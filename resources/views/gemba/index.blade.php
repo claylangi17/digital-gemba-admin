@@ -1,0 +1,239 @@
+@extends('layout.layout')
+@php
+    $title='Riwayat Genba';
+    $subTitle = 'Genba';
+    $script = '<script>
+                        $(".delete-btn").on("click", function() {
+                            $(this).closest(".user-grid-card").addClass("hidden")
+                        });
+                </script>
+                <script src="' . asset('assets/js/data-table.js') . '"></script>
+                ';
+@endphp
+
+@section('content')
+
+    <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
+        <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
+            <div class="flex items-center flex-wrap gap-3">
+                <span class="text-base font-medium text-secondary-light mb-0">Tampilkan</span>                
+            </div>
+            <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                Buat Sesi Genba Baru
+            </button>
+        </div>
+        <div class="card-body p-6">
+            <table id="selection-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="form-check style-check flex items-center">
+                                <input class="form-check-input" id="serial" type="checkbox">
+                                <label class="ms-2 form-check-label" for="serial">
+                                    No.
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Nama Sesi
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Tanggal Dibuat
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Terakhir Diperbaharui
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Status
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Aksi
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- Template Row - Finished  --}}
+                    <tr>
+                        <td>
+                            <div class="form-check style-check flex items-center">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="ms-2 form-check-label">
+                                    01
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            Gemba #5
+                        </td>
+                        <td>25 Jan 2025</td>
+                        <td>26 Jan 2025</td>
+                        <td> <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-sm">Selesai</span> </td>
+                        <td>
+                            <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                <iconify-icon icon="solar:eye-bold"></iconify-icon>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {{-- Template Row - Started  --}}
+                    <tr>
+                        <td>
+                            <div class="form-check style-check flex items-center">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="ms-2 form-check-label">
+                                    02
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            Gemba #6
+                        </td>
+                        <td>25 Jan 2025</td>
+                        <td>26 Jan 2025</td>
+                        <td> <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-sm">Dalam Proses</span> </td>
+                        <td>
+                            <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                <iconify-icon icon="solar:eye-bold"></iconify-icon>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {{-- Template Row - Paused  --}}
+                    <tr>
+                        <td>
+                            <div class="form-check style-check flex items-center">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="ms-2 form-check-label">
+                                    02
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            Gemba #6
+                        </td>
+                        <td>25 Jan 2025</td>
+                        <td>26 Jan 2025</td>
+                        <td> <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-sm">Tertunda</span> </td>
+                        <td>
+                            <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                <iconify-icon icon="solar:eye-bold"></iconify-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
+                <span>Menampilkan 1 sampai 10 dari 12 sesi Genba</span>
+                <ul class="pagination flex flex-wrap items-center gap-2 justify-center">
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"><iconify-icon icon="ep:d-arrow-left" class=""></iconify-icon></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base bg-primary-600 text-white" href="javascript:void(0)">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8" href="javascript:void(0)">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">4</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">5</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"> <iconify-icon icon="ep:d-arrow-right" class=""></iconify-icon> </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main modal -->
+    <div id="default-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Sesi Genba Baru </h3>
+                    <button id="btn-close-default-modal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="user-form" action="{{ route("users.create") }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Sesi</label>
+                            <input type="text" class="form-control" placeholder="Masukkan nama sesi genba " id="name" name="name" required>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button id="btn-cancel-default-modal" type="button" data-modal-hide="default-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button id="btn-submit-default-modal" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg" id="saveTaskButton">
+                        Buat & Masuk Sesi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('user-script')
+<script>
+    // Open Modal 
+    $("#btn-open-default-modal").on("click", function() {
+        $("#default-modal").removeClass("hidden").addClass("flex");
+
+        $("#user-form")[0].reset()
+    });
+
+    // Close Modal
+    $("#btn-close-default-modal").on("click", function() {
+        $("#default-modal").removeClass("flex").addClass("hidden");
+    });
+
+    $("#btn-cancel-default-modal").on("click", function() {
+        $("#default-modal").removeClass("flex").addClass("hidden");
+    });
+
+    // Form Process 
+    $('#btn-submit-default-modal').on('click', function(e) {
+        e.preventDefault();
+
+        $('#user-form').submit();
+    });
+</script>
+@endsection

@@ -8,4 +8,5 @@ Route::middleware(['role:superadmin,admin'])->group(function () {
 
     Route::get('/gemba/analytics', [AnalyticController::class, 'index'])->name('gemba.analytics');
     
+    Route::get('/gemba/history', [GembaController::class, 'index'])->name('gemba.history');
 });

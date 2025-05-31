@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('gemba.history') }}">
                             <i class="ri-circle-fill circle-icon text-secondary-600 w-auto"></i> 
                             Riwayat
                         </a>
