@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('genba_sessions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('whiteboard_id');
-            $table->enum('status', ['PROGRESS', 'POSTPONE', 'FINISH']);
+            $table->string('whiteboard_id')->default('');
+            $table->enum('status', ['PROGRESS', 'POSTPONE', 'FINISH'])->default('PROGRESS');
             $table->string('created_by');
             $table->timestamps();
         });
