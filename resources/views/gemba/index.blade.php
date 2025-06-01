@@ -188,7 +188,7 @@
                     </button>
                 </div>
                 <div class="p-4 md:p-5 space-y-4">
-                    <form id="user-form" action="{{ route("users.create") }}" method="POST">
+                    <form id="user-form" action="{{ route("genba.create") }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Sesi</label>

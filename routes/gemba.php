@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['role:superadmin,admin'])->group(function () {
 
-    Route::get('/gemba/analytics', [AnalyticController::class, 'index'])->name('gemba.analytics');
+    Route::get('/genba/analytics', [AnalyticController::class, 'index'])->name('gemba.analytics');
     
-    Route::get('/gemba/history', [GembaController::class, 'index'])->name('gemba.history');
+    Route::get('/genba/history', [GembaController::class, 'index'])->name('gemba.history');
+
+    // CRUDs
+    Route::get('/genba/view/{id}', [GembaController::class, 'view'])->name('genba.view');
+    Route::post('/genba/create', [GembaController::class, 'create'])->name('genba.create');
 });
