@@ -8908,3 +8908,9 @@ h6, .h6 {
     padding-right: 76px;
   }
 }
+
+/* custom here  */
+.vir-select {
+  border: none !important; 
+  border-radius: 10px;
+}

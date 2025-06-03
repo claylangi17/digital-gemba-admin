@@ -5,7 +5,6 @@
     <link rel="icon" type="image/png') }}" href="{{ asset('assets/images/favicon.png') }}" sizes="16x16">
     <!-- google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
     <!-- Apex Chart css -->
@@ -31,6 +30,9 @@
     <!-- file upload css -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/file-upload.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
+    {{-- Virtual Select  --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/virtual-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/tooltip.min.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
