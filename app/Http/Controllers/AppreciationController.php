@@ -26,18 +26,28 @@ class AppreciationController extends Controller
 
             $path = $request->file('photos')->store('uploads/appreciation/note', 'public');
 
+            $receivers_array = explode(',', $request->receivers);
+            $receivers_id = [];
+            $receivers_name = [];
+
+            foreach ($receivers_array as $person) {
+                $temp = explode("#",$person);
+
+                $receivers_id[] = $temp[0];
+                $receivers_name[] = $temp[1];
+            }
+
             AppreciationNotes::create([
                 'session_id' => $request->session_id,
                 'by' => Auth::user()->name,
-                'receivers' => $request->receivers,
+                'receivers_id' => implode(",",$receivers_id),
+                'receivers_name' => implode(", ",$receivers_name),
                 'line' => $request->line,
                 'description' => $request->description,
                 'files' => $path
             ]);
 
-            $receivers = explode(',', $request->receivers);
-
-            foreach ($receivers as $receiver) {
+            foreach ($receivers_id as $receiver) {
 
                 $user = User::where('id', $receiver)->first();
 

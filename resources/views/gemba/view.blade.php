@@ -275,7 +275,7 @@
                             <div class="card-body p-4 grow"> 
                                 
                                 <div class="block mb-1.5">
-                                    <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">{{ $appreciation->receivers }} </h5>
+                                    <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">{{ $appreciation->receivers_name }} </h5>
                                     <span>{{ $appreciation->line }}</span>
                                 </div>
                                 <p class="card-text text-neutral-600 mb-4">{{ $appreciation->description }}</p>
@@ -330,7 +330,7 @@
                             <select id="receivers" multiple name="receivers" required>
                                 @foreach ($users as $user)
                                     @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->id }}#{{ $user->name }}">{{ $user->name }}</option>
                                     @endif
                                 @endforeach
                             </select>

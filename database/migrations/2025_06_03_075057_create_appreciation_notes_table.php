@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('session_id');
             $table->string('by');
-            $table->text('receivers');
+            $table->text('receivers_id');
+            $table->text('receivers_name');
             $table->string('line');
             $table->string('description');
             $table->text('files');

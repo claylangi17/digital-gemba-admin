@@ -9,7 +9,8 @@ class AppreciationNotes extends Model
     protected $fillable = [
         'session_id',
         'by',
-        'receivers',
+        'receivers_id',
+        'receivers_name',
         'line',
         'description',
         'files',
