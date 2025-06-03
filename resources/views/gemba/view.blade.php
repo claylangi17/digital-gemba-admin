@@ -19,8 +19,8 @@
 
 
             <div class="col-auto">
-                <p class="font-semibold mb-0 dark:text-white text-xl">Genba Session - Team Alpha Meeting</p>
-                <p class="text-center ">15 Mei 2025 - 10:00 WIB</p>
+                <p class="font-semibold mb-0 dark:text-white text-xl text-center">{{ $genba->name }}</p>
+                <p class="text-center ">{{ $genba->created_at->translatedFormat('d F Y - H:i') }} WIB</p>
             </div>
             
             {{-- Dark Mode Swtich - Start  --}}
@@ -260,73 +260,132 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Catatan Apresiasi </span>
                 </div>
 
-                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                <button class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="appreciation-modal" data-modal-toggle="appreciation-modal">
                     <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                     Tambahkan Apresiasi Baru
                 </button>
 
             </div>
             <div class="card-body p-6">
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col">
+                <div id="progress-carousel" class="p-0 dots-style-circle dots-positioned">
+                    @foreach ($appreciations as $appreciation)
+                    <div>
+                        <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col mx-2">
                         
-                        <div class="card-body p-4 grow"> 
-                            
-                            <div class="block mb-1.5">
-                                <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">Clay</h5>
-                                <span>Line 6</span>
+                            <div class="card-body p-4 grow"> 
+                                
+                                <div class="block mb-1.5">
+                                    <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">{{ $appreciation->receivers }} </h5>
+                                    <span>{{ $appreciation->line }}</span>
+                                </div>
+                                <p class="card-text text-neutral-600 mb-4">{{ $appreciation->description }}</p>
+    
+                                <span class="text-xs">Dari: {{ $appreciation->by }}</span>
                             </div>
-                            <p class="card-text text-neutral-600 mb-4">We quickly learn to fear and thus automatically avo id potentially stressful situations of all kinds, including the most common of all</p>
-
-                            <span class="text-xs">Dari: wan cheng</span>
-                        </div>
-                        <div class="flex shrink-0">
-                            <img src="{{ asset('assets/images/card-component/horizontal-card-img1.png') }}" class="h-full w-full object-fit-cover" alt="">
+                            <div class="flex shrink-0">
+                                <img src="{{ asset('storage/' . $appreciation->files) }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                            </div>
                         </div>
                     </div>
-
-                    <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col">
-                        
-                        <div class="card-body p-4 grow"> 
-                            
-                            <div class="block mb-1.5">
-                                <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">Clay</h5>
-                                <span>Line 6</span>
-                            </div>
-                            <p class="card-text text-neutral-600 mb-4">We quickly learn to fear and thus automatically avo id potentially stressful situations of all kinds, including the most common of all</p>
-
-                            <span class="text-xs">Dari: wan cheng</span>
-                        </div>
-                        <div class="flex shrink-0">
-                            <img src="{{ asset('assets/images/card-component/horizontal-card-img1.png') }}" class="h-full w-full object-fit-cover" alt="">
-                        </div>
-                    </div>
+                    @endforeach
+                    
                 </div>
-                
+                <div class="slider-progress">
+                    <span></span>
+                </div>
             </div>
         </div>
         {{-- Issue Card : End  --}}
     </section>
 
+
+    {{-- Appreciations Modal  --}}
+    <!-- Main modal -->
+    <div id="appreciation-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Tambahkan Catatan Apresiasi Baru </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="appreciation-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="appreciation-note-form" action="{{ route("appreciation.note.create") }}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
+                        <div class="mb-3">
+                            <label for="line" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Machine / Line</label>
+                            <select class="form-control" id="line" name="line" required>
+                                @foreach ($lines as $line)
+                                    <option value="{{ $line->name }}">{{ $line->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3 w-full">
+                            <label for="receivers" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Penerima Apresiasi</label>
+                            <select id="receivers" multiple name="receivers" required>
+                                @foreach ($users as $user)
+                                    @if ($user->id != Auth::user()->id)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Deskripsi Apresiasi</label>
+                            <textarea name="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photos" class="form-label">Foto Pendukung Apresiasi</label>
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos">
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" data-modal-hide="appreciation-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button id="save-appreciation" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                        Tambahkan Apresiasi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <x-script/>
 
+    <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
+
     <script>
-        // ================== Password Show Hide Js Start ==========
-        function initializePasswordToggle(toggleSelector) {
-            $(toggleSelector).on("click", function() {
-                $(this).toggleClass("ri-eye-off-line");
-                var input = $($(this).attr("data-toggle"));
-                if (input.attr("type") === "password") {
-                    input.attr("type", "text");
-                } else {
-                    input.attr("type", "password");
-                }
-            });
-        }
-        // Call the function
-        initializePasswordToggle(".toggle-password");
-        // ========================= Password Show Hide Js End ===========================
-</script>
+        VirtualSelect.init({ 
+            ele: '#receivers',
+            maxWidth: '100%',
+            additionalClasses: 'vir-select',
+        });
+
+        $('#save-appreciation').on('click', function(e) {
+            e.preventDefault();
+
+            $('#appreciation-note-form').submit();
+        });
+
+        $("#progress-carousel").slick({
+            infinite: true,
+            slidesToShow: 2,
+            slidesToScroll: 1, 
+            arrows: true, 
+            dots: true,
+            infinite: true,
+            speed: 600,
+            prevArrow: '',
+            nextArrow: '',
+        })
+    </script>
 
 </body>
 </html>

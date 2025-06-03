@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppreciationNotes;
 use App\Models\GenbaSessions;
+use App\Models\Lines;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -43,6 +46,15 @@ class GembaController extends Controller
 
     public function view($id)
     {
-        return view('gemba.view');
+        $data = [
+            "genba" => GenbaSessions::where('id', $id)->first(),
+            "appreciations" => AppreciationNotes::where('session_id', $id)->get(),
+            "users" => User::all(),
+            "lines" => Lines::all(),
+        ];
+        
+        return view('gemba.view', $data);
     }
+
+
 }

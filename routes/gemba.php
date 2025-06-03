@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GembaController;
 use App\Http\Controllers\AnalyticController;
+use App\Http\Controllers\AppreciationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['role:superadmin,admin'])->group(function () {
@@ -13,4 +14,6 @@ Route::middleware(['role:superadmin,admin'])->group(function () {
     // CRUDs
     Route::get('/genba/view/{id}', [GembaController::class, 'view'])->name('genba.view');
     Route::post('/genba/create', [GembaController::class, 'create'])->name('genba.create');
+
+    Route::post('/appreciation/note/create', [AppreciationController::class, 'create'])->name('appreciation.note.create');
 });
