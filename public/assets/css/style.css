@@ -6203,6 +6203,10 @@ svg.radial-progress text.percentage {
   --tw-text-opacity: 0.75;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .underline{
   text-decoration-line: underline;
 }

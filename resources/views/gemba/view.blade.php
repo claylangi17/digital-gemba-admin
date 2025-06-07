@@ -171,12 +171,12 @@
                 </div>
 
                 <div class="flex items-center flex-wrap gap-3">
-                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
                         <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                         Tambahkan Peserta
                     </button>
     
-                    <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="qr-modal" data-modal-toggle="qr-modal">
                         <iconify-icon icon="bx:qr" class="icon text-xl line-height-1"></iconify-icon>
                         Tampilkan Kode QR 
                     </button>
@@ -191,61 +191,101 @@
                                 <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Nama</th>
                                 <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Role</th>
                                 <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Status</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Waktu Hadir</th>
+                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Waktu Masuk</th>
+                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Waktu Keluar</th>
                                 <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
+
+                            @foreach ($attendances as $attendance)
+                                
+                                {{-- Present  --}}
+                                @if ($attendance->status == "PRESENT")
+                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                        <td>
+                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                        </td>
+                                        <td class="capitalize">
+                                            {{ $users->where('id', $attendance->user_id)->first()->department }}
+                                        </td>
+                                        <td>
+                                            <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-sm">Hadir</span>
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_in ?? '-' }}
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_out ?? '-' }}
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                                <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+
+                                {{-- Late  --}}
+                                @if ($attendance->status == "LATE")
+                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                        <td>
+                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                        </td>
+                                        <td class="capitalize">
+                                            {{ $users->where('id', $attendance->user_id)->first()->department }}
+                                        </td>
+                                        <td>
+                                            <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-sm">Terlambat</span>
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_in ?? '-' }}
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_out ?? '-' }}
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                                <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+
+                                {{-- Absent  --}}
+                                @if ($attendance->status == "ABSENT")
+                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                        <td>
+                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                        </td>
+                                        <td class="capitalize">
+                                            {{ $users->where('id', $attendance->user_id)->first()->department }}
+                                        </td>
+                                        <td>
+                                            <span class="bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 px-6 py-1.5 rounded-full font-medium text-sm">Absen</span>
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_in ?? '-' }}
+                                        </td>
+                                        <td>
+                                            {{ $attendance->time_out ?? '-' }}
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                                <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
                             {{-- Template Present  --}}
-                            <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
-                                <td>
-                                    Clay
-                                </td>
-                                <td>Team Leader</td>
-                                <td>
-                                    <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-sm">Hadir</span>
-                                </td>
-                                <td>10:00</td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
-                                    </a>
-                                </td>
-                            </tr>
+                            
 
                             {{-- Template Absent  --}}
-                            <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
-                                <td>
-                                    Clay
-                                </td>
-                                <td>Operator</td>
-                                <td>
-                                    <span class="bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 px-6 py-1.5 rounded-full font-medium text-sm">Absent</span>
-                                </td>
-                                <td>-</td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
-                                    </a>
-                                </td>
-                            </tr>
+                            
 
-                            {{-- Template Present  --}}
-                            <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
-                                <td>
-                                    Clay
-                                </td>
-                                <td>Team Leader</td>
-                                <td>
-                                    <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-sm">Hadir</span>
-                                </td>
-                                <td>10:00</td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
-                                    </a>
-                                </td>
-                            </tr>
+                            {{-- Template Late  --}}
+                            
                         </tbody>
                     </table>
                 </div>
@@ -300,7 +340,6 @@
 
 
     {{-- Appreciations Modal  --}}
-    <!-- Main modal -->
     <div id="appreciation-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full  max-w-2xl max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
@@ -357,6 +396,87 @@
         </div>
     </div>
 
+    {{-- Attendance Modal  --}}
+    <div id="attendance-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Tambahkan Peserta </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="attendance-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="attendance-form" action="{{ route("attendance.create") }}" method="POST">
+                        @csrf
+                        <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
+                        <div class="mb-3 w-full">
+                            <label for="user_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Peserta</label>
+                            <select id="user_ids" multiple name="user_ids" required>
+                                @foreach ($users as $user)
+                                    @if ($user->id != Auth::user()->id)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" data-modal-hide="attendance-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="attendance-modal">
+                        Batal
+                    </button>
+                    <button id="save-attendance" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                        Tambahkan Peserta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- QR Modal  --}}
+    <div id="qr-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Kode QR Kehadiran </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="qr-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <p class="mb-0 text-center"> Scan QR Ini Untuk Mencatat Kehadiran </p>
+                    <div class="flex items-center justify-center">
+                        {!! QrCode::size(225)->generate('SESSION_'. $genba->created_at->translatedFormat('Y_m_d') . "_T" . $genba->id ) !!}
+                    </div>
+                    <p class="mb-0 text-sm text-secondary-light text-center">ID Sesi: {{ $genba->id }} </p>
+
+                    <p class="mb-2 font-semibold">Petunjuk Penggunaan</p>
+
+
+                    <ul class="rounded-lg overflow-hidden">
+                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600 border-b border-primary-200 dark:border-primary-600">1. Buka aplikasi mobile attendance di smartphone Anda</li>
+                        <li class="text-secondary-light p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">2. Pilih menu 'Scan QR' pada aplikasi </li>
+                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600 border-b border-primary-200 dark:border-primary-600">3. Arahkan kamera ke QR code yang ditampilkan </li>
+                        <li class="text-secondary-light p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">4. Tunggu hingga muncul konfirmasi kehadiran</li>
+                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600">5. Ulangi langkah 1-4 sebelum mengakhiri sesi genba </li>
+                    </ul>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" data-modal-hide="qr-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="qr-modal">
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <x-script/>
 
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
@@ -368,10 +488,22 @@
             additionalClasses: 'vir-select',
         });
 
+        VirtualSelect.init({ 
+            ele: '#user_ids',
+            maxWidth: '100%',
+            additionalClasses: 'vir-select',
+        });
+
         $('#save-appreciation').on('click', function(e) {
             e.preventDefault();
 
             $('#appreciation-note-form').submit();
+        });
+
+        $('#save-attendance').on('click', function(e) {
+            e.preventDefault();
+
+            $('#attendance-form').submit();
         });
 
         $("#progress-carousel").slick({

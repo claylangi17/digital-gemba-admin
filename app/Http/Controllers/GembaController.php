@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppreciationNotes;
+use App\Models\Attendances;
 use App\Models\GenbaSessions;
 use App\Models\Lines;
 use App\Models\User;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class GembaController extends Controller
 {
@@ -48,6 +50,7 @@ class GembaController extends Controller
     {
         $data = [
             "genba" => GenbaSessions::where('id', $id)->first(),
+            "attendances" => Attendances::where('session_id', $id)->get(),
             "appreciations" => AppreciationNotes::where('session_id', $id)->get(),
             "users" => User::all(),
             "lines" => Lines::all(),
