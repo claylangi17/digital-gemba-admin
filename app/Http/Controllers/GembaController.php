@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AppreciationNotes;
 use App\Models\Attendances;
 use App\Models\GenbaSessions;
+use App\Models\Issues;
+use App\Models\Items;
 use App\Models\Lines;
 use App\Models\User;
 use Carbon\Carbon;
@@ -55,9 +57,11 @@ class GembaController extends Controller
     {
         $data = [
             "genba" => GenbaSessions::where('id', $id)->first(),
+            "issues" => Issues::where('session_id', $id)->get(),
             "attendances" => Attendances::where('session_id', $id)->get(),
             "appreciations" => AppreciationNotes::where('session_id', $id)->get(),
             "users" => User::all(),
+            "items" => Items::all(),
             "lines" => Lines::all(),
         ];
         

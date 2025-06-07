@@ -54,111 +54,110 @@
                     </form>
                 </div>
 
-                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-modal" data-modal-toggle="issue-modal">
                     <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                     Tambahkan Isu Baru
                 </button>
 
                 <div class="w-full py-6">
-                    <div class="flex items-center justify-between">
-                        <p>80% Isu Terselesaikan</p>
-                        <p>3/5 Selesai</p>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <p>{{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}% Isu Terselesaikan</p>
+                        <p>
+                            {{ $issues->where('status', "CLOSED")->count() }} 
+                            / 
+                            {{ $issues->count() }} 
+                            Selesai
+                        </p>
                     </div>
                     <div class="w-full bg-primary-600/10 rounded-full h-2">
-                        <div class="bg-primary-600 h-2 rounded-full dark:bg-primary-600" style="width: 90%"></div>
+                        <div class="bg-primary-600 h-2 rounded-full dark:bg-primary-600" style="width:  {{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}%"></div>
                     </div>
                 </div>
             </div>
             <div class="card-body p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-6">
-                    {{-- Tempalate Finish  --}}
-                    <div class="user-grid-card">
-                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                            
-
-                            <div class="flex items-center gap-2">
-
-                                {{-- Aspect  --}}
-                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs">Machine</span>
-                                {{-- Status  --}}
-                                <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
-                            </div>
-                            
-                            {{-- Issue Name  --}}
-                            <h6 class="text-lg mb-2 mt-2">
-                                Kendala di mesin sealing
-                            </h6>
-                            
-                            {{-- Supporting File  --}}
-                            <img src="{{ asset('assets/images/card-component/card-img1.png') }}" alt="" class="w-full object-fit-cover">
-                            <div class="pe-6 pb-4 ps-6 text-center mt--50">
-                                
-                                <div class="flex items-center justify-between gap-2">
+                <div id="issue-carousel" class="p-0 dots-style-circle dots-positioned">
+                    @foreach ($issues as $issue)
+                    
+                        @if ($issue->status == "OPEN")
+                            <div class="mx-2">
+                                {{-- Tempalate Onprogress  --}}
+                                <div class="user-grid-card">
+                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
                                         
+        
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+        
+                                                {{-- Aspect  --}}
+                                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                {{-- Status  --}}
+                                                <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
+                                            </div>
+
+                                            <button type="button" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                                <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
+                                            </button>
+                                        </div>
+                                        
+                                        {{-- Issue Name  --}}
+                                        <h6 class="text-lg mb-2 mt-2">
+                                            {{ $issue->description }}
+                                        </h6>
+                                        
+                                        {{-- Supporting File  --}}
+                                        <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                        
+                                        <span class="text-xs py-2">
+                                            <span class="font-semibold">Ditugaskan: </span>
+
+                                            {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {{-- Tempalate Onprogress  --}}
-                    <div class="user-grid-card">
-                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                            
-
-                            <div class="flex items-center gap-2">
-
-                                {{-- Aspect  --}}
-                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs">Machine</span>
-                                {{-- Status  --}}
-                                <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Process</span>
-                            </div>
-                            
-                            {{-- Issue Name  --}}
-                            <h6 class="text-lg mb-2 mt-2">
-                                Kendala di lining machine
-                            </h6>
-                            
-                            {{-- Supporting File  --}}
-                            <img src="{{ asset('assets/images/card-component/card-img1.png') }}" alt="" class="w-full object-fit-cover">
-                            <div class="pe-6 pb-4 ps-6 text-center mt--50">
-                                
-                                <div class="flex items-center justify-between gap-2">
+                        @else
+                            <div class="mx-2">
+                                {{-- Tempalate Finish  --}}
+                                <div class="user-grid-card">
+                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
                                         
+
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+        
+                                                {{-- Aspect  --}}
+                                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                {{-- Status  --}}
+                                                <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
+                                            </div>
+
+                                            <button type="button" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                                <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
+                                            </button>
+                                        </div>
+                                        
+                                        {{-- Issue Name  --}}
+                                        <h6 class="text-lg mb-2 mt-2">
+                                            {{ $issue->description }}
+                                        </h6>
+                                        
+                                        {{-- Supporting File  --}}
+                                        <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                        <span class="text-xs py-2">
+                                            <span class="font-semibold">Ditugaskan: </span>
+
+                                            {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        @endif
 
-                    {{-- Tempalate Onprogress  --}}
-                    <div class="user-grid-card">
-                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                            
-
-                            <div class="flex items-center gap-2">
-
-                                {{-- Aspect  --}}
-                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs">Machine</span>
-                                {{-- Status  --}}
-                                <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Process</span>
-                            </div>
-                            
-                            {{-- Issue Name  --}}
-                            <h6 class="text-lg mb-2 mt-2">
-                                Kendala di lining machine
-                            </h6>
-                            
-                            {{-- Supporting File  --}}
-                            <img src="{{ asset('assets/images/card-component/card-img1.png') }}" alt="" class="w-full object-fit-cover">
-                            <div class="pe-6 pb-4 ps-6 text-center mt--50">
-                                
-                                <div class="flex items-center justify-between gap-2">
-                                        
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
-                
+                <div class="slider-progress">
+                    <span></span>
+                </div>
             </div>
         </div>
         {{-- Issue Card : End  --}}
@@ -293,7 +292,7 @@
         </div>
         {{-- Attendance Card : End  --}}
 
-        {{-- Issue Card : Start  --}}
+        {{-- Appreciation Card : Start  --}}
         <div class="card h-full p-0 rounded-xl border-0 overflow-hidden w-full my-4">
             <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
                 <div class="flex items-center flex-wrap gap-3">
@@ -328,15 +327,79 @@
                         </div>
                     </div>
                     @endforeach
-                    
                 </div>
                 <div class="slider-progress">
                     <span></span>
                 </div>
             </div>
         </div>
-        {{-- Issue Card : End  --}}
+        {{-- Appreciation Card : End  --}}
     </section>
+
+    {{-- Issue Modal  --}}
+    <div id="issue-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Isu Baru </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="issue-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="issue-form" action="{{ route("issue.create") }}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
+                        <div class="mb-3 w-full">
+                            <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
+                            <select id="assigned_ids" multiple name="assigned_ids" required>
+                                @foreach ($users as $user)
+                                    @if ($user->id != Auth::user()->id)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="line" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
+                            <select class="form-control" id="line" name="line" required>
+                                @foreach ($lines as $line)
+                                    <option value="{{ $line->name }}">{{ $line->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3 w-full">
+                            <label for="items" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Item Terkait</label>
+                            <select id="items" multiple name="items" required>
+                                @foreach ($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Deskripsi Permasalahan</label>
+                            <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photos" class="form-label">Foto Pendukung</label>
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos">
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" data-modal-hide="issue-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="issue-modal">
+                        Batal
+                    </button>
+                    <button id="save-issue" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                        Tambahkan Isu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     {{-- Appreciations Modal  --}}
@@ -483,6 +546,19 @@
 
     <script>
         VirtualSelect.init({ 
+            ele: '#assigned_ids',
+            maxWidth: '100%',
+            additionalClasses: 'vir-select',
+        });
+
+        VirtualSelect.init({ 
+            ele: '#items',
+            maxWidth: '100%',
+            allowNewOption: true,
+            additionalClasses: 'vir-select',
+        });
+
+        VirtualSelect.init({ 
             ele: '#receivers',
             maxWidth: '100%',
             additionalClasses: 'vir-select',
@@ -492,6 +568,12 @@
             ele: '#user_ids',
             maxWidth: '100%',
             additionalClasses: 'vir-select',
+        });
+
+        $('#save-issue').on('click', function(e) {
+            e.preventDefault();
+
+            $('#issue-form').submit();
         });
 
         $('#save-appreciation').on('click', function(e) {
@@ -506,10 +588,22 @@
             $('#attendance-form').submit();
         });
 
+        $("#issue-carousel").slick({
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3, 
+            arrows: true, 
+            dots: true,
+            infinite: true,
+            speed: 600,
+            prevArrow: '',
+            nextArrow: '',
+        })
+
         $("#progress-carousel").slick({
             infinite: true,
             slidesToShow: 2,
-            slidesToScroll: 1, 
+            slidesToScroll: 2, 
             arrows: true, 
             dots: true,
             infinite: true,
