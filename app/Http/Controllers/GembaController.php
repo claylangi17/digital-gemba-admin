@@ -7,6 +7,7 @@ use App\Models\Attendances;
 use App\Models\GenbaSessions;
 use App\Models\Lines;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -22,15 +23,19 @@ class GembaController extends Controller
 
     public function create(Request $request) 
     {
-        
         try {
             $request->validate([
                 'name' => 'required',
+                'start_time' => 'required'
             ]);
+
+            $carbon = Carbon::createFromFormat('d/m/Y H:i', $request->start_time);
+            $start_time = $carbon->format('Y-m-d H:i:s');
     
             $genba = GenbaSessions::create([
                             'name' => $request->name,
-                            'created_by' => Auth::user()->name
+                            'created_by' => Auth::user()->name,
+                            'start_time' => $start_time
                         ]);
     
             return redirect()->route('genba.view', [$genba->id]);

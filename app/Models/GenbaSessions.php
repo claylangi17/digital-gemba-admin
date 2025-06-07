@@ -11,5 +11,6 @@ class GenbaSessions extends Model
         'whiteboard_id',
         'status',
         'created_by',
+        'start_time'
     ];
 }

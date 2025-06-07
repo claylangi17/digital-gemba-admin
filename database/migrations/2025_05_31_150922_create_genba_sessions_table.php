@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('whiteboard_id')->default('');
             $table->enum('status', ['PROGRESS', 'POSTPONE', 'FINISH'])->default('PROGRESS');
             $table->string('created_by');
+            $table->timestamp('start_time');
             $table->timestamps();
         });
     }

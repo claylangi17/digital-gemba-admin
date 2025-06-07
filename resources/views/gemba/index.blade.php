@@ -191,8 +191,16 @@
                     <form id="user-form" action="{{ route("genba.create") }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Sesi</label>
+                                <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Sesi</label>
                             <input type="text" class="form-control" placeholder="Masukkan nama sesi genba " id="name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="start_time" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Batas Waktu Absen</label>
+                            <div class=" relative">
+                                <input class="form-control rounded-lg bg-white dark:bg-neutral-700" id="start_time" name="start_time" type="text">
+                                <span class="absolute end-0 top-1/2 -translate-y-1/2 me-3 line-height-1"><iconify-icon icon="solar:calendar-linear" class="icon text-lg"></iconify-icon></span>
+                            </div>
                         </div>
                         
                     </form>
@@ -212,7 +220,21 @@
 @endsection
 
 @section('user-script')
+<script src="{{ asset('assets/js/full-calendar.js') }}"></script>
+<script src="{{ asset('assets/js/flatpickr.js') }}"></script>
+
 <script>
+
+
+    // Flat pickr or date picker js 
+    function getDatePicker(receiveID) {
+        flatpickr(receiveID, {
+            enableTime: true,
+            dateFormat: "d/m/Y H:i",
+        });
+    }
+    getDatePicker("#start_time");
+
     // Open Modal 
     $("#btn-open-default-modal").on("click", function() {
         $("#default-modal").removeClass("hidden").addClass("flex");
