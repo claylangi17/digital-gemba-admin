@@ -11,7 +11,7 @@
             {{-- Back Button - Start  --}}
             <div class="col-auto">
                 <div class="flex flex-wrap items-center gap-[16px]">
-                    <a href="$"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
+                    <a href="{{ route('genba.view', [$issue->session_id]) }}"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
     
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="col-auto">
                 <div class="flex flex-wrap items-center gap-3">
                     <button type="button" id="theme-toggle" class="w-10 h-10 bg-neutral-200 dark:bg-neutral-700 dark:text-white rounded-full flex justify-center items-center">
-                        <span id="theme-toggle-dark-icon" class="hidden">
+                        <span id="theme-toggle-dark-icon" class="flex">
                             <i class="ri-sun-line"></i>
                         </span>
                         <span id="theme-toggle-light-icon" class="hidden">
@@ -53,6 +53,11 @@
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Informasi Isu </span>
                 </div>
+
+                <button  class="btn btn bg-success-600 hover:bg-success-700 text-sm btn-sm text-white px-3 py-3 rounded-lg flex items-center gap-2">
+                    <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
+                    Tandai "Terselesaikan"
+                </button>
             </div>
             <div class="card-body p-6">
                 
@@ -139,9 +144,45 @@
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Temuan Lapangan </span>
                 </div>
+
+                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-file-modal" data-modal-toggle="issue-file-modal">
+                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                    Tambahkan File Baru
+                </button>
             </div>
             <div class="card-body p-6">
                 <div id="files-carousel" class="p-0 dots-style-circle dots-positioned">
+                    @foreach ($issue->files as $file)
+                        @if ($file->type == "PHOTO")
+                            {{-- Tempalate IMG  --}}
+                            <div class="mx-2">
+                                <div class="user-grid-card">
+                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
+                                        {{--  File  --}}
+                                        <img src="{{ asset('storage/' . $file->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $file->path) }}')">
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            {{-- Tempalate IMG  --}}
+                            <div class="mx-2">
+                                <div class="user-grid-card">
+                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4" onclick="showVideoModal('{{ asset('storage/' . $file->path) }}')">
+                                        {{--  File  --}}
+                                        <video
+                                        muted
+                                        autoplay
+                                        loop
+                                        playsinline
+                                        style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
+                                        >
+                                            <source src="{{ asset('storage/' . $file->path) }}" type="video/mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -352,13 +393,124 @@
         {{-- Solution Card : End  --}}
     </section>
 
-    <x-script/>
+    {{-- Issue Files Modal  --}}
+    <div id="issue-file-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Isu Baru </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="issue-file-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="issue-file-form" action="{{ route("issue.file.create") }}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <input type="text" value="{{ $issue->id }}" name="issue_id" id="issue_id" hidden >
+                        <div class="mb-3">
+                            <label for="files" class="form-label">File Foto / Video</label>
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" data-modal-hide="issue-file-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="issue-file-modal">
+                        Batal
+                    </button>
+                    <button id="save-issue-file" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                        Tambahkan FIle
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    {{-- Image Modal  --}}
+    <div id="image-modal" class="hidden overflow-y-auto bg-neutral-600/10 overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
+        <div class="relative p-4 w-full max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="p-6">
+                    <img id="image-modal-file" style="height: 70vh; object-fit:scale-down; margin: 0 auto">
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button onclick="hideImageModal()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg">
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Video Modal  --}}
+    <div id="video-modal" class="hidden overflow-y-auto bg-neutral-600/10 overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
+        <div class="relative p-4 w-full max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="p-6">
+                    <video
+                    style="height: 70vh; margin: 0 auto"
+                    id="video-modal-file"
+                    controls
+                    >
+                    </video>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button onclick="hideVideoModal()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg">
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <x-script/>
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-cause.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-action.js') }}"></script>
 
     <script>
+
+        function showImageModal(path)
+        {
+            $("#image-modal").removeClass('hidden').addClass('flex');
+
+            $('#image-modal-file').attr('src', path)
+        }
+
+        function hideImageModal(path)
+        {
+            $("#image-modal").removeClass('flex').addClass('hidden');
+
+            $('#image-modal-file').attr('src', '')
+        }
+
+        function showVideoModal(path)
+        {
+            $("#video-modal").removeClass('hidden').addClass('flex');
+
+            $('#video-modal-file').attr('src', path)
+        }
+
+        function hideVideoModal(path)
+        {
+            $("#video-modal").removeClass('flex').addClass('hidden');
+
+            $('#video-modal-file').attr('src', '')
+        }
+
+        $("#files-carousel").slick({
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4, 
+            arrows: true, 
+            dots: true,
+            infinite: true,
+            speed: 600,
+            prevArrow: '',
+            nextArrow: '',
+        })
 
         $("#issue-carousel").slick({
             infinite: true,
@@ -371,6 +523,12 @@
             prevArrow: '',
             nextArrow: '',
         })
+
+        $('#save-issue-file').on('click', function(e) {
+            e.preventDefault();
+
+            $('#issue-file-form').submit();
+        });
     </script>
 
 </body>

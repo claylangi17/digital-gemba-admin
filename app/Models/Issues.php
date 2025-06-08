@@ -12,7 +12,12 @@ class Issues extends Model
         'items',
         'assigned_ids',
         'description',
-        'files',
         'status',
     ];
+
+    public function files()
+    {
+        return $this->hasMany(IssueFiles::class, 'issue_id');
+    }
+
 }

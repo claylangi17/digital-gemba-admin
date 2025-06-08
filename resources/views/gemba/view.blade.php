@@ -108,7 +108,7 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
@@ -145,7 +145,7 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
 
@@ -397,8 +397,8 @@
                             <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="photos" class="form-label">Foto Pendukung</label>
-                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos">
+                            <label for="files" class="form-label">Foto / Video Pendukung</label>
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
                         </div>
                     </form>
                 </div>

@@ -35,4 +35,5 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/tooltip.min.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    @livewireStyles
 </head>
