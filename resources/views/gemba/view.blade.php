@@ -49,7 +49,7 @@
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Daftar Isu </span>
                     <form class="navbar-search">
-                        <input type="text" class="bg-white dark:bg-neutral-700 h-10 w-auto" name="search" placeholder="Cari isu">
+                        <input type="text" class="bg-white dark:bg-neutral-700 h-10 w-auto" name="issue-search" id="issue-search" placeholder="Cari isu">
                         <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                     </form>
                 </div>
@@ -82,7 +82,7 @@
                         @foreach ($issues as $issue)
                         
                             @if ($issue->status == "OPEN")
-                                <div class="mx-2">
+                                <div class="mx-2 issue-card" data-description="{{ strtolower($issue->description) }}">
                                     {{-- Tempalate Onprogress  --}}
                                     <div class="user-grid-card">
                                         <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="mx-2">
+                                <div class="mx-2 issue-card" data-description="{{ strtolower($issue->description) }}">
                                     {{-- Tempalate Finish  --}}
                                     <div class="user-grid-card">
                                         <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
@@ -556,6 +556,41 @@
     <x-script/>
 
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
+
+    <script>
+        const searchInput = document.getElementById('issue-search');
+        const cards = document.querySelectorAll('.issue-card');
+    
+        // Debounce utility function
+        function debounce(func, delay = 300) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+    
+        function filterIssues(query) {
+            let matchCount = 0;
+    
+            cards.forEach(card => {
+                const desc = card.dataset.description;
+                if (desc.includes(query)) {
+                    card.style.display = 'block';
+                    matchCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+        }
+    
+        searchInput.addEventListener('input', debounce(function () {
+            const query = $("#issue-search").val().toLowerCase().trim();
+            filterIssues(query);
+        }, 250));
+    </script>
+    
 
     <script>
         VirtualSelect.init({ 
