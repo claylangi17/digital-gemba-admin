@@ -59,6 +59,7 @@
                     Tambahkan Isu Baru
                 </button>
 
+                @if ($issues->count() > 0)
                 <div class="w-full py-6">
                     <div class="flex items-center justify-between mb-1.5">
                         <p>{{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}% Isu Terselesaikan</p>
@@ -73,87 +74,99 @@
                         <div class="bg-primary-600 h-2 rounded-full dark:bg-primary-600" style="width:  {{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}%"></div>
                     </div>
                 </div>
+                @endif
             </div>
             <div class="card-body p-6">
                 <div id="issue-carousel" class="p-0 dots-style-circle dots-positioned">
-                    @foreach ($issues as $issue)
-                    
-                        @if ($issue->status == "OPEN")
-                            <div class="mx-2">
-                                {{-- Tempalate Onprogress  --}}
-                                <div class="user-grid-card">
-                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                                        
-        
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap-2">
-        
-                                                {{-- Aspect  --}}
-                                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
-                                                {{-- Status  --}}
-                                                <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
+                    @if ($issues->count() > 0)
+                        @foreach ($issues as $issue)
+                        
+                            @if ($issue->status == "OPEN")
+                                <div class="mx-2">
+                                    {{-- Tempalate Onprogress  --}}
+                                    <div class="user-grid-card">
+                                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
+                                            
+            
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-2">
+            
+                                                    {{-- Aspect  --}}
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                    {{-- Status  --}}
+                                                    <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
+                                                </div>
+
+                                                <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                                    <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
+                                                </a>
                                             </div>
+                                            
+                                            {{-- Issue Name  --}}
+                                            <h6 class="text-lg mb-2 mt-2">
+                                                {{ $issue->description }}
+                                            </h6>
+                                            
+                                            {{-- Supporting File  --}}
+                                            <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            
+                                            <span class="text-xs py-2">
+                                                <span class="font-semibold">Ditugaskan: </span>
 
-                                            <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
-                                                <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                            </a>
+                                                {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
+                                            </span>
                                         </div>
-                                        
-                                        {{-- Issue Name  --}}
-                                        <h6 class="text-lg mb-2 mt-2">
-                                            {{ $issue->description }}
-                                        </h6>
-                                        
-                                        {{-- Supporting File  --}}
-                                        <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
-                                        
-                                        <span class="text-xs py-2">
-                                            <span class="font-semibold">Ditugaskan: </span>
-
-                                            {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
-                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        @else
-                            <div class="mx-2">
-                                {{-- Tempalate Finish  --}}
-                                <div class="user-grid-card">
-                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                                        
+                            @else
+                                <div class="mx-2">
+                                    {{-- Tempalate Finish  --}}
+                                    <div class="user-grid-card">
+                                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
+                                            
 
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap-2">
-        
-                                                {{-- Aspect  --}}
-                                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
-                                                {{-- Status  --}}
-                                                <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-2">
+            
+                                                    {{-- Aspect  --}}
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                    {{-- Status  --}}
+                                                    <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
+                                                </div>
+
+                                                <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                                    <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
+                                                </a>
                                             </div>
+                                            
+                                            {{-- Issue Name  --}}
+                                            <h6 class="text-lg mb-2 mt-2">
+                                                {{ $issue->description }}
+                                            </h6>
+                                            
+                                            {{-- Supporting File  --}}
+                                            <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <span class="text-xs py-2">
+                                                <span class="font-semibold">Ditugaskan: </span>
 
-                                            <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
-                                                <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                            </a>
+                                                {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
+                                            </span>
                                         </div>
-                                        
-                                        {{-- Issue Name  --}}
-                                        <h6 class="text-lg mb-2 mt-2">
-                                            {{ $issue->description }}
-                                        </h6>
-                                        
-                                        {{-- Supporting File  --}}
-                                        <img src="{{ asset('storage/' . $issue->files) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
-                                        <span class="text-xs py-2">
-                                            <span class="font-semibold">Ditugaskan: </span>
-
-                                            {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
-                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        @endif
+                            @endif
 
-                    @endforeach
+                        @endforeach
+                    @else
+                        <div class="mx-2">
+                            {{-- Tempalate None  --}}
+                            <div class="user-grid-card">
+                                <div class="relative rounded-2xl overflow-hidden p-4">
+                                    <p class="text-center">Belum Ada Isu Terdata</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="slider-progress">
                     <span></span>
