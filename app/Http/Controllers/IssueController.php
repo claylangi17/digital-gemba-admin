@@ -101,4 +101,32 @@ class IssueController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    public function close(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'id' => "required",
+                'session_id' => "required"
+            ]);
+
+            $issue = Issues::where('id', $request->id)->update([
+                "status" => "CLOSED"
+            ]);
+
+            Alert::toast('Isu berhasil ditutup', 'success')->position('top-end')->timerProgressBar();
+    
+            return redirect()->route('genba.view', [$request->session_id]);
+    
+        } catch (\Exception $e) {
+            Log::error('Failed to Close Issue', ['error' => $e->getMessage()]);
+            
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+    
+            return redirect()->back()->withInput();
+        }
+    }
 }

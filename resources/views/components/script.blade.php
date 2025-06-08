@@ -28,7 +28,6 @@
     <script src="{{ asset('assets/js/lib/virtual-select.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/tooltip.min.js') }}"></script>
 
-
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
     @livewireScripts

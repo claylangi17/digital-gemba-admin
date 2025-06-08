@@ -54,10 +54,18 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Informasi Isu </span>
                 </div>
 
-                <button  class="btn btn bg-success-600 hover:bg-success-700 text-sm btn-sm text-white px-3 py-3 rounded-lg flex items-center gap-2">
-                    <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
-                    Tandai "Terselesaikan"
-                </button>
+                @if ($issue->status == "OPEN")
+                    <button onclick="closingConfirmation()" class="btn btn bg-success-600 hover:bg-success-700 text-sm btn-sm text-white px-3 py-3 rounded-lg flex items-center gap-2">
+                        <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
+                        Tandai "Terselesaikan"
+                    </button>
+
+                    <form id="close-issue-form" action="{{ route('issue.close') }}" method="post" hidden>
+                        @csrf
+                        <input type="text" name="id" id="id" value="{{ $issue->id }}">
+                        <input type="text" name="session_id" id="session_id" value="{{ $issue->session_id }}">
+                    </form>
+                @endif
             </div>
             <div class="card-body p-6">
                 
@@ -145,10 +153,12 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Temuan Lapangan </span>
                 </div>
 
-                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-file-modal" data-modal-toggle="issue-file-modal">
-                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                    Tambahkan File Baru
-                </button>
+                @if ($issue->status == "OPEN")
+                    <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-file-modal" data-modal-toggle="issue-file-modal">
+                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                        Tambahkan File Baru
+                    </button>
+                @endif
             </div>
             <div class="card-body p-6">
                 <div id="files-carousel" class="p-0 dots-style-circle dots-positioned">
@@ -393,40 +403,42 @@
         {{-- Solution Card : End  --}}
     </section>
 
-    {{-- Issue Files Modal  --}}
-    <div id="issue-file-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full  max-w-2xl max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Isu Baru </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="issue-file-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Tutup Formulir</span>
-                    </button>
-                </div>
-                <div class="p-4 md:p-5 space-y-4">
-                    <form id="issue-file-form" action="{{ route("issue.file.create") }}" enctype="multipart/form-data" method="POST">
-                        @csrf
-                        <input type="text" value="{{ $issue->id }}" name="issue_id" id="issue_id" hidden >
-                        <div class="mb-3">
-                            <label for="files" class="form-label">File Foto / Video</label>
-                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
-                        </div>
-                    </form>
-                </div>
-                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" data-modal-hide="issue-file-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="issue-file-modal">
-                        Batal
-                    </button>
-                    <button id="save-issue-file" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
-                        Tambahkan FIle
-                    </button>
+    @if ($issue->status == "OPEN")
+        {{-- Issue Files Modal  --}}
+        <div id="issue-file-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full  max-w-2xl max-h-full">
+                <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Isu Baru </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="issue-file-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Tutup Formulir</span>
+                        </button>
+                    </div>
+                    <div class="p-4 md:p-5 space-y-4">
+                        <form id="issue-file-form" action="{{ route("issue.file.create") }}" enctype="multipart/form-data" method="POST">
+                            @csrf
+                            <input type="text" value="{{ $issue->id }}" name="issue_id" id="issue_id" hidden >
+                            <div class="mb-3">
+                                <label for="files" class="form-label">File Foto / Video</label>
+                                <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button type="button" data-modal-hide="issue-file-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="issue-file-modal">
+                            Batal
+                        </button>
+                        <button id="save-issue-file" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                            Tambahkan FIle
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     {{-- Image Modal  --}}
     <div id="image-modal" class="hidden overflow-y-auto bg-neutral-600/10 overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
@@ -469,6 +481,26 @@
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-cause.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-action.js') }}"></script>
+
+
+    <script>
+        function closingConfirmation() {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Isu ini akan dinyatakan telah 'Selesai' ditangani",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, konfirmasi!',
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#close-issue-form").submit()
+                }
+            });
+        }
+    </script>
 
     <script>
 

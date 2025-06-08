@@ -108,7 +108,7 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <img src="{{ asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>

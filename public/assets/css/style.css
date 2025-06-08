@@ -8918,3 +8918,11 @@ h6, .h6 {
   border: none !important; 
   border-radius: 10px;
 }
+
+.swal2-confirm {
+  background-color: #2563eb;
+}
+
+.swal2-cancel {
+  background-color: #d33;
+}
