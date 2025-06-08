@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actions;
 use App\Models\Issues;
 use App\Models\Items;
+use App\Models\RootCauses;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Expr\FuncCall;
@@ -11,6 +14,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class IssueController extends Controller
 {
+    public function view($id)
+    {
+        $data = [
+            "issue" => Issues::where("id", $id)->first(),
+            "users" => User::all()
+        ];
+
+        $data["items"] = Items::whereIn('id', explode(',', $data["issue"]->items))->pluck('name')->implode(', ');
+        $data["root_causes"] = RootCauses::where('issue_id', $data["issue"]->id)->get();
+        $data["actions"] = Actions::where('issue_id', $data["issue"]->id)->get();
+
+        return view('gemba.issue', $data);
+    }
+
     public function create (Request $request)
     {
         try {

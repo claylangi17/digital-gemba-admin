@@ -1,4 +1,4 @@
-if (document.getElementById("selection-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+if (document.getElementById("genba-action-table") && typeof simpleDatatables.DataTable !== 'undefined') {
 
     let multiSelect = true;
     let rowNavigation = false;
@@ -11,8 +11,18 @@ if (document.getElementById("selection-table") && typeof simpleDatatables.DataTa
 
         const options = {
             columns: [
-                { select: [0, 4], sortable: false } // Disable sorting on the first column (index 0 and 6)
+                { select: [0, 6], sortable: false } // Disable sorting on the first column (index 0 and 6)
             ],
+            perPage: 5,
+            labels: {
+                placeholder: "Cari...",
+                searchTitle: "Cari Aksi",
+                pageTitle: "Halaman {page}",
+                perPage: "Item per halaman",
+                noRows: "Tidak Ada Data",
+                info: "Menampilkan {start} sampai {end} dari {rows} item",
+                noResults: "Tidak Ada Aksi Yang Cocok",
+            },
             rowRender: (row, tr, _index) => {
                 if (!tr.attributes) {
                     tr.attributes = {};
@@ -33,7 +43,7 @@ if (document.getElementById("selection-table") && typeof simpleDatatables.DataTa
             options.tabIndex = 1;
         }
 
-        table = new simpleDatatables.DataTable("#selection-table", options);
+        table = new simpleDatatables.DataTable("#genba-action-table", options);
 
         // Mark all rows as unselected
         table.data.data.forEach(data => {

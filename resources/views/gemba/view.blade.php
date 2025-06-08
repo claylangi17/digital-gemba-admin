@@ -94,9 +94,9 @@
                                                 <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
                                             </div>
 
-                                            <button type="button" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                            <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
                                                 <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                            </button>
+                                            </a>
                                         </div>
                                         
                                         {{-- Issue Name  --}}
@@ -131,9 +131,9 @@
                                                 <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
                                             </div>
 
-                                            <button type="button" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
+                                            <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
                                                 <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                            </button>
+                                            </a>
                                         </div>
                                         
                                         {{-- Issue Name  --}}
