@@ -209,7 +209,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <h6 class="text-base mb-0 font-medium grow"> {{ $users->where('id', $cause->created_by)->first()->name }} </h6>
+                                    <h6 class="text-base mb-0 font-medium grow"> {{ $cause->creator->name }} </h6>
                                 </td>
                                 <td>
                                     <p> {{ $cause->category }} </p>
@@ -320,7 +320,7 @@
                                     <span> {{ $act->description }} </span>
                                 </td>
                                 <td>
-                                    <span> {{ $users->where('id', $act->created_by)->first()->name }} </span>
+                                    <span> {{ $act->creator->name }} </span>
                                 </td>
                                 <td>
                                     <span> {{ $act->due_date }} </span>
