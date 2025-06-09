@@ -7,9 +7,12 @@
 <body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">   
     
     @include('sweetalert::alert')
-    @livewire('Modal.Form.Action')
     @livewire('Modal.View.Action')
     @livewire('Modal.View.RootCause')
+
+    @if ($issue->status == "OPEN")
+        @livewire('Modal.Form.Action')
+    @endif
 
     <div class="navbar-header border-b border-neutral-200 dark:border-neutral-600">
         <div class="flex items-center justify-between">
@@ -296,10 +299,12 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Solusi / Aksi </span>
                 </div>
 
-                <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                    Buat Aksi Baru
-                </button>
+                @if ($issue->status == "OPEN")
+                    <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                        Buat Aksi Baru
+                    </button>
+                @endif
             </div>
             <div class="card-body p-6">
                 <table id="genba-action-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
@@ -394,9 +399,11 @@
                                     <button onclick="Livewire.dispatch('showModalViewAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </button>
-                                    <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="lucide:edit"></iconify-icon>
-                                    </button>
+                                    @if ($issue->status == "OPEN")
+                                        <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
+                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                        </button>
+                                    @endif
                                     <a href="{{ route('action.delete', [$act->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                     </a>
