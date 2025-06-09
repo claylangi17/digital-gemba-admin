@@ -20,7 +20,11 @@ class GembaController extends Controller
 {
     public function index() 
     {
-        return view('gemba.index');
+        $data = [
+            "genbas" => GenbaSessions::all()
+        ];
+        
+        return view('gemba.index', $data);
     }
 
     public function create(Request $request) 
