@@ -105,7 +105,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                            <a href="{{ route('genba.view', [$genba->id]) }}" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                 <iconify-icon icon="solar:eye-bold"></iconify-icon>
                             </a>
                         </td>
