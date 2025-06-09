@@ -257,7 +257,7 @@
                                             {{ $attendance->time_out ?? '-' }}
                                         </td>
                                         <td class="text-center">
-                                            <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                            <a href="{{ route('attendance.delete', [$attendance->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                                 <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
                                             </a>
                                         </td>
@@ -283,7 +283,7 @@
                                             {{ $attendance->time_out ?? '-' }}
                                         </td>
                                         <td class="text-center">
-                                            <a href="javascript:void(0)" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                            <a href="{{ route('attendance.delete', [$attendance->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                                 <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
                                             </a>
                                         </td>

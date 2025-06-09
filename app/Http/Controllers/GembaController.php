@@ -55,6 +55,10 @@ class GembaController extends Controller
 
     public function view($id)
     {
+        $title = 'Hapus Peserta!';
+        $text = "Apakah kamu yakin untuk menghapus peserta ini?";
+        confirmDelete($title, $text);
+        
         $data = [
             "genba" => GenbaSessions::where('id', $id)->first(),
             "issues" => Issues::where('session_id', $id)->orderBy('created_at', 'DESC')->get(),

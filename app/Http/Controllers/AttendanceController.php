@@ -51,4 +51,17 @@ class AttendanceController extends Controller
             return redirect()->back()->withInput();
         } 
     }
+
+    public function delete($id)
+    {
+        $action = Attendances::find($id);
+        if ($action) {
+            $action->delete();
+            Alert::toast('Peserta Berhasil Dihapus!', 'success')->position('top-end')->timerProgressBar();
+        } else {
+            Alert::toast('Peserta Tidak Ditemukan', 'error')->position('top-end')->timerProgressBar();
+        }
+
+        return redirect()->back();
+    }
 }
