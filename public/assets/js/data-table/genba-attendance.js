@@ -16,12 +16,12 @@ if (document.getElementById("genba-attendance-table") && typeof simpleDatatables
             perPage: 5,
             labels: {
                 placeholder: "Cari...",
-                searchTitle: "Cari Aksi",
+                searchTitle: "Cari Peserta",
                 pageTitle: "Halaman {page}",
                 perPage: "Item per halaman",
-                noRows: "Tidak Ada Data",
+                noRows: "Tidak Ada Peserta",
                 info: "Menampilkan {start} sampai {end} dari {rows} item",
-                noResults: "Tidak Ada Aksi Yang Cocok",
+                noResults: "Tidak Ada Peserta Yang Cocok",
             },
             rowRender: (row, tr, _index) => {
                 if (!tr.attributes) {
