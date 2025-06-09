@@ -8,6 +8,8 @@
     
     @include('sweetalert::alert')
     @livewire('Modal.Form.Action')
+    @livewire('Modal.View.Action')
+    @livewire('Modal.View.RootCause')
 
     <div class="navbar-header border-b border-neutral-200 dark:border-neutral-600">
         <div class="flex items-center justify-between">
@@ -270,13 +272,10 @@
                                     <span> {{ $cause->description }} </span>
                                 </td>
                                 <td>
-                                    <button class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                    <button onclick="Livewire.dispatch('showModalViewRootCause', { id: '{{ $cause->id }}' })" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </button>
                                     @if ($issue->status == "OPEN")
-                                        <button class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
-                                            <iconify-icon icon="lucide:edit"></iconify-icon>
-                                        </button>
                                         <button class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                             <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                         </button>
@@ -392,7 +391,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                    <button onclick="Livewire.dispatch('showModalViewAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </button>
                                     <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">

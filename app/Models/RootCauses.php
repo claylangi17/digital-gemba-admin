@@ -24,4 +24,9 @@ class RootCauses extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function files()
+    {
+        return $this->hasMany(RootCauseFiles::class, 'root_cause_id');
+    }
 }
