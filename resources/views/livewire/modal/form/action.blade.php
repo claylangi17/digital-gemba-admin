@@ -10,7 +10,7 @@ style="display: @if($show === true)
     <div class="relative p-4 max-h-full" style="width: 70%">
         <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Edit Aksi </h3>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> {{ $mode == "create" ? "Buat Aksi" : "Edit Aksi" }} </h3>
                 <button type="button" wire:click="doClose()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -19,14 +19,25 @@ style="display: @if($show === true)
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <form id="action-form" action="{{ route("action.update") }}" method="POST" class="grid grid-cols-2 gap-2">
+                <form id="action-form" action="{{ $mode == "create" ? route("action.create") : route("action.update") }}" method="POST" class="grid grid-cols-3 gap-2">
                     @csrf
-                    <input type="text" value="{{ $action->id ?? '' }}" name="action_id" id="action_id" hidden>
+                    
+                    @if ($mode == "create")
+                        <input type="text" value="{{ $issue_id ?? '' }}" name="issue_id" id="issue_id" hidden>
+                    @else
+                        <input type="text" value="{{ $action->id ?? '' }}" name="action_id" id="action_id" hidden>
+                    @endif
 
                     <div class="mb-3 w-full">
                         <label for="pic_id" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">PIC</label>
                         <select id="pic_id" name="pic_id" class="form-control w-full" required>
-                            @if ($users)
+                            @if ($mode == "create")
+                                @foreach ($users as $user)
+                                    @if ($user->id != Auth::user()->id)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            @else
                                 @foreach ($users as $user)
                                     @if ($user->id != Auth::user()->id)
                                         @if ($user->id == $action->pic->id)
@@ -48,7 +59,20 @@ style="display: @if($show === true)
                         </div>
                     </div>
 
-                    <div class="mb-3 col-span-2">
+                    <div class="mb-3 w-full">
+                        <label for="type" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Tipe Aksi</label>
+                        <select id="type" name="type" class="form-control w-full" required>
+                            @if ($mode == "create")
+                                <option value="CORRECTIVE">Korektif</option>
+                                <option value="PREVENTIVE">Preventif</option>
+                            @else
+                                <option value="CORRECTIVE" {{ $action->type == "CORRECTIVE" ? 'selected' : '' }}>Korektif</option>
+                                <option value="PREVENTIVE" {{ $action->type == "PREVENTIVE" ? 'selected' : '' }}>Preventif</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-span-3">
                         <label for="description" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Deskripsi Aksi</label>
                         <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Enter a description...">{{ $action->description ?? '' }}</textarea>
                     </div>

@@ -296,6 +296,11 @@
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Solusi / Aksi </span>
                 </div>
+
+                <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                    Buat Aksi Baru
+                </button>
             </div>
             <div class="card-body p-6">
                 <table id="genba-action-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
