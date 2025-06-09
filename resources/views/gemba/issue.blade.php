@@ -276,9 +276,9 @@
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </button>
                                     @if ($issue->status == "OPEN")
-                                        <button class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                        <a href="{{ route('cause.delete', [$cause->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                             <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                        </button>
+                                        </a>
                                     @endif
                                 </td>
                             </tr>
