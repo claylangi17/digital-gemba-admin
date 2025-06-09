@@ -13,4 +13,9 @@ class GenbaSessions extends Model
         'created_by',
         'start_time'
     ];
+
+    public function issues()
+    {
+        return $this->hasMany(Issues::class, "session_id");
+    }
 }

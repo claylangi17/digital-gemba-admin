@@ -84,6 +84,14 @@ class GembaController extends Controller
                 'id' => "required",
             ]);
 
+            $open_issue = GenbaSessions::where('id', $request->id)->first()->issues->where('status', "OPEN")->count();
+
+            if ($open_issue > 0) {
+                Alert::toast('Sesi Genba gagal diselesaikan, tandai semua isu menjadi "Terselesaikan"', 'error')->position('top-end')->timerProgressBar();
+
+                return redirect()->back();
+            };
+
             GenbaSessions::where('id', $request->id)->update([
                 "status" => "FINISH"
             ]);
