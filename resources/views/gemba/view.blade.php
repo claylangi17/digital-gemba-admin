@@ -197,15 +197,54 @@
             </div>
             <div class="card-body p-6">
                 <div class="table-responsive">
-                    <table class="table striped-table mb-0">
+                    <table id="genba-attendance-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
                         <thead>
                             <tr>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Nama</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Role</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Status</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Waktu Masuk</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Waktu Keluar</th>
-                                <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600 text-center">Aksi</th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2">
+                                        Nama
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2">
+                                        Departemen
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2">
+                                        Status
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2">
+                                        Waktu Masuk
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2">
+                                        Waktu Keluar
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-neutral-800 dark:text-white">
+                                    <div class="flex items-center gap-2 justify-center">
+                                        Aksi
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -214,9 +253,9 @@
                                 
                                 {{-- Present  --}}
                                 @if ($attendance->status == "PRESENT")
-                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                    <tr>
                                         <td>
-                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                            <h6 class="text-xs mb-0 font-semibold"> {{ $users->where('id', $attendance->user_id)->first()->name }} </h6>
                                         </td>
                                         <td class="capitalize">
                                             {{ $users->where('id', $attendance->user_id)->first()->department }}
@@ -240,9 +279,9 @@
 
                                 {{-- Late  --}}
                                 @if ($attendance->status == "LATE")
-                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                    <tr>
                                         <td>
-                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                            <h6 class="text-xs mb-0 font-semibold"> {{ $users->where('id', $attendance->user_id)->first()->name }} </h6>
                                         </td>
                                         <td class="capitalize">
                                             {{ $users->where('id', $attendance->user_id)->first()->department }}
@@ -266,9 +305,9 @@
 
                                 {{-- Absent  --}}
                                 @if ($attendance->status == "ABSENT")
-                                    <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
+                                    <tr>
                                         <td>
-                                            {{ $users->where('id', $attendance->user_id)->first()->name }}
+                                            <h6 class="text-xs mb-0 font-semibold"> {{ $users->where('id', $attendance->user_id)->first()->name }} </h6>
                                         </td>
                                         <td class="capitalize">
                                             {{ $users->where('id', $attendance->user_id)->first()->department }}
@@ -556,6 +595,7 @@
     <x-script/>
 
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
+    <script src="{{ asset('assets/js/data-table/genba-attendance.js') }}"></script>
 
     <script>
         const searchInput = document.getElementById('issue-search');
