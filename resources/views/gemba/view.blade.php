@@ -11,7 +11,7 @@
             {{-- Back Button - Start  --}}
             <div class="col-auto">
                 <div class="flex flex-wrap items-center gap-[16px]">
-                    <a href="$"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
+                    <a href="{{ route('gemba.history') }}"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
     
                 </div>
             </div>
