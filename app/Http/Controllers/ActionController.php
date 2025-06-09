@@ -43,4 +43,17 @@ class ActionController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    public function delete($id)
+    {
+        $action = Actions::find($id);
+        if ($action) {
+            $action->delete();
+            Alert::toast('Aksi Berhasil Dihapus!', 'success')->position('top-end')->timerProgressBar();
+        } else {
+            Alert::toast('Aksi Tidak Ditemukan', 'error')->position('top-end')->timerProgressBar();
+        }
+
+        return redirect()->back();
+    }
 }

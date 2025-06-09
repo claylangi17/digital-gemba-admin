@@ -24,6 +24,10 @@ class IssueController extends Controller
             "users" => User::all()
         ];
 
+        $title = 'Hapus Item!';
+        $text = "Apakah kamu yakin untuk menghapus item ini?";
+        confirmDelete($title, $text);
+
         $data["items"] = Items::whereIn('id', explode(',', $data["issue"]->items))->pluck('name')->implode(', ');
         $data["root_causes"] = RootCauses::where('issue_id', $data["issue"]->id)->get();
         $data["actions"] = Actions::where('issue_id', $data["issue"]->id)->get();

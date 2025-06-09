@@ -393,9 +393,9 @@
                                     <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="lucide:edit"></iconify-icon>
                                     </button>
-                                    <button class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                    <a href="{{ route('action.delete', [$act->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
