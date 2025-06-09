@@ -11,7 +11,7 @@
             {{-- Back Button - Start  --}}
             <div class="col-auto">
                 <div class="flex flex-wrap items-center gap-[16px]">
-                    <a href="{{ route('gemba.history') }}"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
+                    <a href="{{ route('genba.history') }}"> <iconify-icon icon="iconoir:arrow-left" class="icon"></iconify-icon> </a>
     
                 </div>
             </div>
@@ -19,7 +19,15 @@
 
 
             <div class="col-auto">
-                <p class="font-semibold mb-0 dark:text-white text-xl text-center">{{ $genba->name }}</p>
+                <div class="flex items-center gap-2">
+                    <p class="font-semibold mb-0 dark:text-white text-xl text-center">{{ $genba->name }}</p>
+
+                    @if ($genba->status == "PROGRESS")
+                        <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 rounded-full text-xs p-2 py-1.5 font-semibold">Dalam Proses</span>
+                    @else
+                        <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full text-xs p-2 py-1.5 font-semibold">Terselesaikan</span>
+                    @endif
+                </div>
                 <p class="text-center ">{{ $genba->created_at->translatedFormat('d F Y - H:i') }} WIB</p>
             </div>
             
@@ -54,10 +62,12 @@
                     </form>
                 </div>
 
-                <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-modal" data-modal-toggle="issue-modal">
-                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                    Tambahkan Isu Baru
-                </button>
+                @if ($genba->status == "PROGRESS")
+                    <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="issue-modal" data-modal-toggle="issue-modal">
+                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                        Tambahkan Isu Baru
+                    </button>
+                @endif
 
                 @if ($issues->count() > 0)
                 <div class="w-full py-6">
@@ -182,17 +192,19 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Presensi </span>
                 </div>
 
-                <div class="flex items-center flex-wrap gap-3">
-                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
-                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                        Tambahkan Peserta
-                    </button>
-    
-                    <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="qr-modal" data-modal-toggle="qr-modal">
-                        <iconify-icon icon="bx:qr" class="icon text-xl line-height-1"></iconify-icon>
-                        Tampilkan Kode QR 
-                    </button>
-                </div>
+                @if ($genba->status == "PROGRESS")
+                    <div class="flex items-center flex-wrap gap-3">
+                        <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
+                            <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                            Tambahkan Peserta
+                        </button>
+        
+                        <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="qr-modal" data-modal-toggle="qr-modal">
+                            <iconify-icon icon="bx:qr" class="icon text-xl line-height-1"></iconify-icon>
+                            Tampilkan Kode QR 
+                        </button>
+                    </div>
+                @endif
 
             </div>
             <div class="card-body p-6">
@@ -329,14 +341,6 @@
                                     </tr>
                                 @endif
                             @endforeach
-                            {{-- Template Present  --}}
-                            
-
-                            {{-- Template Absent  --}}
-                            
-
-                            {{-- Template Late  --}}
-                            
                         </tbody>
                     </table>
                 </div>
@@ -351,10 +355,12 @@
                     <span class="text-xl font-medium text-secondary-light mb-0">Catatan Apresiasi </span>
                 </div>
 
-                <button class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="appreciation-modal" data-modal-toggle="appreciation-modal">
-                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                    Tambahkan Apresiasi Baru
-                </button>
+                @if ($genba->status == "PROGRESS")
+                    <button class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="appreciation-modal" data-modal-toggle="appreciation-modal">
+                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                        Tambahkan Apresiasi Baru
+                    </button>
+                @endif
 
             </div>
             <div class="card-body p-6">
@@ -386,6 +392,36 @@
             </div>
         </div>
         {{-- Appreciation Card : End  --}}
+
+        {{-- Finishing Card : Start  --}}
+        <div class="card h-full p-0 rounded-xl border-0 overflow-hidden w-full">
+            <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
+                <div class="flex items-center flex-wrap gap-3">
+                    <span class="text-xl font-medium text-secondary-light mb-0">Finalisasi Genba</span>
+                </div>
+
+                <div class="flex items-center flex-wrap gap-3">
+                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
+                        <iconify-icon icon="tabler:file-download" class="icon text-xl line-height-1"></iconify-icon>
+                        Cetak Laporan Genba
+                    </button>
+    
+                    @if ($genba->status != "FINISH")
+                        <button onclick="closingConfirmation()" class="btn bg-success-600 text-white hover:bg-success-700 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="material-symbols:stop-outline-rounded" class="icon text-xl line-height-1"></iconify-icon>
+                            Tutup Sesi
+                        </button>
+
+                        <form id="close-genba-form" action="{{ route('genba.close') }}" method="post" hidden>
+                            @csrf
+                            <input type="text" name="id" id="id" value="{{ $genba->id }}">
+                        </form>
+                    @endif
+                </div>
+
+            </div>
+        </div>
+        {{-- Finishing Card : End  --}}
     </section>
 
     {{-- Issue Modal  --}}
@@ -633,6 +669,23 @@
     
 
     <script>
+        function closingConfirmation() {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Genba ini akan dinyatakan telah 'Selesai' dilaksanakan",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, konfirmasi!',
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#close-genba-form").submit()
+                }
+            });
+        }
+        
         VirtualSelect.init({ 
             ele: '#assigned_ids',
             maxWidth: '100%',

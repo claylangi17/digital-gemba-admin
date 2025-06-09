@@ -76,5 +76,30 @@ class GembaController extends Controller
         return view('gemba.view', $data);
     }
 
+    public function close(Request $request)
+    {
+        try {
 
+            $request->validate([
+                'id' => "required",
+            ]);
+
+            GenbaSessions::where('id', $request->id)->update([
+                "status" => "FINISH"
+            ]);
+
+            Alert::toast('Sesi Genba berhasil diselesaikan', 'success')->position('top-end')->timerProgressBar();
+    
+            return redirect()->route('genba.history');
+    
+        } catch (\Exception $e) {
+            Log::error('Failed to Close Genba Session', ['error' => $e->getMessage()]);
+            
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+    
+            return redirect()->back()->withInput();
+        }
+    }
 }
