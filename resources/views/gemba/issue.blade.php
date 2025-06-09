@@ -4,7 +4,10 @@
 
 <x-head/>
 
-<body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
+<body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">   
+    
+    @include('sweetalert::alert')
+    @livewire('Modal.Form.Action')
 
     <div class="navbar-header border-b border-neutral-200 dark:border-neutral-600">
         <div class="flex items-center justify-between">
@@ -43,8 +46,6 @@
             {{-- Dark Mode Swtich - End  --}}
         </div>
     </div>
-
-    @include('sweetalert::alert')
 
     <section class="dashboard-main-body">
         {{-- Issue Card : Start  --}}
@@ -269,15 +270,17 @@
                                     <span> {{ $cause->description }} </span>
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                    <button class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                    </a>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="lucide:edit"></iconify-icon>
-                                    </a>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
-                                        <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                    </a>
+                                    </button>
+                                    @if ($issue->status == "OPEN")
+                                        <button class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
+                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                        </button>
+                                        <button class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -371,7 +374,7 @@
                                     <span> {{ $act->description }} </span>
                                 </td>
                                 <td>
-                                    <span> {{ $act->creator->name }} </span>
+                                    <span> {{ $act->pic->name }} </span>
                                 </td>
                                 <td>
                                     <span> {{ $act->due_date }} </span>
@@ -384,15 +387,15 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                    <button class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                    </a>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
+                                    </button>
+                                    <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="lucide:edit"></iconify-icon>
-                                    </a>
-                                    <a href="javascript:void(0)" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                    </button>
+                                    <button class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                         <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach

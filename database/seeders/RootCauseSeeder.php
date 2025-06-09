@@ -39,7 +39,7 @@ class RootCauseSeeder extends Seeder
 
         foreach (range(1, 10) as $i) {
             DB::table('root_causes')->insert([
-                'issue_id' => 5, // assuming 20 sample issues exist
+                'issue_id' => rand(6,7), // assuming 20 sample issues exist
                 'category' => $category[rand(0,4)],
                 'description' => $descriptions[array_rand($descriptions)],
                 'supporting_files' => null,

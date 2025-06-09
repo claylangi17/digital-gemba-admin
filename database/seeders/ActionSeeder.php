@@ -31,8 +31,8 @@ class ActionSeeder extends Seeder
 
         foreach (range(1, 10) as $i) {
             DB::table('actions')->insert([
-                'issue_id' => 5, // fixed as per requirement
-                'root_cause_id' => rand(37, 46), // adjust according to seeded root_cause IDs
+                'issue_id' => rand(6,7), // fixed as per requirement
+                'root_cause_id' => rand(47, 56), // adjust according to seeded root_cause IDs
                 'type' => rand(0, 1) ? 'CORRECTIVE' : 'PREVENTIVE',
                 'description' => $descriptions[array_rand($descriptions)],
                 'pic_id' => rand(1, 7),
