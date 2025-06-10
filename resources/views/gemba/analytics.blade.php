@@ -428,64 +428,83 @@
             </div>
         </div>
         <div class="card-body p-6">
-            <div class="table-responsive">
-                <table class="table striped-table mb-0">
-                    <thead>
+            <table id="overdue-action-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Tipe Aksi
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Deskripsi
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Area
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                Batas Waktu
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                        <th scope="col" class="text-neutral-800 dark:text-white">
+                            <div class="flex items-center gap-2">
+                                PIC
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                </svg>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($overdue_actions as $action)
                         <tr>
-                            <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Nama</th>
-                            <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Area</th>
-                            <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Tipe</th>
-                            <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600">Batas Waktu</th>
-                            <th scope="col" class="!bg-white dark:!bg-neutral-700 border-b border-neutral-200 dark:border-neutral-600 text-center">PIC</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="odd:bg-neutral-100 dark:odd:bg-neutral-600">
                             <td>
-                                Perbaiki Roll
+                                {{ $action->type }}
                             </td>
-                            <td>Die Cut</td>
-                            <td>Korektif</td>
-                            <td>11-04-25</td>
+                            <td>
+                                {{ $action->description }}
+                            </td>
+                            <td>
+                                {{ $action->line }}
+                            </td>
+                            <td>
+                                {{ $action->due_date }}
+                            </td>
                             <td class="text-center">
-                                <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-8 py-1.5 rounded-full font-medium text-sm">Clay</span>
+                                <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-8 py-1.5 rounded-full font-medium text-sm">
+                                {{ $action->pic->name }}
+                                </span>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
-                <span>Menampilkan 1 sampai 10 dari 12 aksi</span>
-                <ul class="pagination flex flex-wrap items-center gap-2 justify-center">
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"><iconify-icon icon="ep:d-arrow-left" class=""></iconify-icon></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base bg-primary-600 text-white" href="javascript:void(0)">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8" href="javascript:void(0)">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">5</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"> <iconify-icon icon="ep:d-arrow-right" class=""></iconify-icon> </a>
-                    </li>
-                </ul>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
 @endsection
 
 @section('user-script')
+<script src="{{ asset('assets/js/data-table/analytic-overdue-action.js') }}"></script>
+
 <script>
     
 </script>
