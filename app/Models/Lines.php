@@ -10,4 +10,9 @@ class Lines extends Model
         "name",
         "description"
     ];
+
+    public function issues()
+    {
+        return $this->hasMany(Issues::class, "line_id");
+    }
 }

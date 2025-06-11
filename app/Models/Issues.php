@@ -8,7 +8,7 @@ class Issues extends Model
 {
     protected $fillable = [
         'session_id',
-        'line',
+        'line_id',
         'items',
         'assigned_ids',
         'description',
