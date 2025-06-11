@@ -20,4 +20,9 @@ class Issues extends Model
         return $this->hasMany(IssueFiles::class, 'issue_id');
     }
 
+    public function line()
+    {
+        return $this->hasOne(Lines::class, "id", "line_id");
+    }
+
 }

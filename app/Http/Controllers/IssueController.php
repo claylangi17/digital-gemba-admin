@@ -41,7 +41,7 @@ class IssueController extends Controller
 
             $request->validate([
                 'session_id' => "required",
-                'line' => "required",
+                'line_id' => "required",
                 'items' => "required",
                 'assigned_ids' => "required",
                 'description' => "required",
@@ -65,7 +65,7 @@ class IssueController extends Controller
             // Create Issue 
             $issue = Issues::create([
                         'session_id' => $request->session_id,
-                        'line' => $request->line,
+                        'line_id' => $request->line_id,
                         'items' => $request->items,
                         'assigned_ids' => $request->assigned_ids,
                         'description' => $request->description,

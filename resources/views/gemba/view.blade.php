@@ -102,7 +102,7 @@
                                                 <div class="flex items-center gap-2">
             
                                                     {{-- Aspect  --}}
-                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line->name }} </span>
                                                     {{-- Status  --}}
                                                     <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
                                                 </div>
@@ -139,7 +139,7 @@
                                                 <div class="flex items-center gap-2">
             
                                                     {{-- Aspect  --}}
-                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line }} </span>
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line->name }} </span>
                                                     {{-- Status  --}}
                                                     <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
                                                 </div>
@@ -452,10 +452,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="line" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
-                            <select class="form-control" id="line" name="line" required>
+                            <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
+                            <select class="form-control" id="line_id" name="line_id" required>
                                 @foreach ($lines as $line)
-                                    <option value="{{ $line->name }}">{{ $line->name }}</option>
+                                    <option value="{{ $line->id }}">{{ $line->name }}</option>
                                 @endforeach
                             </select>
                         </div>

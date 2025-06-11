@@ -85,7 +85,7 @@
                         </div>
                         <div class="px-4">
                             <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200 mb-1.5">Lokasi Permasalahan</h5>
-                            <p class="card-text text-neutral-600"> {{ $issue->line }} </p>
+                            <p class="card-text text-neutral-600"> {{ $issue->line->name }} </p>
                         </div>
                     </div>
                     {{-- Card: Line :End  --}}
