@@ -163,7 +163,7 @@
                                 {{ $action->description }}
                             </td>
                             <td>
-                                {{ $action->issue->line }}
+                                {{ $action->issue->line->name }}
                             </td>
                             <td>
                                 {{ $action->due_date }}
@@ -189,9 +189,5 @@
     $(".delete-btn").on("click", function() {
         $(this).closest(".user-grid-card").addClass("hidden")
     });
-
-    // ================================ Action Overview Donut chart Start ================================ 
-    
-    // ================================ Users Overview Donut chart End ================================ 
 </script>
 @endsection
