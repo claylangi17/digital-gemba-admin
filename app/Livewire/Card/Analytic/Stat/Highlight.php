@@ -10,8 +10,8 @@ use Livewire\Component;
 
 class Highlight extends Component
 {
-    public $active_issue;
-    public $active_issue_last;
+    public $total_issue;
+    public $total_issue_last;
 
     public $done_issue;
     public $done_issue_last;
@@ -24,17 +24,17 @@ class Highlight extends Component
     
     public function get_data()
     {
-        $this->active_issue = Issues::whereMonth('created_at', Carbon::now()->month)->where('status', "OPEN")->count();
+        $this->total_issue = Issues::whereMonth('created_at', Carbon::now()->month)->count();
         $this->done_issue = Issues::whereMonth('created_at', Carbon::now()->month)->where('status', "CLOSED")->count();
-        $this->overdue_action = Actions::whereMonth('created_at', Carbon::now()->month)->wherePast('due_date')->count();
+        $this->overdue_action = Actions::whereMonth('created_at', Carbon::now()->month)->whereColumn('done_at', ">", 'due_date')->count();
         $this->total_appreciation = AppreciationNotes::whereMonth('created_at', Carbon::now()->month)->count();
     }
 
     public function get_data_last()
     {
-        $this->active_issue_last = Issues::whereMonth('created_at', Carbon::now()->subMonth()->month)->where('status', "OPEN")->count();
+        $this->total_issue_last = Issues::whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
         $this->done_issue_last = Issues::whereMonth('created_at', Carbon::now()->subMonth()->month)->where('status', "CLOSED")->count();
-        $this->overdue_action_last = Actions::whereMonth('created_at', Carbon::now()->subMonth()->month)->wherePast('due_date')->count();
+        $this->overdue_action_last = Actions::whereMonth('created_at', Carbon::now()->subMonth()->month)->whereColumn('done_at', ">", 'due_date')->count();
         $this->total_appreciation_last = AppreciationNotes::whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
     }
 

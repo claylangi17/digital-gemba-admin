@@ -13,6 +13,7 @@ class Actions extends Model
         'description',
         'pic_id',
         'due_date',
+        'done_at',
         'status',
         'evidence_files',
         'evidence_description',

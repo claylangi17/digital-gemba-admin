@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('pic_id')->constrained('users')->onDelete('cascade');
             $table->timestamp('due_date')->nullable();
+            $table->timestamp('done_at')->nullable();
             $table->enum('status', ['PROGRESS', 'FINISHED']); 
             $table->text('evidence_files')->nullable();
             $table->text('evidence_description')->nullable();
