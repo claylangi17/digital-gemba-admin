@@ -2,61 +2,6 @@
 @php
     $title='Statistik Gemba';
     $subTitle = 'Gemba - Statistik';
-    $script = '<script>
-                        $(".delete-btn").on("click", function() {
-                            $(this).closest(".user-grid-card").addClass("hidden")
-                        });
-
-                        // ================================ Users Overview Donut chart Start ================================ 
-                    var options = {
-                        series: [500, 500, 500],
-                        colors: ["#FF9F29", "#487FFF", "#E4F1FF"],
-                        labels: ["Active", "New", "Total"],
-                        legend: {
-                            show: false
-                        },
-                        chart: {
-                            type: "donut",
-                            height: 270,
-                            sparkline: {
-                                enabled: true // Remove whitespace
-                            },
-                            margin: {
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                                left: 0
-                            },
-                            padding: {
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                        stroke: {
-                            width: 0,
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        responsive: [{
-                            breakpoint: 480,
-                            options: {
-                                chart: {
-                                    width: 200
-                                },
-                                legend: {
-                                    position: "bottom"
-                                }
-                            }
-                        }],
-                    };
-
-                    var chart = new ApexCharts(document.querySelector("#userOverviewDonutChart"), options);
-                    chart.render();
-                    // ================================ Users Overview Donut chart End ================================ 
-                </script>';
 @endphp
 
 @section('content')
@@ -377,50 +322,10 @@
         </div>
         <!-- Top Issue Category End -->
 
-        <div class="col-span-12 md:col-span-6 2xl:col-span-4">
-            <div class="card border-0 h-full rounded-lg">
-                <div class="card-body p-6 flex flex-col justify-between gap-8">
-                    <div class="flex items-center flex-wrap gap-2 justify-between mb-5">
-                        <h6 class="font-bold text-lg mb-0">Status Aksi</h6>
-                        <select class="form-select form-select-sm w-auto bg-white dark:bg-neutral-800 dark:text-white border text-neutral-600">
-                            <option>Tahun Ini</option>
-                            <option>Bulan Ini</option>
-                            <option>Minggu Ini</option>
-                        </select>
-                    </div>
-                    <div id="userOverviewDonutChart" class="margin-16-minus y-value-left apexcharts-tooltip-z-none"></div>
-
-                    <ul class="flex flex-wrap items-center justify-between mt-3 gap-3">
-                        <li class="flex flex-col gap-2">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full
-                                bg-warning-600"></span>
-                                <span class="text-neutral-600 text-sm font-semibold">Organic Search</span>
-                            </div>
-                            <span class="text-primary-light font-bold">875</span>
-                        </li>
-                        <li class="flex flex-col gap-2">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full
-                                bg-success-600"></span>
-                                <span class="text-neutral-600 text-sm font-semibold">Referrals</span>
-                            </div>
-                            <span class="text-primary-light font-bold">450</span>
-                        </li>
-                        <li class="flex flex-col gap-2">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full
-                                bg-primary-600"></span>
-                                <span class="text-neutral-600 text-sm font-semibold">Social Media</span>
-                            </div>
-                            <span class="text-primary-light font-bold">4,305</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @livewire('Card.Analytic.Donut.Action')
     </div>
 
+    Overdue Actions Table
     <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
         <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
             <div class="flex items-center flex-wrap gap-3">
@@ -483,7 +388,7 @@
                                 {{ $action->description }}
                             </td>
                             <td>
-                                {{ $action->line }}
+                                {{ $action->issue->line }}
                             </td>
                             <td>
                                 {{ $action->due_date }}
@@ -506,6 +411,12 @@
 <script src="{{ asset('assets/js/data-table/analytic-overdue-action.js') }}"></script>
 
 <script>
+    $(".delete-btn").on("click", function() {
+        $(this).closest(".user-grid-card").addClass("hidden")
+    });
+
+    // ================================ Action Overview Donut chart Start ================================ 
     
+    // ================================ Users Overview Donut chart End ================================ 
 </script>
 @endsection
