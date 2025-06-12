@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Log;
 
 class AppreciationController extends Controller
 {
+    public function index()
+    {
+        $topUsers = User::orderByDesc('points')->take(3)->get();
+
+        $topUserIds = $topUsers->pluck('id')->toArray();
+
+        $otherUsers = User::whereNotIn('id', $topUserIds)
+                          ->orderByDesc('points') 
+                          ->get();
+
+        $data = [
+            "users" => $otherUsers, 
+            "top" => $topUsers      
+        ];
+
+        return view('appreciation', $data);
+    }
+    
     public function create(Request $request)
     {
 
