@@ -5541,6 +5541,14 @@ svg.radial-progress text.percentage {
   padding: 2.5rem;
 }
 
+.p-12{
+  padding: 2.75rem;
+}
+
+.p-14{
+  padding: 3rem;
+}
+
 .p-2{
   padding: 0.5rem;
 }
@@ -5682,6 +5690,11 @@ svg.radial-progress text.percentage {
 .py-10{
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.py-14{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .py-16{
