@@ -12,7 +12,7 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
-                <a href="#">
+                <a href="{{ route('index') }}">
                     <iconify-icon icon="mage:home-3" class="menu-icon"></iconify-icon>
                     <span>Beranda</span>
                 </a>
@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('genba.history') }}">
                             <i class="ri-circle-fill circle-icon text-secondary-600 w-auto"></i> 
                             Riwayat
                         </a>

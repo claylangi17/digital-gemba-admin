@@ -2943,6 +2943,14 @@ svg.radial-progress text.percentage {
   grid-column: span 2 / span 2;
 }
 
+.col-span-3{
+  grid-column: span 3 / span 3;
+}
+
+.col-span-4{
+  grid-column: span 4 / span 4;
+}
+
 .m-0{
   margin: 0px;
 }
@@ -3829,6 +3837,10 @@ svg.radial-progress text.percentage {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .grid-cols-4{
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -3880,6 +3892,15 @@ svg.radial-progress text.percentage {
 .justify-between{
   justify-content: space-between;
 }
+
+.justify-around{
+  justify-content: space-around
+}
+
+.justify-evenly{
+  justify-content: space-evenly
+}
+
 
 .gap-1{
   gap: 0.25rem;
@@ -5520,6 +5541,14 @@ svg.radial-progress text.percentage {
   padding: 2.5rem;
 }
 
+.p-12{
+  padding: 2.75rem;
+}
+
+.p-14{
+  padding: 3rem;
+}
+
 .p-2{
   padding: 0.5rem;
 }
@@ -5661,6 +5690,11 @@ svg.radial-progress text.percentage {
 .py-10{
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.py-14{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .py-16{
@@ -6192,6 +6226,10 @@ svg.radial-progress text.percentage {
 
 .text-opacity-75{
   --tw-text-opacity: 0.75;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .underline{
@@ -8898,4 +8936,18 @@ h6, .h6 {
     padding-left: 76px;
     padding-right: 76px;
   }
+}
+
+/* custom here  */
+.vir-select {
+  border: none !important; 
+  border-radius: 10px;
+}
+
+.swal2-confirm {
+  background-color: #2563eb;
+}
+
+.swal2-cancel {
+  background-color: #d33;
 }

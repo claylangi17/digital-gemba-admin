@@ -19,6 +19,24 @@ return Application::configure(basePath: dirname(__DIR__))
             
             Route::middleware('web')
                 ->group(base_path('routes/gemba.php'));
+            
+            Route::middleware('web')
+                ->group(base_path('routes/issue.php'));
+            
+            Route::middleware('web')
+                ->group(base_path('routes/appreciation.php'));
+            
+            Route::middleware('web')
+                ->group(base_path('routes/attendance.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/action.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/cause.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/analytic.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {

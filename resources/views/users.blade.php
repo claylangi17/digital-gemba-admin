@@ -40,45 +40,47 @@
         <div class="card-body p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-6">
                 @foreach ($users as $user)
-                    <div class="user-grid-card">
-                        <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden">
-                            <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" class="w-full object-fit-cover">
-                            <div class="pe-6 pb-4 ps-6 text-center mt--50">
-                                <img src="{{ asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto -mt-[50px] rounded-full object-fit-cover">
-                                <h6 class="text-lg mb-0 mt-1.5">
-                                    {{ $user->name }}
-                                </h6>
-                                <span class="text-secondary-light mb-4">
-                                    {{ $user->email }}
-                                </span>
+                    @if ($user->id != Auth::user()->id)
+                        <div class="user-grid-card">
+                            <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden">
+                                <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" class="w-full object-fit-cover">
+                                <div class="pe-6 pb-4 ps-6 text-center mt--50">
+                                    <img src="{{ asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto -mt-[50px] rounded-full object-fit-cover">
+                                    <h6 class="text-lg mb-0 mt-1.5">
+                                        {{ $user->name }}
+                                    </h6>
+                                    <span class="text-secondary-light mb-4">
+                                        {{ $user->email }}
+                                    </span>
 
-                                <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
-                                    <div class="text-center w-1/2">
-                                        <h6 class="text-base mb-0"> {{ $user->department }} </h6>
-                                        <span class="text-secondary-light text-sm mb-0">Department</span>
+                                    <div class="center-border relative bg-gradient-to-r from-danger-500/10 to-danger-50/25 rounded-lg p-3 flex items-center gap-4 before:absolute before:w-px before:h-full before:z-[1] before:bg-neutral-200 dark:before:bg-neutral-500 before:start-1/2">
+                                        <div class="text-center w-1/2">
+                                            <h6 class="text-base mb-0"> {{ $user->department }} </h6>
+                                            <span class="text-secondary-light text-sm mb-0">Department</span>
+                                        </div>
+                                        <div class="text-center w-1/2">
+                                            <h6 class="text-base mb-0"> {{ $user->role }} </h6>
+                                            <span class="text-secondary-light text-sm mb-0">Role</span>
+                                        </div>
                                     </div>
-                                    <div class="text-center w-1/2">
-                                        <h6 class="text-base mb-0"> {{ $user->role }} </h6>
-                                        <span class="text-secondary-light text-sm mb-0">Role</span>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <a href="#" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                            <iconify-icon icon="solar:eye-linear" class="icon text-xl line-height-1"></iconify-icon>
+                                            Lihat 
+                                        </a> 
+                                        <a href="#" class="bg-warning-50 hover:bg-warning-600 dark:hover:bg-warning-600 hover:text-white dark:hover:text-white dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 bg-hover-warning-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                            <iconify-icon icon="solar:ruler-cross-pen-outline" class="icon text-xl line-height-1"></iconify-icon>
+                                            Ubah 
+                                        </a> 
+                                        <a href="{{ route('users.delete', [$user->id]) }}" data-confirm-delete="true" class="bg-danger-50 hover:bg-danger-600 dark:hover:bg-danger-600 hover:text-white dark:hover:text-white dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 bg-hover-danger-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                            <iconify-icon icon="solar:trash-bin-trash-linear" class="icon text-xl line-height-1"></iconify-icon>
+                                            Hapus
+                                        </a>    
                                     </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-2">
-                                    <a href="#" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
-                                        <iconify-icon icon="solar:eye-linear" class="icon text-xl line-height-1"></iconify-icon>
-                                        Lihat 
-                                    </a> 
-                                    <a href="#" class="bg-warning-50 hover:bg-warning-600 dark:hover:bg-warning-600 hover:text-white dark:hover:text-white dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 bg-hover-warning-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
-                                        <iconify-icon icon="solar:ruler-cross-pen-outline" class="icon text-xl line-height-1"></iconify-icon>
-                                        Ubah 
-                                    </a> 
-                                    <a href="{{ route('users.delete', [$user->id]) }}" data-confirm-delete="true" class="bg-danger-50 hover:bg-danger-600 dark:hover:bg-danger-600 hover:text-white dark:hover:text-white dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 bg-hover-danger-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
-                                        <iconify-icon icon="solar:trash-bin-trash-linear" class="icon text-xl line-height-1"></iconify-icon>
-                                        Hapus
-                                    </a>    
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
             <div class="flex items-center justify-between flex-wrap gap-2 mt-6">

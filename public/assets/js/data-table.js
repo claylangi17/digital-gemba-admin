@@ -11,7 +11,7 @@ if (document.getElementById("selection-table") && typeof simpleDatatables.DataTa
 
         const options = {
             columns: [
-                { select: [0, 6], sortable: false } // Disable sorting on the first column (index 0 and 6)
+                { select: [0, 4], sortable: false } // Disable sorting on the first column (index 0 and 6)
             ],
             rowRender: (row, tr, _index) => {
                 if (!tr.attributes) {
