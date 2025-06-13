@@ -118,7 +118,7 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <img src="{{ $issue->files->where('type', "PHOTO")->first() ? asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) : 'https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini' }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
@@ -155,7 +155,7 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            <img src="{{ $issue->files->where('type', "PHOTO")->first() ? asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) : 'https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini' }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
 
