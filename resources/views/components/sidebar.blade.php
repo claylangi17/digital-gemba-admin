@@ -40,7 +40,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{ route('appreciation.index') }}">
                     <iconify-icon icon="gg:awards" class="menu-icon"></iconify-icon>
                     <span>Penghargaan</span>
                 </a>
