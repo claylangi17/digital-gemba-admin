@@ -11,10 +11,10 @@
     <div class="flex items-center justify-between gap-4 mb-8">
         <div class="w-1/2">
             <p class="text-[40px]">👋</p>
-            <h4 class="mb-5">Selamat Datang di Genba Digital</h4>
-            <h6 class="text-xl mb-2">Lacak dan kelola semua sesi GEMBA dengan efisien.</h6>
+            <h4 class="mb-5">Selamat Datang di Gemba Digital</h4>
+            <h6 class="text-xl mb-2">Lacak dan kelola semua sesi Gemba dengan efisien.</h6>
             <p class="mb-0 text-secondary-light max-w-[634px] text-base">
-                GEMBA Walk adalah praktik manajemen yang mengutamakan pengamatan langsung di lapangan. Dengan GEMBA Digital, Anda dapat mendigitalisasi proses ini untuk pemantauan yang lebih efektif dan pengambilan keputusan yang lebih baik.
+                Gemba Walk adalah praktik manajemen yang mengutamakan pengamatan langsung di lapangan. Dengan Gemba Digital, Anda dapat mendigitalisasi proses ini untuk pemantauan yang lebih efektif dan pengambilan keputusan yang lebih baik.
             </p>
         </div>
         <div class="w-1/ overflow-hidden rounded-xl" style="aspect-ratio: 16/9">
@@ -28,7 +28,7 @@
     <div class="card h-full p-0 rounded-xl border-0 overflow-hidden w-full my-4">
         <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
             <div class="flex items-center flex-wrap gap-3">
-                <span class="text-xl font-medium text-secondary-light mb-0">Daftar Sesi Genba </span>
+                <span class="text-xl font-medium text-secondary-light mb-0">Daftar Sesi Gemba </span>
             </div>
 
         </div>
@@ -49,7 +49,7 @@
                                     Sesi Baru
                                 </h6>
                                 <p class="text-base text-center mb-2 mt-2">
-                                    Buat Sesi Genba Baru
+                                    Buat Sesi Gemba Baru
                                 </p>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                         {{-- Tempalate None  --}}
                         <div class="user-grid-card">
                             <div class="relative rounded-2xl overflow-hidden p-4">
-                                <p class="text-center">Belum Ada Sesi Genba</p>
+                                <p class="text-center">Belum Ada Sesi Gemba</p>
                             </div>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
         <div class="relative p-4 w-full  max-w-2xl max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Sesi Genba Baru </h3>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Sesi Gemba Baru </h3>
                     <button id="btn-close-default-modal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
