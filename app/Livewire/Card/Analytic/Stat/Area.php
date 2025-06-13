@@ -11,7 +11,10 @@ class Area extends Component
     
     public function mount()
     {
-        $this->lines = Lines::all();
+        $this->lines = Lines::withCount('issues')
+        ->orderBy('issues_count', 'desc')
+        ->take(5)
+        ->get();
     }
     
     public function render()
