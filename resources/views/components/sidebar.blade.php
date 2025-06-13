@@ -52,27 +52,6 @@
                     <span>Pengguna</span>
                 </a>
             </li>
-
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
-                    <span>Pengaturan</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="#">
-                            <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> 
-                            Presensi
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> 
-                            Reward System
-                        </a>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </aside>
