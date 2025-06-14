@@ -319,13 +319,23 @@
             <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Solusi / Aksi </span>
+
+                    <button onclick="location.reload()" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                        <iconify-icon icon="uis:refresh" class="icon text-xl line-height-1"></iconify-icon>
+                    </button>
                 </div>
 
                 @if ($issue->status == "OPEN")
-                    <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                        Buat Aksi Baru
-                    </button>
+                    <div class="flex items-center justify-end gap-3">
+                        <button onclick="Livewire.dispatch('showModalAISuggestAction', ['{{ $issue->id }}' ,'{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
+                            Tanya AI
+                        </button>
+                        <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                            Buat Aksi Baru
+                        </button>
+                    </div>
                 @endif
             </div>
             <div class="card-body p-6">
@@ -514,9 +524,11 @@
         </div>
     </div>
 
-    @livewire('Card.AI.Suggest.RootCause')
-
     <x-script/>
+
+    @livewire('Card.AI.Suggest.RootCause')
+    @livewire('Card.AI.Suggest.Action')
+
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-cause.js') }}"></script>
     <script src="{{ asset('assets/js/data-table/genba-action.js') }}"></script>
