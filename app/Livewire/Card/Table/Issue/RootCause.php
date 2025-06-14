@@ -23,6 +23,13 @@ class RootCause extends Component
         $this->dispatch('resetGenbaCauseTable');
     }
 
+    public function reload()
+    {
+        $this->get_data();
+
+        $this->dispatch('resetGenbaCauseTable');
+    }
+
     public function get_data($category = 'all')
     {
         if ($category == 'all')

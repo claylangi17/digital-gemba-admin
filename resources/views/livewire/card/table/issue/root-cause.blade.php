@@ -4,7 +4,7 @@
         <div class="flex items-center flex-wrap gap-3" style="width: 45%">
             <span class="text-xl font-medium text-secondary-light mb-0">Akar Masalah </span>
 
-            <button onclick="location.reload()" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+            <button wire:click="reload()" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                 <iconify-icon icon="uis:refresh" class="icon text-xl line-height-1"></iconify-icon>
             </button>
 
