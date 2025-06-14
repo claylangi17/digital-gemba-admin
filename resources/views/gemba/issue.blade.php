@@ -210,10 +210,14 @@
             <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Akar Masalah </span>
+
+                    <button onclick="location.reload()" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                        <iconify-icon icon="uis:refresh" class="icon text-xl line-height-1"></iconify-icon>
+                    </button>
                 </div>
 
                 @if ($issue->status == "OPEN")
-                    <div class="flex items-center justify-end gap-2">
+                    <div class="flex items-center justify-end gap-3">
                         <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->id }}' ,'{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                             <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                             Tanya AI

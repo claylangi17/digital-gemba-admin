@@ -77,6 +77,15 @@ class RootCause extends Component
             'supporting_files' => ''
         ]);
 
+        // Remove the saved suggestion from the list
+        $this->suggestions = array_filter($this->suggestions, function ($item) use ($suggestion) {
+            return $item !== $suggestion;
+        });
+
+        // Optional: Reset array keys
+        $this->suggestions = array_values($this->suggestions);
+
+
         $this->dispatch('lv-toast-success', ['message' => 'Saran Akar Masalah Berhasil Disimpan']);
     }
 
