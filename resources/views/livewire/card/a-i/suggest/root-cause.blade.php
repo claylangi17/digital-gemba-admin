@@ -25,7 +25,7 @@ style="display: @if($show === true)
                         <option value="machine" class="capitalize">machine</option>
                         <option value="material" class="capitalize">material</option>
                         <option value="method" class="capitalize">method</option>
-                        <option value="environemt" class="capitalize">environemt</option>
+                        <option value="environment" class="capitalize">environment</option>
                     </select>
     
                     <button wire:click="get_suggestion(document.getElementById('possible_category').value)" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">

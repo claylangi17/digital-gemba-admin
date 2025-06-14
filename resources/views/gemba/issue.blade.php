@@ -12,6 +12,7 @@
 
     @if ($issue->status == "OPEN")
         @livewire('Modal.Form.Action')
+        @livewire('Modal.Form.RootCause')
     @endif
 
     <div class="navbar-header border-b border-neutral-200 dark:border-neutral-600">
@@ -212,10 +213,16 @@
                 </div>
 
                 @if ($issue->status == "OPEN")
-                    <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                        <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
-                        Tanya AI
-                    </button>
+                    <div class="flex items-center justify-end gap-2">
+                        <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
+                            Tanya AI
+                        </button>
+                        <button onclick="Livewire.dispatch('showModalFormRootCause', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                            Tambahkan Akar Masalah
+                        </button>
+                    </div>
                 @endif
             </div>
             <div class="card-body p-6">
@@ -289,6 +296,10 @@
                                         <a href="{{ route('cause.delete', [$cause->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
                                             <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                         </a>
+
+                                        <button onclick="Livewire.dispatch('showModalFormRootCause', { id: '{{ $cause->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
+                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                        </button>
                                     @endif
                                 </td>
                             </tr>
@@ -459,6 +470,7 @@
                 </div>
             </div>
         </div>
+
     @endif
 
     {{-- Image Modal  --}}
