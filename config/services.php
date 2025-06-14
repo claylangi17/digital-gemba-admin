@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'genba_ai' => [
+        'url' => env('GENBA_AI_API_ADDRESS'),
+        'key' => env('GENBA_AI_API_KEY'),
+    ]
+
 ];

@@ -210,6 +210,13 @@
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-xl font-medium text-secondary-light mb-0">Akar Masalah </span>
                 </div>
+
+                @if ($issue->status == "OPEN")
+                    <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                        <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
+                        Tanya AI
+                    </button>
+                @endif
             </div>
             <div class="card-body p-6">
                 <table id="genba-cause-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
@@ -490,6 +497,8 @@
             </div>
         </div>
     </div>
+
+    @livewire('Card.AI.Suggest.RootCause')
 
     <x-script/>
     <script src="{{ asset('assets/js/defaultCarousel.js') }}"></script>
