@@ -2,13 +2,18 @@
 
 namespace App\Livewire\Card\AI\Suggest;
 
+use App\Models\RootCauses;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RootCause extends Component
 {
     public $isLoading = false;
+    public $issue_id;
+    public $category;
     public $show;
     public $line;
     public $problem;
@@ -20,16 +25,18 @@ class RootCause extends Component
 
     protected $listeners = ['showModalAISuggestRootCause' => 'showModal'];
 
-    public function showModal($line, $problem) 
+    public function showModal($issue_id, $line, $problem) 
     {
         $this->line = $line;
         $this->problem = $problem;
+        $this->issue_id = $issue_id;
         $this->doShow();
     }
 
     public function get_suggestion($category)
     {
         $this->isLoading  = true;
+        $this->category = $category;
         
         $apiUrl = config('services.genba_ai.url');
         $apiKey = config('services.genba_ai.key');
@@ -41,7 +48,6 @@ class RootCause extends Component
         }
 
         $response = Http::withHeaders([
-            'Accept' => 'application/json',
             'X-API-KEY' => $apiKey,
         ])->post("{$apiUrl}/root-cause/suggest", [
             "area" => $this->line,
@@ -59,6 +65,19 @@ class RootCause extends Component
         }
     
         $this->isLoading  = false;
+    }
+
+    public function save_suggestion($suggestion)
+    {
+        RootCauses::create([
+            'issue_id' => $this->issue_id,
+            'category' => $this->category,
+            'description' => $suggestion,
+            'created_by' => Auth::user()->id,
+            'supporting_files' => ''
+        ]);
+
+        $this->dispatch('lv-toast-success', ['message' => 'Saran Akar Masalah Berhasil Disimpan']);
     }
 
     public function doShow() {

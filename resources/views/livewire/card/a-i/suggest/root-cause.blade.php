@@ -35,12 +35,12 @@ style="display: @if($show === true)
                 </div>
             </div>
 
-            <div id="rootcause-suggestion-loading" class="@if ($isLoading) flex @else hidden @endif items-center justify-center gap-4 p-6 mb-3">
+            <div id="rootcause-suggestion-loading" wire:loading.flex wire:target="get_suggestion" class="flex items-center justify-center gap-4 p-6 mb-3">
                 <p class="text-primary-600">Mohon Tunggu Sebentar</p>
                 <iconify-icon icon="eos-icons:three-dots-loading" class="icon text-2xl line-height-1 text-primary-600"></iconify-icon>
             </div>
 
-            <div class="mb-3 p-6 @if ($isLoading) hidden @else block @endif" id="rootcause-table">
+            <div class="mb-3 p-6" wire:loading.remove wire:target="get_suggestion" id="rootcause-table">
                 <div class="table-responsive">
                     <table class="table border-0 mb-0">
                         <thead>
@@ -56,9 +56,10 @@ style="display: @if($show === true)
                                     <td>
                                         {{ $item }}
                                     </td>
-                                    <td>
-                                        <button class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
-                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                    <td class="flex items-center justify-end">
+                                        <button wire:click="save_suggestion('{{ $item }}')" class="btn bg-success-600 text-sm text-white btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                                            <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
+                                            Simpan Saran Penyebab
                                         </button>
                                     </td>
                                 </tr>
