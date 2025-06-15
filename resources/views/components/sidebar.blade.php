@@ -4,9 +4,9 @@
     </button>
     <div>
         <a href="{{ route('index') }}" class="sidebar-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="light-logo">
-            <img src="{{ asset('assets/images/logo-light.png') }}" alt="site logo" class="dark-logo">
-            <img src="{{ asset('assets/images/logo-icon.png') }}" alt="site logo" class="logo-icon">
+            <img src="{{ asset('assets/images/logo-light.png') }}" alt="site logo" class="light-logo">
+            <img src="{{ asset('assets/images/logo-dark.png') }}" alt="site logo" class="dark-logo">
+            <img src="{{ asset('assets/images/icon.png') }}" alt="site logo" class="logo-icon">
         </a>
     </div>
     <div class="sidebar-menu-area">
@@ -40,7 +40,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{ route('appreciation.index') }}">
                     <iconify-icon icon="gg:awards" class="menu-icon"></iconify-icon>
                     <span>Penghargaan</span>
                 </a>
@@ -51,27 +51,6 @@
                     <iconify-icon icon="humbleicons:users" class="menu-icon"></iconify-icon>
                     <span>Pengguna</span>
                 </a>
-            </li>
-
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
-                    <span>Pengaturan</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="#">
-                            <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> 
-                            Presensi
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> 
-                            Reward System
-                        </a>
-                    </li>
-                </ul>
             </li>
         </ul>
     </div>

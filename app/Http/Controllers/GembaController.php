@@ -21,7 +21,7 @@ class GembaController extends Controller
     public function index() 
     {
         $data = [
-            "genbas" => GenbaSessions::all()
+            "genbas" => GenbaSessions::orderByDesc('created_at')->get()
         ];
         
         return view('gemba.index', $data);

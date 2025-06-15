@@ -3489,6 +3489,10 @@ svg.radial-progress text.percentage {
   width: 50%;
 }
 
+.w-3\/4{
+  width: 75%;
+}
+
 .w-10{
   width: 2.5rem;
 }

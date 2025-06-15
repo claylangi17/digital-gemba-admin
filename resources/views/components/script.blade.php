@@ -33,4 +33,19 @@
     @livewireScripts
     @stack('lv-scripts')
 
+    <script>
+        window.addEventListener('lv-toast-success', event => {
+            console.log();
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: event.detail[0].message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        });
+    </script>
+
     <?php echo (isset($script) ? $script   : '')?>
