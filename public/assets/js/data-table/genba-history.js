@@ -13,7 +13,7 @@ if (document.getElementById("genba-history-table") && typeof simpleDatatables.Da
             columns: [
                 { select: [5], sortable: false } // Disable sorting on the first column (index 0 and 6)
             ],
-            perPage: 5,
+            perPage: 10,
             labels: {
                 placeholder: "Cari...",
                 searchTitle: "Cari Sesi Genba",
