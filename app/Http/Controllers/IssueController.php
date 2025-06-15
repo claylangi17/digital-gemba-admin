@@ -29,8 +29,8 @@ class IssueController extends Controller
         confirmDelete($title, $text);
 
         $data["items"] = Items::whereIn('id', explode(',', $data["issue"]->items))->pluck('name')->implode(', ');
-        $data["root_causes"] = RootCauses::where('issue_id', $data["issue"]->id)->get();
-        $data["actions"] = Actions::where('issue_id', $data["issue"]->id)->get();
+        $data["root_causes"] = RootCauses::where('issue_id', $data["issue"]->id)->orderByDesc('created_at')->get();
+        $data["actions"] = Actions::where('issue_id', $data["issue"]->id)->orderByDesc('created_at')->get();
 
         return view('gemba.issue', $data);
     }
