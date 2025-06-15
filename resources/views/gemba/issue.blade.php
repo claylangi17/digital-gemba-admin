@@ -315,7 +315,11 @@
                                 </td>
                                 <td>
                                     @if ($act->status == "PROGRESS")
-                                        <p class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs text-center">Dalam Proses</p>
+                                        @if ($act->due_date < Carbon\Carbon::now())
+                                            <p class="bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 px-6 py-1.5 rounded-full font-medium text-xs text-center">Terlambat</p>
+                                        @else
+                                            <p class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs text-center">Dalam Proses</p>
+                                        @endif
                                     @else
                                         <p class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs text-center">Terselesaikan</p>
                                     @endif
