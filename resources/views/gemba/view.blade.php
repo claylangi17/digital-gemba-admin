@@ -364,31 +364,38 @@
 
             </div>
             <div class="card-body p-6">
-                <div id="progress-carousel" class="p-0 dots-style-circle dots-positioned">
-                    @foreach ($appreciations as $appreciation)
-                    <div>
-                        <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col mx-2">
-                        
-                            <div class="card-body p-4 grow"> 
-                                
-                                <div class="block mb-1.5">
-                                    <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">{{ $appreciation->receivers_name }} </h5>
-                                    <span>{{ $appreciation->line }}</span>
+                @if ($appreciations->count() > 0)
+                        <div class="p-0 dots-style-circle dots-positioned" id="progress-carousel">
+                            @foreach ($appreciations as $appreciation)
+                                <div>
+                                    <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col mx-2">
+                                    
+                                        <div class="card-body p-4 grow"> 
+                                            
+                                            <div class="block mb-1.5">
+                                                <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200">{{ $appreciation->receivers_name }} </h5>
+                                                <span>{{ $appreciation->line }}</span>
+                                            </div>
+                                            <p class="card-text text-neutral-600 mb-4">{{ $appreciation->description }}</p>
+                
+                                            <span class="text-xs">Dari: {{ $appreciation->by }}</span>
+                                        </div>
+                                        <div class="flex shrink-0">
+                                            <img src="{{ asset('storage/' . $appreciation->files) }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="card-text text-neutral-600 mb-4">{{ $appreciation->description }}</p>
-    
-                                <span class="text-xs">Dari: {{ $appreciation->by }}</span>
-                            </div>
-                            <div class="flex shrink-0">
-                                <img src="{{ asset('storage/' . $appreciation->files) }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
-                            </div>
+                            @endforeach
                         </div>
-                    </div>
-                    @endforeach
-                </div>
-                <div class="slider-progress">
-                    <span></span>
-                </div>
+
+                        <div class="slider-progress">
+                            <span></span>
+                        </div>
+                    @else
+                        <div class="flex items-center justify-center">
+                            Belum Ada Catatan Apresiasi
+                        </div>
+                    @endif
             </div>
         </div>
         {{-- Appreciation Card : End  --}}
