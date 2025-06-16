@@ -21,6 +21,7 @@ class RootCause extends Component
         $this->get_data($category);
 
         $this->dispatch('resetGenbaCauseTable');
+        $this->dispatch('triggerActionChangeCategory', $category);
     }
 
     public function reload()
