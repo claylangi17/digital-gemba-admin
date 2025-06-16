@@ -22,7 +22,7 @@
 
         @if ($issue->status == "OPEN")
             <div class="flex items-center justify-end gap-3" style="width: 45%">
-                <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->id }}' ,'{{ $issue->line }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->id }}' ,'{{ $issue->line->name }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Tanya AI
                 </button>
