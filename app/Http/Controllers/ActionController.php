@@ -16,6 +16,7 @@ class ActionController extends Controller
         try {
             $request->validate([
                 'issue_id' => 'required',
+                'root_cause_selector' => "required",
                 'type' => "required",
                 'pic_id' => 'required',
                 'description' => 'required',
@@ -27,6 +28,7 @@ class ActionController extends Controller
 
             Actions::create([
                 'issue_id' => $request->issue_id,
+                'root_cause_id' => $request->root_cause_selector,
                 'type' => $request->type,
                 'pic_id' => $request->pic_id,
                 'description' => $request->description,
@@ -55,6 +57,7 @@ class ActionController extends Controller
         try {
             $request->validate([
                 'action_id' => 'required',
+                'root_cause_selector' => "required",
                 'type' => 'required',
                 'pic_id' => 'required',
                 'description' => 'required',
@@ -66,6 +69,7 @@ class ActionController extends Controller
 
             Actions::where('id', $request->action_id)->update([
                 'type' => $request->type,
+                'root_cause_id' => $request->root_cause_selector,
                 'pic_id' => $request->pic_id,
                 'description' => $request->description,
                 'due_date' => $due_date,

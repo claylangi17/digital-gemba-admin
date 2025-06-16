@@ -28,7 +28,7 @@ class Actions extends Model
 
     public function rootCause()
     {
-        return $this->belongsTo(RootCauses::class);
+        return $this->belongsTo(RootCauses::class, 'root_cause_id');
     }
 
     public function pic()
