@@ -46,6 +46,21 @@
                 timerProgressBar: true,
             });
         });
+
+        Livewire.on('lv-delete-confirm', (event) => {
+            Swal.fire({
+                title: 'Hapus ' + event.itemName + '?',
+                text: "Apakah kamu yakin untuk menghapus " + event.itemName + " ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch(event.confirmationListener, { id: event.itemId })
+                }
+            })
+        });
     </script>
 
     <?php echo (isset($script) ? $script   : '')?>

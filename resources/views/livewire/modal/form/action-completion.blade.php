@@ -7,10 +7,10 @@ style="display: @if($show === true)
                  none
          @endif;"
          >
-    <div class="relative p-4 max-h-full" style="width: 80%">
+    <div class="relative p-4 max-h-full" style="width: 70%">
         <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Detail Aksi </h3>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Selesaikan Aksi </h3>
                 <button type="button" wire:click="doClose()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -82,7 +82,7 @@ style="display: @if($show === true)
                 {{-- Status Card :End  --}}
 
                 {{-- Card: Description :Start  --}}
-                <div class="card @if($action) @if($action->status == 'FINISHED') col-span-2 @else col-span-4 @endif @endif rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
+                <div class="card col-span-4 rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
                     <div class="flex shrink-0">
                         <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-primary-600 text-white rounded-xl">
                             <iconify-icon icon="material-symbols:description-outline" class="h5 mb-0"></iconify-icon>
@@ -94,76 +94,30 @@ style="display: @if($show === true)
                     </div>
                 </div>
                 {{-- Card: Description :End  --}}
+            </div>
+            <div class="p-4 md:p-5 space-y-4">
+                <form id="action-completion-form" action="{{ route('action.complete') }}" enctype="multipart/form-data" method="POST" class="grid grid-cols-2 gap-2">
+                    @csrf
+                    
+                    <input type="text" value="{{ $action->id ?? '' }}" name="action_id" id="action_id" hidden>
 
-                @if ($action && $action->status == 'FINISHED')
-                    {{-- Card: Description :Start  --}}
-                    <div class="card col-span-2 rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
-                        <div class="flex shrink-0">
-                            <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-primary-600 text-white rounded-xl">
-                                <iconify-icon icon="ic:sharp-done-all" class="h5 mb-0"></iconify-icon>
-                            </div>
-                        </div>
-                        <div class="px-4">
-                            <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200 mb-1.5">Deskripsi Penyelesaian Aksi</h5>
-                            <p class="card-text text-neutral-600"> {{ $action->completion_description ?? '' }} </p>
-                        </div>
+                    <div class="mb-3 col-span-2">
+                        <label for="description" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Deskripsi Penyelesaian</label>
+                        <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Enter a description..."></textarea>
                     </div>
-                    {{-- Card: Description :End  --}}
-                @endif
 
-                @if ($action && $action->status == "FINISHED")
-                    {{-- Files Card : Start  --}}
-                    <div class="card h-full p-0 rounded-xl border-0 overflow-hidden w-full my-4 col-span-4">
-                        <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
-                            <div class="flex items-center flex-wrap gap-3">
-                                <span class="text-xl font-medium text-secondary-light mb-0">Bukti Penyelesaian Aksi </span>
-                            </div>
-
-                        </div>
-                        <div class="card-body p-6">
-                            <div id="action-files-carousel" class="p-0 dots-style-circle dots-positioned">
-                                @if ($action != null)
-                                    @foreach ($action->completionFiles as $file)
-                                        @if ($file->type == "PHOTO")
-                                            {{-- Tempalate IMG  --}}
-                                            <div class="mx-2">
-                                                <div class="user-grid-card">
-                                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
-                                                        {{--  File  --}}
-                                                        <img src="{{ asset('storage/' . $file->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $file->path) }}')">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @else
-                                            {{-- Tempalate IMG  --}}
-                                            <div class="mx-2">
-                                                <div class="user-grid-card">
-                                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4" onclick="showVideoModal('{{ asset('storage/' . $file->path) }}')">
-                                                        {{--  File  --}}
-                                                        <video
-                                                        muted
-                                                        autoplay
-                                                        loop
-                                                        playsinline
-                                                        style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
-                                                        >
-                                                            <source src="{{ asset('storage/' . $file->path) }}" type="video/mp4">
-                                                        </video>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
+                    <div class="mb-3 col-span-2">
+                        <label for="files" class="form-label">Foto / Video Penyelesaian Aksi</label>
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
                     </div>
-                    {{-- Files Card : End  --}}
-                @endif
+                </form>
             </div>
             <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" wire:click="doClose()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg">
-                    Kembali
+                    Batal
+                </button>
+                <button id="save-action-completion" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                    Simpan Aksi
                 </button>
             </div>
         </div>
@@ -172,22 +126,10 @@ style="display: @if($show === true)
 
 @push('lv-scripts')
     <script>
-        Livewire.on('initActionFilesCarousel', () => {
-            setTimeout(() => {
-                const $carousel = $("#action-files-carousel");
+        $('#save-action-completion').on('click', function(e) {
+            e.preventDefault();
 
-                if ($carousel.hasClass('slick-initialized')) {
-                    $carousel.slick('unslick');
-                }
-
-                $carousel.slick({
-                    infinite: true,
-                    slidesToShow: 4,
-                    slidesToScroll: 4, 
-                    dots: true,
-                    speed: 600,
-                });
-            }, 150); // small delay ensures modal is visible in DOM
-        })
+            $('#action-completion-form').submit();
+        });
     </script>
 @endpush

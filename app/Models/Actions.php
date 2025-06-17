@@ -16,7 +16,7 @@ class Actions extends Model
         'done_at',
         'status',
         'evidence_files',
-        'evidence_description',
+        'completion_description',
         'created_by',
     ];
 
@@ -28,7 +28,7 @@ class Actions extends Model
 
     public function rootCause()
     {
-        return $this->belongsTo(RootCauses::class);
+        return $this->belongsTo(RootCauses::class, 'root_cause_id');
     }
 
     public function pic()
@@ -39,5 +39,10 @@ class Actions extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function completionFiles()
+    {
+        return $this->hasMany(ActionCompletionFiles::class, 'action_id');
     }
 }

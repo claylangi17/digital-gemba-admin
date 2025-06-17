@@ -19,7 +19,7 @@ style="display: @if($show === true)
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <form id="action-form" action="{{ $mode == "create" ? route("action.create") : route("action.update") }}" method="POST" class="grid grid-cols-3 gap-2">
+                <form id="action-form" action="{{ $mode == "create" ? route("action.create") : route("action.update") }}" method="POST" class="grid grid-cols-2 gap-2">
                     @csrf
                     
                     @if ($mode == "create")
@@ -72,7 +72,26 @@ style="display: @if($show === true)
                         </select>
                     </div>
 
-                    <div class="mb-3 col-span-3">
+                    <div class="mb-3 w-full">
+                        <label for="root_cause_selector" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Pilih Isu Terkait</label>
+                        <select id="root_cause_selector" name="root_cause_selector" style="width: 100%" required>
+                            @if ($causes)
+                                @foreach ($causes as $cause)
+                                    @if ($action)
+                                        @if ($action->rootCause->id == $cause->id)
+                                            <option value="{{ $cause->id }}" selected>{{ $cause->description }} - {{ $cause->category }}</option>
+                                        @else
+                                            <option value="{{ $cause->id }}">{{ $cause->description }} - {{ $cause->category }}</option>
+                                        @endif
+                                    @else
+                                        <option value="{{ $cause->id }}">{{ $cause->description }} - {{ $cause->category }}</option>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-span-2">
                         <label for="description" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Deskripsi Aksi</label>
                         <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Enter a description...">{{ $action->description ?? '' }}</textarea>
                     </div>
@@ -95,10 +114,16 @@ style="display: @if($show === true)
     <script src="{{ asset('assets/js/flatpickr.js') }}"></script>
 
     <script>
-        Livewire.on('showModalFormAction', () => {
-            // Flat pickr or date picker js 
-            
-        })
+        Livewire.on('initActionRootCauseSelector', () => {
+            setTimeout(() => {
+                VirtualSelect.init({ 
+                    ele: '#root_cause_selector',
+                    search: true,
+                    maxWidth: "100%",
+                    additionalClasses: 'vir-select',
+                });
+            }, 100);
+        });
 
         function getDatePicker(receiveID) {
                 flatpickr(receiveID, {

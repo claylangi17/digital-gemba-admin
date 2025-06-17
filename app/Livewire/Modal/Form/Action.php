@@ -3,6 +3,7 @@
 namespace App\Livewire\Modal\Form;
 
 use App\Models\Actions;
+use App\Models\RootCauses;
 use App\Models\User;
 use Livewire\Component;
 
@@ -13,6 +14,7 @@ class Action extends Component
     public $show;
     public $mode;
     public $issue_id;
+    public $causes = null;
 
     public function mount() {
         $this->show = false;
@@ -37,10 +39,13 @@ class Action extends Component
             $this->issue_id = $issue_id;
         }
 
+        $this->causes = RootCauses::where('issue_id', $issue_id)->get();
+
         $this->doShow();
     }
 
     public function doShow() {
+        $this->dispatch('initActionRootCauseSelector');
         $this->show = true;
     }
 
