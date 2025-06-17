@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('done_at')->nullable();
             $table->enum('status', ['PROGRESS', 'FINISHED']); 
             $table->text('evidence_files')->nullable();
-            $table->text('evidence_description')->nullable();
+            $table->text('completion_description')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

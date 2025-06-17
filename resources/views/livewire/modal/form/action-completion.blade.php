@@ -7,10 +7,10 @@ style="display: @if($show === true)
                  none
          @endif;"
          >
-    <div class="relative p-4 max-h-full" style="width: 80%">
+    <div class="relative p-4 max-h-full" style="width: 70%">
         <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Detail Aksi </h3>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Selesaikan Aksi </h3>
                 <button type="button" wire:click="doClose()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -94,14 +94,30 @@ style="display: @if($show === true)
                     </div>
                 </div>
                 {{-- Card: Description :End  --}}
+            </div>
+            <div class="p-4 md:p-5 space-y-4">
+                <form id="action-completion-form" action="{{ route('action.complete') }}" enctype="multipart/form-data" method="POST" class="grid grid-cols-2 gap-2">
+                    @csrf
+                    
+                    <input type="text" value="{{ $action->id ?? '' }}" name="action_id" id="action_id" hidden>
 
-                {{-- Files Card : Start  --}}
-                
-                {{-- Files Card : End  --}}
+                    <div class="mb-3 col-span-2">
+                        <label for="description" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Deskripsi Penyelesaian</label>
+                        <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Enter a description..."></textarea>
+                    </div>
+
+                    <div class="mb-3 col-span-2">
+                        <label for="files" class="form-label">Foto / Video Penyelesaian Aksi</label>
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                    </div>
+                </form>
             </div>
             <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" wire:click="doClose()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg">
-                    Kembali
+                    Batal
+                </button>
+                <button id="save-action-completion" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                    Simpan Aksi
                 </button>
             </div>
         </div>
@@ -110,19 +126,10 @@ style="display: @if($show === true)
 
 @push('lv-scripts')
     <script>
-        Livewire.on('showModalViewAction', () => {
-            // Flat pickr or date picker js 
-            $("#action-files-carousel").slick({
-                infinite: true,
-                slidesToShow: 4,
-                slidesToScroll: 4, 
-                arrows: true, 
-                dots: true,
-                infinite: true,
-                speed: 600,
-                prevArrow: '',
-                nextArrow: '',
-            })
-        })
+        $('#save-action-completion').on('click', function(e) {
+            e.preventDefault();
+
+            $('#action-completion-form').submit();
+        });
     </script>
 @endpush

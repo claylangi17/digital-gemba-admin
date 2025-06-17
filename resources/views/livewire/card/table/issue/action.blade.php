@@ -116,17 +116,45 @@
                             @endif
                         </td>
                         <td>
-                            <button onclick="Livewire.dispatch('showModalViewAction', { id: '{{ $act->id }}' })" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
-                                <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                            </button>
-                            @if ($issue->status == "OPEN")
-                                <button onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}', issue_id: '{{ $issue->id }}'})" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
-                                    <iconify-icon icon="lucide:edit"></iconify-icon>
-                                </button>
-                            @endif
-                            <a href="{{ route('action.delete', [$act->id]) }}" data-confirm-delete="true" class="w-8 h-8 bg-danger-100 dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
-                                <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                            </a>
+                            <div class="">
+                                <div class="flex justify-end">
+                                    @if ($act->status == "PROGRESS")
+                                        <button onclick="Livewire.dispatch('showModalFormActionCompletion', { action_id: '{{ $act->id }}' })" class="text-white bg-success-600 hover:bg-success-700 focus:ring-4 focus:outline-none focus:ring-success-300 font-medium rounded-s-lg text-base px-5 py-4 text-center inline-flex items-center dark:bg-success-600 dark:hover:bg-success-700 dark:focus:ring-success-800" type="button">
+                                            <iconify-icon icon="ic:sharp-done-all"></iconify-icon>
+                                        </button>
+                                        <button onclick="Livewire.dispatch('showModalViewAction', { id: '{{ $act->id }}' })" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-base px-5 py-4 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                                            <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                        </button>
+                                    @else
+                                        <button onclick="Livewire.dispatch('showModalViewAction', { id: '{{ $act->id }}' })" class="rounded-s-lg text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-base px-5 py-4 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                                            <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                        </button>
+                                    @endif
+                                    <button data-dropdown-toggle="defaultActionPillDropGroup-{{ $act->id }}" data-dropdown-placement="bottom" class="text-white bg-neutral-600 hover:bg-neutral-700 focus:ring-4 focus:outline-none focus:ring-neutral-300 font-medium rounded-e-lg text-base px-5 py-4 text-center inline-flex items-center dark:bg-neutral-600 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800" type="button">
+                                        Aksi
+                                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Dropdown menu -->
+                                <div id="defaultActionPillDropGroup-{{ $act->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-2xl w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-base text-gray-700 dark:text-gray-200">
+                                        @if ($issue->status == "OPEN")
+                                            <li>
+                                                <div onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}', issue_id: '{{ $issue->id }}'})" class="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    Edit
+                                                </div>
+                                            </li>
+                                        @endif
+                                        <li>
+                                            <div onclick="Livewire.dispatch('lv-delete-confirm', { itemId : '{{ $act->id }}', itemName : 'Aksi', confirmationListener: 'deleteActionConfirmed' })" class="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                Hapus
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

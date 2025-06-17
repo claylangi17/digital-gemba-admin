@@ -10,7 +10,10 @@ class Action extends Component
     public $actions;
     public $issue;
 
-    protected $listeners = ['triggerActionChangeCategory' => 'change_category'];
+    protected $listeners = [
+        'triggerActionChangeCategory' => 'change_category',
+        'deleteActionConfirmed' => 'delete'
+    ];
 
     public function mount($issue)
     {
@@ -44,6 +47,14 @@ class Action extends Component
             ->where('issue_id', $this->issue->id)
             ->get();
         }
+    }
+
+    public function delete($id)
+    {
+        Actions::where('id',$id)->delete();
+        $this->dispatch("lv-toast-success", ["message" => "Aksi berhasil dihapus"]);
+
+        $this->reload();
     }
     
     public function render()

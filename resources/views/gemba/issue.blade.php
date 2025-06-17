@@ -12,6 +12,7 @@
 
     @if ($issue->status == "OPEN")
         @livewire('Modal.Form.Action')
+        @livewire('Modal.Form.ActionCompletion')
         @livewire('Modal.Form.RootCause')
     @endif
 
