@@ -23,6 +23,8 @@ class Action extends Component
         $this->action = Actions::where('id', $id)->first();
 
         $this->doShow();
+
+        $this->dispatch('initActionFilesCarousel');
     }
 
     public function doShow() {
