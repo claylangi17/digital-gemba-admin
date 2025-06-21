@@ -15,18 +15,6 @@
         <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-between">
             <div class="flex items-center flex-wrap gap-3">
                 <span class="text-base font-medium text-secondary-light mb-0">Tampilkan</span>
-                <select class="form-select form-select-sm w-auto dark:bg-neutral-600 dark:text-white border-neutral-200 dark:border-neutral-500 rounded-lg">
-                    <option>10</option>
-                    <option>20</option>
-                    <option>30</option>
-                    <option>40</option>
-                    <option>50</option>
-                    <option>60</option>
-                    <option>70</option>
-                    <option>80</option>
-                    <option>90</option>
-                    <option>10</option>
-                </select>
                 <form class="navbar-search">
                     <input type="text" class="bg-white dark:bg-neutral-700 h-10 w-auto" name="search" placeholder="Cari Pengguna">
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
@@ -82,32 +70,6 @@
                         </div>
                     @endif
                 @endforeach
-            </div>
-            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
-                <span>Menampilkan 1 sampai 10 dari 12 pengguna</span>
-                <ul class="pagination flex flex-wrap items-center gap-2 justify-center">
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"><iconify-icon icon="ep:d-arrow-left" class=""></iconify-icon></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base bg-primary-600 text-white" href="javascript:void(0)">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8" href="javascript:void(0)">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)">5</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link bg-neutral-300 dark:bg-neutral-600 text-secondary-light font-semibold rounded-lg border-0 flex items-center justify-center h-8 w-8 text-base" href="javascript:void(0)"> <iconify-icon icon="ep:d-arrow-right" class=""></iconify-icon> </a>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
