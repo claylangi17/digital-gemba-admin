@@ -19,9 +19,6 @@
                             <span class="text-sm text-neutral-600 font-normal"> {{ $line->issues->count() }} Isu </span>
                         </div>
                     </div>
-                    <a href="javascript:void(0)" class="w-6 h-6 bg-primary-600/10 text-primary-600 dark:text-primary-600 flex justify-center items-center text-lg hover:bg-primary-600/20 rounded">
-                        <i class="ri-arrow-right-s-line"></i>
-                    </a>
                 </div>
             @endforeach
             
