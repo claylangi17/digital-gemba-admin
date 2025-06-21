@@ -365,9 +365,9 @@
             </div>
             <div class="card-body p-6">
                 @if ($appreciations->count() > 0)
-                        <div class="p-0 dots-style-circle dots-positioned" id="progress-carousel">
+                        <div class="p-0 dots-style-circle dots-positioned cursor-pointer" id="progress-carousel">
                             @foreach ($appreciations as $appreciation)
-                                <div>
+                                <div onclick="Livewire.dispatch('showModalViewAppreciationNote', { id: '{{ $appreciation->id }}' })">
                                     <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col mx-2">
                                     
                                         <div class="card-body p-4 grow"> 
@@ -634,6 +634,8 @@
             </div>
         </div>
     </div>
+
+    @livewire('Modal.View.AppreciationNote')
 
     <x-script/>
 
