@@ -32,7 +32,7 @@
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                 </form>
             </div>
-            <button  class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="default-modal" data-modal-toggle="default-modal">
+            <button onclick="Livewire.dispatch('showModalFormUser', { id: ''})" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                 <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                 Tambahkan Pengguna Baru
             </button>
@@ -64,14 +64,14 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between gap-2">
-                                        <a href="#" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                        <button href="#" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
                                             <iconify-icon icon="solar:eye-linear" class="icon text-xl line-height-1"></iconify-icon>
                                             Lihat 
-                                        </a> 
-                                        <a href="#" class="bg-warning-50 hover:bg-warning-600 dark:hover:bg-warning-600 hover:text-white dark:hover:text-white dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 bg-hover-warning-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                        </button> 
+                                        <button onclick="Livewire.dispatch('showModalFormUser', { id: '{{ $user->id }}'})" class="bg-warning-50 hover:bg-warning-600 dark:hover:bg-warning-600 hover:text-white dark:hover:text-white dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 bg-hover-warning-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
                                             <iconify-icon icon="solar:ruler-cross-pen-outline" class="icon text-xl line-height-1"></iconify-icon>
                                             Ubah 
-                                        </a> 
+                                        </button> 
                                         <a href="{{ route('users.delete', [$user->id]) }}" data-confirm-delete="true" class="bg-danger-50 hover:bg-danger-600 dark:hover:bg-danger-600 hover:text-white dark:hover:text-white dark:bg-danger-600/25 text-danger-600 dark:text-danger-400 bg-hover-danger-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
                                             <iconify-icon icon="solar:trash-bin-trash-linear" class="icon text-xl line-height-1"></iconify-icon>
                                             Hapus
@@ -112,67 +112,7 @@
         </div>
     </div>
 
-    <!-- Main modal -->
-    <div id="default-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full  max-w-2xl max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Tambahkan Pengguna Baru </h3>
-                    <button id="btn-close-default-modal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Tutup Formulir</span>
-                    </button>
-                </div>
-                <div class="p-4 md:p-5 space-y-4">
-                    <form id="user-form" action="{{ route("users.create") }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Pengguna</label>
-                            <input type="text" class="form-control" placeholder="Masukkan nama pengguna " id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Email</label>
-                            <input type="text" class="form-control" placeholder="Masukan alamat email" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="department" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Departemen</label>
-                            <select class="form-control" id="department" name="department" required>
-                                <option value="manufacture">Manufaktur</option>
-                                <option value="qc">Quality Control</option>
-                                <option value="management">Manajemen</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Role</label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="superadmin">Superadmin</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">Karyawan</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Kata Sandi</label>
-                            <div class="relative mb-5">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Buat kata sandi default">
-                                <span class="toggle-password ri-eye-line cursor-pointer absolute end-0 top-1/2 -translate-y-1/2 me-4 text-secondary-light" data-toggle="#your-password"></span>
-                            </div>
-                        </div>
-                        
-                    </form>
-                </div>
-                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button id="btn-cancel-default-modal" type="button" data-modal-hide="default-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="modal">
-                        Batal
-                    </button>
-                    <button id="btn-submit-default-modal" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg" id="saveTaskButton">
-                        Tambahkan Pengguna
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @livewire('Modal.Form.User')
 
 @endsection
 

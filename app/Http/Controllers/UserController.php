@@ -42,6 +42,32 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        User::where('id', $request->id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'department' => $request->department,
+        ]);
+
+        if (!$request->password)
+        {
+            User::where('id', $request->id)->update([
+                'password' => bcrypt($request->password),
+            ]);
+        }
+
+        Alert::toast('Pengguna Berhasil Diperbaharui!', 'success')->position('top-end')->timerProgressBar();
+
+        return redirect()->back();
+    }
+
     public function delete($id)
     {
         $user = User::find($id);
