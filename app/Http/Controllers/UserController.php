@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserCoverPhoto;
+use App\Models\UserProfilePhoto;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {   
@@ -29,13 +32,36 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
             'department' => $request->department,
             'password' => bcrypt($request->password),
         ]);
+
+        if ($request->hasFile('profile_photo')) {
+            $profileFile = $request->file('profile_photo');
+            $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
+            $profilePath = $profileFile->storeAs('uploads/user/profile/' . $user->id, $profileFilename, 'public');
+        
+            UserProfilePhoto::create([
+                'user_id' => $user->id,
+                'path' => $profilePath,
+            ]);
+        }
+        
+        if ($request->hasFile('cover_photo')) {
+            $coverFile = $request->file('cover_photo');
+            $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
+            $coverPath = $coverFile->storeAs('uploads/user/cover/' . $user->id, $coverFilename, 'public');
+        
+            UserCoverPhoto::create([
+                'user_id' => $user->id,
+                'path' => $coverPath,
+            ]);
+        }
+        
 
         Alert::toast('Pengguna Berhasil Ditambahkan!', 'success')->position('top-end')->timerProgressBar();
 
@@ -55,6 +81,26 @@ class UserController extends Controller
             'role' => $request->role,
             'department' => $request->department,
         ]);
+
+        if ($request->hasFile('profile_photo')) {
+            $profileFile = $request->file('profile_photo');
+            $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
+            $profilePath = $profileFile->storeAs('uploads/user/profile/' . $request->id, $profileFilename, 'public');
+        
+            UserProfilePhoto::where('user_id', $request->id)->update([
+                'path' => $profilePath,
+            ]);
+        }
+        
+        if ($request->hasFile('cover_photo')) {
+            $coverFile = $request->file('cover_photo');
+            $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
+            $coverPath = $coverFile->storeAs('uploads/user/cover/' . $request->id, $coverFilename, 'public');
+        
+            UserCoverPhoto::where('user_id', $request->id)->update([
+                'path' => $coverPath,
+            ]);
+        }
 
         if (!$request->password)
         {

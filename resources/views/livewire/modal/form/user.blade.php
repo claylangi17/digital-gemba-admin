@@ -27,7 +27,7 @@ style="display: @if($show === true)
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <form id="user-form" action="{{ $mode == "create" ? route("users.create") : route("users.update") }}" method="POST">
+                <form id="user-form" action="{{ $mode == "create" ? route("users.create") : route("users.update") }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     @if ($mode !=  'create')
@@ -63,6 +63,14 @@ style="display: @if($show === true)
                             <input type="password" class="form-control" id="password" name="password" placeholder="Buat kata sandi default">
                             <span class="toggle-password ri-eye-line cursor-pointer absolute end-0 top-1/2 -translate-y-1/2 me-4 text-secondary-light" data-toggle="#your-password"></span>
                         </div>
+                    </div>
+                    <div class="mb-3 col-span-2">
+                        <label for="profile_photo" class="form-label">Foto Profil</label>
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="profile_photo" id="profile_photo" accept="image/*">
+                    </div>
+                    <div class="mb-3 col-span-2">
+                        <label for="cover_photo" class="form-label">Foto Sampul</label>
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="cover_photo" id="cover_photo" accept="image/*">
                     </div>
                     
                 </form>
