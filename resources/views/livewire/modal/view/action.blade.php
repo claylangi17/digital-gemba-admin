@@ -82,7 +82,7 @@ style="display: @if($show === true)
                 {{-- Status Card :End  --}}
 
                 {{-- Card: Description :Start  --}}
-                <div class="card @if($action) @if($action->status == 'FINISHED') col-span-2 @else col-span-4 @endif @endif rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
+                <div class="card col-span-2 rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
                     <div class="flex shrink-0">
                         <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-primary-600 text-white rounded-xl">
                             <iconify-icon icon="material-symbols:description-outline" class="h5 mb-0"></iconify-icon>
@@ -94,6 +94,20 @@ style="display: @if($show === true)
                     </div>
                 </div>
                 {{-- Card: Description :End  --}}
+
+                {{-- Related Cause Card :Start  --}}
+                <div class="card col-span-2 rounded-xl overflow-hidden border-0 flex flex-nowrap sm:flex-row flex-col">
+                    <div class="flex shrink-0">
+                        <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-primary-600 text-white rounded-xl">
+                            <iconify-icon icon="ic:outline-report-problem" class="h5 mb-0"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="px-4">
+                        <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200 mb-1.5">Akar Masalah Terkait</h5>
+                        <p class="card-text text-neutral-600"> ({{ $action->rootCause->category ?? '' }}) {{ $action->rootCause->description ?? '' }} </p>
+                    </div>
+                </div>
+                {{-- Related Cause Card :End  --}}
 
                 @if ($action && $action->status == 'FINISHED')
                     {{-- Card: Description :Start  --}}
