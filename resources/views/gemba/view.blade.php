@@ -415,7 +415,7 @@
     
                     @if ($genba->status != "FINISH")
                         <button onclick="closingConfirmation()" class="btn bg-success-600 text-white hover:bg-success-700 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                            <iconify-icon icon="material-symbols:stop-outline-rounded" class="icon text-xl line-height-1"></iconify-icon>
+                            <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
                             Tutup Sesi
                         </button>
 
