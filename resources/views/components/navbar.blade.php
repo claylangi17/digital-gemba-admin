@@ -26,7 +26,7 @@
 
                 {{-- Profile Menu : start  --}}
                 <button data-dropdown-toggle="dropdownProfile" class="flex justify-center items-center rounded-full" type="button">
-                    <img src="{{ asset('assets/images/user.png') }}" alt="image" class="w-10 h-10 object-fit-cover rounded-full">
+                    <img src="{{ Auth::user()->profilePhoto ? asset('storage/' . Auth::user()->profilePhoto->path) : asset('assets/images/user.png') }}" alt="image" class="w-10 h-10 object-fit-cover rounded-full">
                 </button>
                 <div id="dropdownProfile" class="z-10 hidden bg-white dark:bg-neutral-700 rounded-lg shadow-lg dropdown-menu-sm p-3">
                     <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 mb-4 flex items-center justify-between gap-2">
@@ -39,9 +39,9 @@
                     <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
                         <ul class="flex flex-col">
                             <li>
-                                <a class="text-black px-0 py-2 hover:text-primary-600 flex items-center gap-4" href="#">
+                                <button onclick="Livewire.dispatch('showModalViewUser', { id: '{{ Auth::user()->id }}'})" class="text-black px-0 py-2 hover:text-primary-600 flex items-center gap-4" href="#">
                                     <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon>  My Profile
-                                </a>
+                                </button>
                             </li>
                             <li>
                                 <a class="text-black px-0 py-2 hover:text-danger-600 flex items-center gap-4" href="{{ route('auth.logout.attempt') }}">

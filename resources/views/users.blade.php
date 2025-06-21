@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between gap-2">
-                                        <button href="#" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
+                                        <button onclick="Livewire.dispatch('showModalViewUser', { id: '{{ $user->id }}'})" class="bg-primary-50 hover:bg-primary-600 dark:hover:bg-primary-600 hover:text-white dark:hover:text-white dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 bg-hover-primary-600 hover-text-white p-2.5 text-sm btn-sm px-4 py-3 rounded-lg flex items-center justify-center mt-4 font-medium gap-2">
                                             <iconify-icon icon="solar:eye-linear" class="icon text-xl line-height-1"></iconify-icon>
                                             Lihat 
                                         </button> 
@@ -75,6 +75,7 @@
     </div>
 
     @livewire('Modal.Form.User')
+    @livewire('Modal.View.User')
 
 @endsection
 
