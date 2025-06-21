@@ -72,7 +72,8 @@
                 @if ($issues->count() > 0)
                 <div class="w-full py-6">
                     <div class="flex items-center justify-between mb-1.5">
-                        <p>{{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}% Isu Terselesaikan</p>
+                        <p>{{ ceil(($issues->where('status', 'CLOSED')->count() / $issues->count()) * 100) }}% Isu Terselesaikan</p>
+
                         <p>
                             {{ $issues->where('status', "CLOSED")->count() }} 
                             / 
