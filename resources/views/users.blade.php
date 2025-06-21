@@ -16,7 +16,7 @@
             <div class="flex items-center flex-wrap gap-3">
                 <span class="text-base font-medium text-secondary-light mb-0">Tampilkan</span>
                 <form class="navbar-search">
-                    <input type="text" class="bg-white dark:bg-neutral-700 h-10 w-auto" name="search" placeholder="Cari Pengguna">
+                    <input type="text" class="bg-white dark:bg-neutral-700 h-10 w-auto" name="user-search" id="user-search" placeholder="Cari Pengguna">
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
                 </form>
             </div>
@@ -29,7 +29,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-6">
                 @foreach ($users as $user)
                     @if ($user->id != Auth::user()->id)
-                        <div class="user-grid-card">
+                        <div class="user-grid-card" data-name="{{ $user->name }}" data-email="{{ $user->name }}">
                             <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden">
                                 <img src="{{ $user->coverPhoto ? asset('storage/' . $user->coverPhoto->path) : asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 360px ;height: 120px; object-fit:cover">
                                 <div class="pe-6 pb-4 ps-6 text-center mt--50">
@@ -101,6 +101,28 @@
         e.preventDefault();
 
         $('#user-form').submit();
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('user-search');
+
+        searchInput.addEventListener('input', function () {
+            const keyword = this.value.toLowerCase();
+            const userCards = document.querySelectorAll('.user-grid-card');
+
+            userCards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const email = card.getAttribute('data-email').toLowerCase();
+
+                if (name.includes(keyword) || email.includes(keyword)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
     });
 </script>
 @endsection
