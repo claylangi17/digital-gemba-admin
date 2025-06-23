@@ -41,6 +41,7 @@ class Action extends Component
 
     public function get_suggestion($rawData, $type)
     {
+        $this->suggestions = [];
         $request_data = explode('#', $rawData);
         
         $this->isLoading  = true;
