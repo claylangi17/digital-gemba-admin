@@ -84,7 +84,7 @@ class Action extends Component
             $this->suggestions = [];
         }
     
-        $this->isLoading  = false;
+        $this->dispatch('initRootCauseSelector');
     }
 
     public function save_suggestion($rawData)
