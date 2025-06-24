@@ -18,4 +18,9 @@ class GenbaSessions extends Model
     {
         return $this->hasMany(Issues::class, "session_id");
     }
+
+    public function reports()
+    {
+        return $this->hasMany(GenbaReports::class, "session_id");
+    }
 }

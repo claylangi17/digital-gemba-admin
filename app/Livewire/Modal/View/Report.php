@@ -2,8 +2,12 @@
 
 namespace App\Livewire\Modal\View;
 
+use App\Models\GenbaReports;
+use App\Models\GenbaSessions;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Report extends Component
@@ -14,18 +18,26 @@ class Report extends Component
     public $show;
     public $line;
     public $problem;
-    public $suggestions;
+    public $reports;
     
     public function mount() {
         $this->show = false;
     }
 
-    protected $listeners = ['showModalAIreport' => 'showModal'];
+    protected $listeners = [
+        'showModalAIReport' => 'showModal',
+    ];
 
     public function showModal($session_id) 
     {
         $this->session_id = $session_id;
+        $this->getReports();
         $this->doShow();
+    }
+
+    public function getReports()
+    {
+        $this->reports = GenbaReports::where('session_id', $this->session_id)->orderByDesc('created_at')->get();
     }
 
     public function create_report()
@@ -42,18 +54,24 @@ class Report extends Component
 
         $response = Http::withHeaders([
             'X-API-KEY' => $apiKey,
-        ])->get("{$apiUrl}/sessions/{$this->session_id}/gemba_report_pdf");
+        ])->timeout(300)
+        ->get("{$apiUrl}/sessions/{$this->session_id}/gemba_report_pdf");
 
-        if ($response->successful()) {
-            // Store the suggestions in the array
-            $data = $response->json();
-            $this->suggestions = $data['suggested_root_causes'] ?? [];
-        } else {
-            // Optional: handle error, maybe log it
-            $this->suggestions = [];
-        }
-    
-        $this->isLoading  = false;
+        $content = $response->getBody()->getContents();
+        $filename = 'gemba_report_session-' . $this->session_id . '- ' . Carbon::now()->format('Ymd_His') . '.pdf';
+        $path = 'gemba_reports/' . $filename;
+
+        Storage::disk('public')->put($path, $content);
+
+        $url = Storage::url($path);
+
+        GenbaReports::create([
+            "session_id" => $this->session_id,
+            "filename" => $filename,
+            "path" => $url
+        ]);
+
+        $this->getReports();
     }
 
     public function doShow() {

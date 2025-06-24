@@ -409,7 +409,7 @@
                 </div>
 
                 <div class="flex items-center flex-wrap gap-3">
-                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
+                    <button onclick="Livewire.dispatch('showModalAIReport', { session_id: '{{ $genba->id }}' })" class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                         <iconify-icon icon="tabler:file-download" class="icon text-xl line-height-1"></iconify-icon>
                         Cetak Laporan Gemba
                     </button>
@@ -637,6 +637,7 @@
     </div>
 
     @livewire('Modal.View.AppreciationNote')
+    @livewire('Modal.View.Report')
 
     <x-script/>
 
