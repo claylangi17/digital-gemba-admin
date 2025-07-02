@@ -92,13 +92,13 @@ INFO:
     border-width: 5px
 }
 
-.dark .appreciation-winner-card {
-    background-color: #283142;
+.appreciation-info-card {
+    background-color: #fff;
     border-width: 5px
 }
 
-.appreciation-info-card {
-    background-color: #fff;
+.dark .appreciation-winner-card {
+    background-color: #283142;
     border-width: 5px
 }
 
