@@ -9,13 +9,13 @@
             </button>
 
             <div style="width: 50%">
-                <select class="capitalize" id="filter_category" name="filter_category" style="width: 75%" required wire:change="change_category($event.target.value)">
-                    <option value="all" class="capitalize">semua</option>
-                    <option value="man" class="capitalize">man</option>
-                    <option value="machine" class="capitalize">machine</option>
-                    <option value="material" class="capitalize">material</option>
-                    <option value="method" class="capitalize">method</option>
-                    <option value="environment" class="capitalize">environment</option>
+                <select class="form-control capitalize" id="filter_category" name="filter_category" style="width: 75%" required wire:change="change_category($event.target.value)">
+                    <option value="all" class="capitalize text-black">semua</option>
+                    <option value="man" class="capitalize text-black">man</option>
+                    <option value="machine" class="capitalize text-black">machine</option>
+                    <option value="material" class="capitalize text-black">material</option>
+                    <option value="method" class="capitalize text-black">method</option>
+                    <option value="environment" class="capitalize text-black">environment</option>
                 </select>
             </div>
         </div>
@@ -26,7 +26,7 @@
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Tanya AI
                 </button>
-                <button onclick="Livewire.dispatch('showModalFormRootCause', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                <button onclick="Livewire.dispatch('showModalFormRootCause', { issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                     Tambahkan Akar Masalah
                 </button>
@@ -105,7 +105,7 @@
                                     <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                 </a>
 
-                                <button onclick="Livewire.dispatch('showModalFormRootCause', { id: '{{ $cause->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
+                                <button onclick="Livewire.dispatch('showModalFormRootCause', { issue_id: '{{ $issue->id }}' ,  cause_id: '{{ $cause->id }}' })" class="w-8 h-8 bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 rounded-full inline-flex items-center justify-center">
                                     <iconify-icon icon="lucide:edit"></iconify-icon>
                                 </button>
                             @endif

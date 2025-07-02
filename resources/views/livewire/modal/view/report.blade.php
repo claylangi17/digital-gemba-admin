@@ -9,7 +9,7 @@ style="display: @if($show === true)
     <div class="relative p-4 max-h-full" style="width: 80%">
         <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Tanya AI Terkait Aksi </h3>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Buat Laporan Sesi Gemba </h3>
                 <button type="button" wire:click="doClose()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -17,61 +17,52 @@ style="display: @if($show === true)
                     <span class="sr-only">Tutup Formulir</span>
                 </button>
             </div>
-            <div class="mb-3 flex items-center gap-6 justify-between p-6">
-                <label for="root_cause" class="inline font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Pilih Isu Terkait</label>
-                <div class="flex items-center gap-6 w-3/4 justify-end">
-                    <select id="root_cause" name="root_cause" required>
-                        @if ($causes)
-                            @foreach ($causes as $cause)
-                                <option value="{{ $cause->id }}#{{ $cause->category }}#{{ $cause->description }}">{{ $cause->description }} - {{ $cause->category }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-    
-                    <button wire:click="get_suggestion(document.getElementById('root_cause').value)" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                        <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
-                        Tanya AI
-                    </button>
-                </div>
+            <div class="mb-3 flex items-center gap-6 justify-between px-6 py-2">
+                <label for="root_cause" class="inline font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2 capitalize">Klik Tombol Disamping untuk membuat laporan</label>
+                <button wire:click="create_report()" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                    <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
+                    Buat Laporan
+                </button>
+                    
             </div>
 
-            <div id="rootcause-suggestion-loading" wire:loading.flex wire:target="get_suggestion" class="flex items-center justify-center gap-4 p-6 mb-3">
+            <div id="rootcause-suggestion-loading" wire:loading.flex wire:target="create_report" class="flex items-center justify-center gap-4 p-6 mb-3">
                 <p class="text-primary-600">Mohon Tunggu Sebentar</p>
                 <iconify-icon icon="eos-icons:three-dots-loading" class="icon text-2xl line-height-1 text-primary-600"></iconify-icon>
             </div>
 
-            <div class="mb-3 p-6" wire:loading.remove wire:target="get_suggestion" id="rootcause-table">
+            <div class="mb-3 p-6" wire:loading.remove wire:target="create_report">
                 <div class="table-responsive">
                     <table class="table border-0 mb-0">
                         <thead>
                             <tr>
-                                <th style="text-wrap: wrap">Deskripsi Aksi</th>
-                                <th class="">Tipe Aksi</th>
+                                <th class="">Nama File</th>
+                                <th class="">Dibuat Pada</th>
                                 <th class="">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($suggestions)
-                                @foreach ($suggestions as $item)
+                            @if ($reports && $reports->count() > 0)
+                                @foreach ($reports as $item)
                                 <tr>
-                                    <td style="width:50%; text-wrap: wrap">
-                                        {{ $item["description"] }}
+                                    <td>
+                                        {{ $item->filename }}
                                     </td>
-                                    <td class="capitalize">
-                                        {{ $item["type"] }}
+                                    <td>
+                                        {{ $item->created_at->translatedFormat('d F Y - H:i') }}
                                     </td>
-                                    <td class="flex items-center justify-end" style="height: max-content">
-                                        <button wire:click="save_suggestion({{ json_encode(["cause_id" => $item['cause_id'], "type" => $item["type"], "description" => $item["description"]]) }})" class="btn bg-success-600 text-sm text-white btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                                            <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
-                                            Simpan Saran Aksi
-                                        </button>
+                                    <td class="flex items-center justify-end">
+                                        <a href="{{ $item->path }}"  class="btn bg-success-600 text-sm text-white btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                                            <iconify-icon icon="lucide:save" class="icon text-xl line-height-1"></iconify-icon>
+                                            Download File
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             @else
                             <tr>
                                 <td colspan="2" class="text-center">
-                                    Belum Ada Saran - Silahkan Klik Tombol "Tanya AI"
+                                    Belum Ada File - Silahkan Klik Tombol "Buat Laporan"
                                 </td>
                             </tr>
                             @endif

@@ -25,4 +25,8 @@ class Issues extends Model
         return $this->hasOne(Lines::class, "id", "line_id");
     }
 
+    public function actions()
+    {
+        return $this->hasMany(Actions::class, "issue_id", "id");
+    }
 }

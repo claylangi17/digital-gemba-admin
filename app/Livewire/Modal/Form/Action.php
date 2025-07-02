@@ -26,17 +26,17 @@ class Action extends Component
 
     protected $listeners = ['showModalFormAction' => 'showModal'];
 
-    public function showModal($id, $issue_id = null) 
+    public function showModal($issue_id, $action_id = null) 
     {
-        if ($id != '')
+        $this->issue_id = $issue_id;
+        
+        if ($action_id)
         {
-            $this->action = Actions::where('id', $id)->first();
+            $this->action = Actions::where('id', $action_id)->first();
             $this->mode = "update";
-        }
-
-        if ($issue_id)
-        {
-            $this->issue_id = $issue_id;
+        } else {
+            $this->action = null;
+            $this->mode = "create";
         }
 
         $this->causes = RootCauses::where('issue_id', $issue_id)->get();

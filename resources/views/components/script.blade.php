@@ -61,6 +61,21 @@
                 }
             })
         });
+
+        Livewire.on('lv-confirmation', (data) => {
+            Swal.fire({
+                title: data.title,
+                text: data.text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch(data.confirmationListener)
+                }
+            })
+        });
     </script>
 
     <?php echo (isset($script) ? $script   : '')?>

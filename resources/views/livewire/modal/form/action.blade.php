@@ -28,9 +28,9 @@ style="display: @if($show === true)
                         <input type="text" value="{{ $action->id ?? '' }}" name="action_id" id="action_id" hidden>
                     @endif
 
-                    <div class="mb-3 w-full">
-                        <label for="pic_id" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">PIC</label>
-                        <select id="pic_id" name="pic_id" class="form-control w-full" required>
+                    <div class="mb-3">
+                        <label for="pic_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">PIC</label>
+                        <select id="pic_id" name="pic_id" required>
                             @if ($mode == "create")
                                 @foreach ($users as $user)
                                     @if ($user->id != Auth::user()->id)
@@ -63,11 +63,11 @@ style="display: @if($show === true)
                         <label for="type" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Tipe Aksi</label>
                         <select id="type" name="type" class="form-control w-full" required>
                             @if ($mode == "create")
-                                <option value="CORRECTIVE">Korektif</option>
-                                <option value="PREVENTIVE">Preventif</option>
+                                <option class="text-black" value="CORRECTIVE">Korektif</option>
+                                <option class="text-black" value="PREVENTIVE">Preventif</option>
                             @else
-                                <option value="CORRECTIVE" {{ $action->type == "CORRECTIVE" ? 'selected' : '' }}>Korektif</option>
-                                <option value="PREVENTIVE" {{ $action->type == "PREVENTIVE" ? 'selected' : '' }}>Preventif</option>
+                                <option class="text-black" value="CORRECTIVE" {{ $action->type == "CORRECTIVE" ? 'selected' : '' }}>Korektif</option>
+                                <option class="text-black" value="PREVENTIVE" {{ $action->type == "PREVENTIVE" ? 'selected' : '' }}>Preventif</option>
                             @endif
                         </select>
                     </div>
@@ -122,6 +122,21 @@ style="display: @if($show === true)
                     maxWidth: "100%",
                     additionalClasses: 'vir-select',
                 });
+
+                VirtualSelect.init({ 
+                    ele: '#pic_id',
+                    name: 'pic_id',
+                    maxWidth: '100%',
+                    search: true,
+                    noOptionsText: "Tidak ada karyawan",
+                    noSearchResultsText: "Karyawan tidak ditemukan",
+                    searchPlaceholderText: "Cari....",
+                    placeholder: "Pilih PIC",
+                });
+
+                @if ($mode == "update")
+                    document.querySelector('#pic_id').setValue('{{ $action->pic->id }}');
+                @endif
             }, 100);
         });
 

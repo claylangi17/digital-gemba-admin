@@ -115,6 +115,12 @@ class IssueController extends Controller
                 'session_id' => "required"
             ]);
 
+            if (Issues::where('id', $request->id)->first()->actions->where('status', "PROGRESS")->count() > 0)
+            {
+                Alert::toast('Aksi dari isu ini belum terselesaikan, Harap selesaikan terlebih dahulu', 'error')->position('top-end')->timerProgressBar();
+                return redirect()->back();
+            }
+
             $issue = Issues::where('id', $request->id)->update([
                 "status" => "CLOSED"
             ]);

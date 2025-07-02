@@ -31,20 +31,7 @@
                 <p class="text-center ">{{ $genba->created_at->translatedFormat('d F Y - H:i') }} WIB</p>
             </div>
             
-            {{-- Dark Mode Swtich - Start  --}}
-            <div class="col-auto">
-                <div class="flex flex-wrap items-center gap-3">
-                    <button type="button" id="theme-toggle" class="w-10 h-10 bg-neutral-200 dark:bg-neutral-700 dark:text-white rounded-full flex justify-center items-center">
-                        <span id="theme-toggle-dark-icon" class="hidden">
-                            <i class="ri-sun-line"></i>
-                        </span>
-                        <span id="theme-toggle-light-icon" class="hidden">
-                            <i class="ri-moon-line"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-            {{-- Dark Mode Swtich - End  --}}
+            @livewire('Switch.ThemeMode')
         </div>
     </div>
 
@@ -72,7 +59,8 @@
                 @if ($issues->count() > 0)
                 <div class="w-full py-6">
                     <div class="flex items-center justify-between mb-1.5">
-                        <p>{{ ($issues->where('status', "CLOSED")->count() / $issues->count()) * 100 }}% Isu Terselesaikan</p>
+                        <p>{{ ceil(($issues->where('status', 'CLOSED')->count() / $issues->count()) * 100) }}% Isu Terselesaikan</p>
+
                         <p>
                             {{ $issues->where('status', "CLOSED")->count() }} 
                             / 
@@ -365,9 +353,9 @@
             </div>
             <div class="card-body p-6">
                 @if ($appreciations->count() > 0)
-                        <div class="p-0 dots-style-circle dots-positioned" id="progress-carousel">
+                        <div class="p-0 dots-style-circle dots-positioned cursor-pointer" id="progress-carousel">
                             @foreach ($appreciations as $appreciation)
-                                <div>
+                                <div onclick="Livewire.dispatch('showModalViewAppreciationNote', { id: '{{ $appreciation->id }}' })">
                                     <div class="card bg-success-100 border border-gray-200 rounded-xl overflow-hidden flex flex-nowrap sm:flex-row flex-col mx-2">
                                     
                                         <div class="card-body p-4 grow"> 
@@ -381,7 +369,7 @@
                                             <span class="text-xs">Dari: {{ $appreciation->by }}</span>
                                         </div>
                                         <div class="flex shrink-0">
-                                            <img src="{{ asset('storage/' . $appreciation->files) }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            <img src="{{ $appreciation->files != '' ? asset('storage/' . $appreciation->files) : 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -408,14 +396,14 @@
                 </div>
 
                 <div class="flex items-center flex-wrap gap-3">
-                    <button  class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2" data-modal-target="attendance-modal" data-modal-toggle="attendance-modal">
+                    <button onclick="Livewire.dispatch('showModalAIReport', { session_id: '{{ $genba->id }}' })" class="btn btn-secondary border border-neutral text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                         <iconify-icon icon="tabler:file-download" class="icon text-xl line-height-1"></iconify-icon>
                         Cetak Laporan Gemba
                     </button>
     
                     @if ($genba->status != "FINISH")
                         <button onclick="closingConfirmation()" class="btn bg-success-600 text-white hover:bg-success-700 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-                            <iconify-icon icon="material-symbols:stop-outline-rounded" class="icon text-xl line-height-1"></iconify-icon>
+                            <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
                             Tutup Sesi
                         </button>
 
@@ -450,29 +438,15 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3 w-full">
                             <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
-                            <select id="assigned_ids" multiple name="assigned_ids" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="assigned_ids"></div>
                         </div>
                         <div class="mb-3">
                             <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
-                            <select class="form-control" id="line_id" name="line_id" required>
-                                @foreach ($lines as $line)
-                                    <option value="{{ $line->id }}">{{ $line->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="lines"></div>
                         </div>
                         <div class="mb-3 w-full">
                             <label for="items" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Item Terkait</label>
-                            <select id="items" multiple name="items" required>
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="items"></div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi Permasalahan</label>
@@ -516,21 +490,11 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3">
                             <label for="line" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Machine / Line</label>
-                            <select class="form-control" id="line" name="line" required>
-                                @foreach ($lines as $line)
-                                    <option value="{{ $line->name }}">{{ $line->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="line"></div>
                         </div>
                         <div class="mb-3 w-full">
                             <label for="receivers" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Penerima Apresiasi</label>
-                            <select id="receivers" multiple name="receivers" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}#{{ $user->name }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="receivers"></div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi Apresiasi</label>
@@ -573,13 +537,7 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3 w-full">
                             <label for="user_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Peserta</label>
-                            <select id="user_ids" multiple name="user_ids" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="user_ids"></div>
                         </div>
                     </form>
                 </div>
@@ -634,6 +592,9 @@
             </div>
         </div>
     </div>
+
+    @livewire('Modal.View.AppreciationNote')
+    @livewire('Modal.View.Report')
 
     <x-script/>
 
@@ -693,29 +654,111 @@
             });
         }
         
-        VirtualSelect.init({ 
+        let assigneds = VirtualSelect.init({ 
             ele: '#assigned_ids',
+            name: 'assigned_ids',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}', },
+                    @endif
+                @endforeach
+            ],
+
+        });
+
+        VirtualSelect.init({ 
+            ele: '#lines',
+            name: 'line_id',
+            maxWidth: '100%',
+            search: true,
+            noOptionsText: "Tidak ada pilihan",
+            noSearchResultsText: "Pilihan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Line",
+            options : [
+                @foreach ($lines as $line)
+                { label: '{{ $line->name }}', value: '{{ $line->id }}', },
+                @endforeach
+            ]
+        });
+
+        VirtualSelect.init({ 
+            ele: '#line',
+            name: 'line',
+            maxWidth: '100%',
+            search: true,
+            noOptionsText: "Tidak ada pilihan",
+            noSearchResultsText: "Pilihan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Line",
+            options : [
+                @foreach ($lines as $line)
+                { label: '{{ $line->name }}', value: '{{ $line->name }}', },
+                @endforeach
+            ]
         });
 
         VirtualSelect.init({ 
             ele: '#items',
+            name: 'items',
             maxWidth: '100%',
             allowNewOption: true,
-            additionalClasses: 'vir-select',
+            search: true,
+            noOptionsText: "Tidak ada item",
+            noSearchResultsText: "Item tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Item",
+            options : [
+                @foreach ($items as $item)
+                { label: '{{ $item->name }}', value: '{{ $item->id }}', },
+                @endforeach
+            ]
         });
 
         VirtualSelect.init({ 
             ele: '#receivers',
+            name: 'receivers',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}#{{ $user->name }}', },
+                    @endif
+                @endforeach
+            ],
         });
 
         VirtualSelect.init({ 
             ele: '#user_ids',
+            name: 'user_ids',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}', },
+                    @endif
+                @endforeach
+            ],
         });
 
         $('#save-issue').on('click', function(e) {
