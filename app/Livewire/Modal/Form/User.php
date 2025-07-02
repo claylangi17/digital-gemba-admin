@@ -20,10 +20,13 @@ class User extends Component
 
     public function showModal($id) 
     {
-        if ($id != '')
+        if ($id)
         {
             $this->user = ModelsUser::where('id', $id)->first();
             $this->mode = "update";
+        } else {
+            $this->user = null;
+            $this->mode = "create";
         }
 
         $this->doShow();

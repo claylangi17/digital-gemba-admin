@@ -15,7 +15,7 @@
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Tanya AI
                 </button>
-                <button onclick="Livewire.dispatch('showModalFormAction', { id: '' , issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                <button onclick="Livewire.dispatch('showModalFormAction', { issue_id: '{{ $issue->id }}' })" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                     Buat Aksi Baru
                 </button>
@@ -142,7 +142,7 @@
                                     <ul class="py-2 text-base text-gray-700 dark:text-gray-200">
                                         @if ($issue->status == "OPEN")
                                             <li>
-                                                <div onclick="Livewire.dispatch('showModalFormAction', { id: '{{ $act->id }}', issue_id: '{{ $issue->id }}'})" class="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                <div onclick="Livewire.dispatch('showModalFormAction', { issue_id: '{{ $issue->id }}' , action_id: '{{ $act->id }}'})" class="cursor-pointer block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                     Edit
                                                 </div>
                                             </li>
