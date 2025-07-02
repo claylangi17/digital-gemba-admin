@@ -39,7 +39,7 @@ class Action extends Component
         $this->dispatch('initRootCauseSelector');
     }
 
-    public function get_suggestion($rawData, $type)
+    public function get_suggestion($rawData)
     {
         $this->suggestions = [];
         $request_data = explode('#', $rawData);
@@ -69,14 +69,14 @@ class Action extends Component
             // Store the suggestions in the array
             $data = $response->json();
 
-            $actionType = $type == "corrective" ? "temporary_actions" : "preventive_actions";
-
-            foreach ($data[$actionType] as $action) {
-                $this->suggestions[] = [
-                    "cause_id" => $request_data[0],
-                    "type" => $type,
-                    "description" => $action,
-                ];
+            foreach (["temporary", "preventive"] as $actionType){
+                foreach ($data[$actionType . "_actions"] as $action) {
+                    $this->suggestions[] = [
+                        "cause_id" => $request_data[0],
+                        "type" => $actionType == "temporary" ? "corrective" : "preventive",
+                        "description" => $action,
+                    ];
+                }
             }
 
         } else {

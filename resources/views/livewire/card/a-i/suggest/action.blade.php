@@ -27,13 +27,8 @@ style="display: @if($show === true)
                             @endforeach
                         @endif
                     </select>
-
-                    <select class="form-control capitalize" id="action_type" name="action_type" style="width: fit-content" required>
-                        <option value="preventive" class="capitalize">Preventive</option>
-                        <option value="corrective" class="capitalize">corrective</option>
-                    </select>
     
-                    <button wire:click="get_suggestion(document.getElementById('root_cause').value, document.getElementById('action_type').value)" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                    <button wire:click="get_suggestion(document.getElementById('root_cause').value)" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                         <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                         Tanya AI
                     </button>
@@ -50,7 +45,8 @@ style="display: @if($show === true)
                     <table class="table border-0 mb-0">
                         <thead>
                             <tr>
-                                <th class="">Deskripsi Aksi</th>
+                                <th style="text-wrap: wrap">Deskripsi Aksi</th>
+                                <th class="">Tipe Aksi</th>
                                 <th class="">Aksi</th>
                             </tr>
                         </thead>
@@ -58,10 +54,13 @@ style="display: @if($show === true)
                             @if ($suggestions)
                                 @foreach ($suggestions as $item)
                                 <tr>
-                                    <td>
+                                    <td style="width:50%; text-wrap: wrap">
                                         {{ $item["description"] }}
                                     </td>
-                                    <td class="flex items-center justify-end">
+                                    <td class="capitalize">
+                                        {{ $item["type"] }}
+                                    </td>
+                                    <td class="flex items-center justify-end" style="height: max-content">
                                         <button wire:click="save_suggestion({{ json_encode(["cause_id" => $item['cause_id'], "type" => $item["type"], "description" => $item["description"]]) }})" class="btn bg-success-600 text-sm text-white btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                                             <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                                             Simpan Saran Aksi
