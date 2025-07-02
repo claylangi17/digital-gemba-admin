@@ -42,7 +42,13 @@ class AppreciationController extends Controller
                 "description" => "required",
             ]);
 
-            $path = $request->file('photos')->store('uploads/appreciation/note', 'public');
+            if ($request->hasFile('photos'))
+            {
+                $path = $request->file('photos')->store('uploads/appreciation/note', 'public');
+            } else {
+                $path = '';
+            }
+
 
             $receivers_array = explode(',', $request->receivers);
             $receivers_id = [];

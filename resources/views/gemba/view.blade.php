@@ -382,7 +382,7 @@
                                             <span class="text-xs">Dari: {{ $appreciation->by }}</span>
                                         </div>
                                         <div class="flex shrink-0">
-                                            <img src="{{ asset('storage/' . $appreciation->files) }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            <img src="{{ $appreciation->files != '' ? asset('storage/' . $appreciation->files) : 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -714,7 +714,7 @@
             placeholder: "Pilih Line",
             options : [
                 @foreach ($lines as $line)
-                { label: '{{ $line->name }}', value: '{{ $line->id }}', },
+                { label: '{{ $line->name }}', value: '{{ $line->name }}', },
                 @endforeach
             ]
         });
