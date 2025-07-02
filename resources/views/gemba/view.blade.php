@@ -451,29 +451,15 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3 w-full">
                             <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
-                            <select id="assigned_ids" multiple name="assigned_ids" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="assigned_ids"></div>
                         </div>
                         <div class="mb-3">
                             <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
-                            <select class="form-control" id="line_id" name="line_id" required>
-                                @foreach ($lines as $line)
-                                    <option value="{{ $line->id }}">{{ $line->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="lines"></div>
                         </div>
                         <div class="mb-3 w-full">
                             <label for="items" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Item Terkait</label>
-                            <select id="items" multiple name="items" required>
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="items"></div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi Permasalahan</label>
@@ -517,21 +503,11 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3">
                             <label for="line" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Machine / Line</label>
-                            <select class="form-control" id="line" name="line" required>
-                                @foreach ($lines as $line)
-                                    <option value="{{ $line->name }}">{{ $line->name }}</option>
-                                @endforeach
-                            </select>
+                            <div id="line"></div>
                         </div>
                         <div class="mb-3 w-full">
                             <label for="receivers" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Penerima Apresiasi</label>
-                            <select id="receivers" multiple name="receivers" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}#{{ $user->name }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="receivers"></div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi Apresiasi</label>
@@ -574,13 +550,7 @@
                         <input type="text" value="{{ $genba->id }}" name="session_id" id="session_id" hidden >
                         <div class="mb-3 w-full">
                             <label for="user_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Peserta</label>
-                            <select id="user_ids" multiple name="user_ids" required>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <div id="user_ids"></div>
                         </div>
                     </form>
                 </div>
@@ -697,29 +667,111 @@
             });
         }
         
-        VirtualSelect.init({ 
+        let assigneds = VirtualSelect.init({ 
             ele: '#assigned_ids',
+            name: 'assigned_ids',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}', },
+                    @endif
+                @endforeach
+            ],
+
+        });
+
+        VirtualSelect.init({ 
+            ele: '#lines',
+            name: 'line_id',
+            maxWidth: '100%',
+            search: true,
+            noOptionsText: "Tidak ada pilihan",
+            noSearchResultsText: "Pilihan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Line",
+            options : [
+                @foreach ($lines as $line)
+                { label: '{{ $line->name }}', value: '{{ $line->id }}', },
+                @endforeach
+            ]
+        });
+
+        VirtualSelect.init({ 
+            ele: '#line',
+            name: 'line',
+            maxWidth: '100%',
+            search: true,
+            noOptionsText: "Tidak ada pilihan",
+            noSearchResultsText: "Pilihan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Line",
+            options : [
+                @foreach ($lines as $line)
+                { label: '{{ $line->name }}', value: '{{ $line->id }}', },
+                @endforeach
+            ]
         });
 
         VirtualSelect.init({ 
             ele: '#items',
+            name: 'items',
             maxWidth: '100%',
             allowNewOption: true,
-            additionalClasses: 'vir-select',
+            search: true,
+            noOptionsText: "Tidak ada item",
+            noSearchResultsText: "Item tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Item",
+            options : [
+                @foreach ($items as $item)
+                { label: '{{ $item->name }}', value: '{{ $item->id }}', },
+                @endforeach
+            ]
         });
 
         VirtualSelect.init({ 
             ele: '#receivers',
+            name: 'receivers',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}#{{ $user->name }}', },
+                    @endif
+                @endforeach
+            ],
         });
 
         VirtualSelect.init({ 
             ele: '#user_ids',
+            name: 'user_ids',
             maxWidth: '100%',
-            additionalClasses: 'vir-select',
+            multiple: true,
+            search: true,
+            noOptionsText: "Tidak ada karyawan",
+            noSearchResultsText: "Karyawan tidak ditemukan",
+            searchPlaceholderText: "Cari....",
+            placeholder: "Pilih Karyawan",
+            options: [
+                @foreach ( $users as $user )
+                    @if (Auth::user()->id != $user->id)
+                    { label: '{{ $user->name }}', value: '{{ $user->id }}', },
+                    @endif
+                @endforeach
+            ],
         });
 
         $('#save-issue').on('click', function(e) {

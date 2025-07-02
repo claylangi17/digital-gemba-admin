@@ -39,12 +39,12 @@
                     <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
                         <ul class="flex flex-col">
                             <li>
-                                <button onclick="Livewire.dispatch('showModalViewUser', { id: '{{ Auth::user()->id }}'})" class="text-black px-0 py-2 hover:text-primary-600 flex items-center gap-4" href="#">
+                                <button onclick="Livewire.dispatch('showModalViewUser', { id: '{{ Auth::user()->id }}'})" class="text-black dark:text-white px-0 py-2 hover:text-primary-600 dark:hover:text-primary-600 flex items-center gap-4" href="#">
                                     <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon>  My Profile
                                 </button>
                             </li>
                             <li>
-                                <a class="text-black px-0 py-2 hover:text-danger-600 flex items-center gap-4" href="{{ route('auth.logout.attempt') }}">
+                                <a class="text-black dark:text-white px-0 py-2 hover:text-danger-600 dark:hover:text-danger-600 flex items-center gap-4" href="{{ route('auth.logout.attempt') }}">
                                     <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>  Log Out
                                 </a>
                             </li>

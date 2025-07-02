@@ -9,13 +9,13 @@
             </button>
 
             <div style="width: 50%">
-                <select class="capitalize" id="filter_category" name="filter_category" style="width: 75%" required wire:change="change_category($event.target.value)">
-                    <option value="all" class="capitalize">semua</option>
-                    <option value="man" class="capitalize">man</option>
-                    <option value="machine" class="capitalize">machine</option>
-                    <option value="material" class="capitalize">material</option>
-                    <option value="method" class="capitalize">method</option>
-                    <option value="environment" class="capitalize">environment</option>
+                <select class="form-control capitalize" id="filter_category" name="filter_category" style="width: 75%" required wire:change="change_category($event.target.value)">
+                    <option value="all" class="capitalize text-black">semua</option>
+                    <option value="man" class="capitalize text-black">man</option>
+                    <option value="machine" class="capitalize text-black">machine</option>
+                    <option value="material" class="capitalize text-black">material</option>
+                    <option value="method" class="capitalize text-black">method</option>
+                    <option value="environment" class="capitalize text-black">environment</option>
                 </select>
             </div>
         </div>

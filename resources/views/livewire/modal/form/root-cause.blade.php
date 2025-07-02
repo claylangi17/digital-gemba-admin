@@ -19,7 +19,7 @@ style="display: @if($show === true)
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <form id="cause-form" action="{{ $mode == "create" ? route("cause.create") : route("cause.update") }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-3 gap-2">
+                <form id="cause-form" action="{{ $mode == "create" ? route("cause.create") : route("cause.update") }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-2 gap-2">
                     @csrf
                     
                     @if ($mode == "create")
@@ -29,33 +29,33 @@ style="display: @if($show === true)
                     @endif
 
                     <div class="mb-3">
-                        <label for="category" class="inline font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Faktor Penyebab</label>
+                        <label for="files" class="form-label">Foto / Video Temuan Lapangan</label>
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Faktor Penyebab</label>
                         <select class="form-control capitalize" id="category" name="category" style="width: 100%" required>
                             @if ($mode == "create")
-                                <option value="man" class="capitalize">man</option>
-                                <option value="machine" class="capitalize">machine</option>
-                                <option value="material" class="capitalize">material</option>
-                                <option value="method" class="capitalize">method</option>
-                                <option value="environment" class="capitalize">environemt</option>
+                                <option value="man" class="capitalize text-black">man</option>
+                                <option value="machine" class="capitalize text-black">machine</option>
+                                <option value="material" class="capitalize text-black">material</option>
+                                <option value="method" class="capitalize text-black">method</option>
+                                <option value="environment" class="capitalize text-black">environemt</option>
                             @else
-                                <option value="man" class="capitalize" {{ $cause->category == "man" ? 'selected' : '' }}>man</option>
-                                <option value="machine" class="capitalize" {{ $cause->category == "machine" ? 'selected' : '' }}>machine</option>
-                                <option value="material" class="capitalize" {{ $cause->category == "material" ? 'selected' : '' }}>material</option>
-                                <option value="method" class="capitalize" {{ $cause->category == "method" ? 'selected' : '' }}>method</option>
-                                <option value="environment" class="capitalize" {{ $cause->category == "environment" ? 'selected' : '' }}>environemt</option>
+                                <option value="man" class="capitalize text-black" {{ $cause->category == "man" ? 'selected' : '' }}>man</option>
+                                <option value="machine" class="capitalize text-black" {{ $cause->category == "machine" ? 'selected' : '' }}>machine</option>
+                                <option value="material" class="capitalize text-black" {{ $cause->category == "material" ? 'selected' : '' }}>material</option>
+                                <option value="method" class="capitalize text-black" {{ $cause->category == "method" ? 'selected' : '' }}>method</option>
+                                <option value="environment" class="capitalize text-black" {{ $cause->category == "environment" ? 'selected' : '' }}>environemt</option>
                             @endif
                             
                         </select>
                     </div>
 
-                    <div class="mb-3 col-span-3">
+                    <div class="mb-3 col-span-2">
                         <label for="description" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Deskripsi Permasalahan</label>
                         <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Enter a description...">{{ $cause->description ?? '' }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="files" class="form-label">Foto / Video Temuan Lapangan</label>
-                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
                     </div>
                 </form>
             </div>

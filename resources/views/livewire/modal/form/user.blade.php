@@ -45,16 +45,16 @@ style="display: @if($show === true)
                     <div class="mb-3">
                         <label for="department" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Departemen</label>
                         <select class="form-control" id="department" name="department" required>
-                            <option value="manufacture" @if($user && $user->department == 'manufacture') selected @endif>Manufaktur</option>
-                            <option value="qc" @if($user && $user->department == 'qc') selected @endif>Quality Control</option>
-                            <option value="management" @if($user && $user->department == 'management') selected @endif>Manajemen</option>
+                            <option class="text-black" value="manufacture" @if($user && $user->department == 'manufacture') selected @endif>Manufaktur</option>
+                            <option class="text-black" value="qc" @if($user && $user->department == 'qc') selected @endif>Quality Control</option>
+                            <option class="text-black" value="management" @if($user && $user->department == 'management') selected @endif>Manajemen</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="role" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Role</label>
                         <select class="form-control" id="role" name="role" required>
-                            <option value="admin" @if($user && $user->role == 'admin') selected @endif>Admin</option>
-                            <option value="user" @if($user && $user->role == 'user') selected @endif>Karyawan</option>
+                            <option class="text-black" value="admin" @if($user && $user->role == 'admin') selected @endif>Admin</option>
+                            <option class="text-black" value="user" @if($user && $user->role == 'user') selected @endif>Karyawan</option>
                         </select>
                     </div>
                     <div class="mb-3">

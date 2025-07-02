@@ -8946,6 +8946,12 @@ h6, .h6 {
 .vir-select {
   border: none !important; 
   border-radius: 10px;
+  color: black;
+}
+
+.vir-select-dropbox {
+  color: black;
+  background: gray;
 }
 
 .swal2-confirm {
