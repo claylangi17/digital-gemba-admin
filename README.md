@@ -181,7 +181,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This program only for testing - for commercial use, Please contact me
 
 ---
 
