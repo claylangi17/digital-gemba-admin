@@ -14,10 +14,10 @@
 <div align="center">
   <a href="https://github.com/ardfar/gemba-digital">
     <!-- You can add your logo here -->
-    <!-- <img src="images/logo.png" alt="Logo" width="80" height="80"> -->
+    <img src="https://genba.aradenta.com/assets/images/logo-dark.png" alt="Logo">
   </a>
 
-  <h3 align="center">Gemba Digital</h3>
+  <h1 align="center">Gemba Digital</h1>
 
   <p align="center">
     A web application for conducting Digital Gemba Walks to drive continuous improvement.
@@ -25,8 +25,8 @@
     <a href="https://github.com/ardfar/gemba-digital"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <!-- <a href="https://your-project-demo-link.com">View Demo</a>
-    · -->
+    <a href="https://genba.aradenta.com">View Demo</a>
+    ·
     <a href="https://github.com/ardfar/gemba-digital/issues">Report Bug</a>
     ·
     <a href="https://github.com/ardfar/gemba-digital/issues">Request Feature</a>
@@ -62,7 +62,8 @@
 
 ## About The Project
 
-[![Product Screenshot][product-screenshot]](https://github.com/ardfar/gemba-digital)
+[![Product Screenshot](https://genba.aradenta.com/assets/images/app-screenshot.png)](https://github.com/ardfar/gemba-digital)
+
 
 `Gemba Digital` is a tool designed to modernize the practice of Gemba Walks. Traditionally, a Gemba Walk involves managers going to the "real place" where work happens to observe, engage, and identify opportunities for improvement. This project digitizes that process, allowing for structured data collection, analysis, and follow-up on findings to foster a culture of continuous improvement.
 
@@ -99,7 +100,7 @@ Make sure you have the following software installed on your machine.
 
 1.  **Clone the repo**
     ```sh
-    git clone [https://github.com/ardfar/gemba-digital.git](https://github.com/ardfar/gemba-digital.git)
+    git clone https://github.com/ardfar/gemba-digital.git
     cd gemba-digital
     ```
 2.  **Install PHP dependencies**
