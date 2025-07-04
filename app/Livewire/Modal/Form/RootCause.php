@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Modal\Form;
 
-use App\Models\Actions;
 use App\Models\RootCauses;
 use App\Models\User;
 use Livewire\Component;

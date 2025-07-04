@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Actions;
 use App\Models\IssueFiles;
-use App\Models\Issues;
-use App\Models\Items;
-use App\Models\RootCauses;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr\FuncCall;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 

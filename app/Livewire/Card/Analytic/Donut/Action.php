@@ -4,9 +4,7 @@ namespace App\Livewire\Card\Analytic\Donut;
 
 use App\Models\Actions;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class Action extends Component
 {

@@ -3,7 +3,6 @@
 namespace App\Livewire\Modal\View;
 
 use App\Models\GenbaReports;
-use App\Models\GenbaSessions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
