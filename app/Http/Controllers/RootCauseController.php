@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Livewire\Card\AI\Suggest\RootCause;
 use App\Models\RootCauseFiles;
 use App\Models\RootCauses;
 use Illuminate\Http\Request;
@@ -24,6 +23,7 @@ class RootCauseController extends Controller
                 'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
             ]);
 
+            // Create root cause
             $cause = RootCauses::create([
                 'issue_id' => $request->issue_id,
                 'category' => $request->category,
@@ -74,6 +74,7 @@ class RootCauseController extends Controller
                 'description' => 'required',
             ]);
 
+            // Update related cause 
             RootCauses::where('id', $request->cause_id)->update([
                 'category' => $request->category,
                 'description' => $request->description,

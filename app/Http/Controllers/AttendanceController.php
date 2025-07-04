@@ -18,8 +18,8 @@ class AttendanceController extends Controller
                 "session_id" => "required"
             ]);
 
+            // Parse user ids and insert them into session attendance 
             $user_ids = explode(',', $request->user_ids);
-
             foreach ($user_ids as $id){
 
                 if (!Attendances::where('session_id', $request->session_id)->where('user_id', $id)->exists())

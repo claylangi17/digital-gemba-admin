@@ -18,11 +18,13 @@ class IssueController extends Controller
 {
     public function view($id)
     {
+        // Get Data from Related issue 
         $data = [
             "issue" => Issues::where("id", $id)->first(),
             "users" => User::all()
         ];
 
+        // Message for sweetalert delete confirmation 
         $title = 'Hapus Item!';
         $text = "Apakah kamu yakin untuk menghapus item ini?";
         confirmDelete($title, $text);
@@ -114,13 +116,15 @@ class IssueController extends Controller
                 'session_id' => "required"
             ]);
 
+            // Check if issue still has unfinished action 
             if (Issues::where('id', $request->id)->first()->actions->where('status', "PROGRESS")->count() > 0)
             {
                 Alert::toast('Aksi dari isu ini belum terselesaikan, Harap selesaikan terlebih dahulu', 'error')->position('top-end')->timerProgressBar();
                 return redirect()->back();
             }
 
-            $issue = Issues::where('id', $request->id)->update([
+            // Update Issue Status 
+            Issues::where('id', $request->id)->update([
                 "status" => "CLOSED"
             ]);
 

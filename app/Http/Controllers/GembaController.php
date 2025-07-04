@@ -34,9 +34,11 @@ class GembaController extends Controller
                 'start_time' => 'required'
             ]);
 
+            // Parse timedate format 
             $carbon = Carbon::createFromFormat('d/m/Y H:i', $request->start_time);
             $start_time = $carbon->format('Y-m-d H:i:s');
     
+            // Create Session 
             $genba = GenbaSessions::create([
                             'name' => $request->name,
                             'created_by' => Auth::user()->name,
@@ -58,10 +60,12 @@ class GembaController extends Controller
 
     public function view($id)
     {
+        // Message for sweetalert delete confirmation 
         $title = 'Hapus Peserta!';
         $text = "Apakah kamu yakin untuk menghapus peserta ini?";
         confirmDelete($title, $text);
         
+        // Collect Data from related session 
         $data = [
             "genba" => GenbaSessions::where('id', $id)->first(),
             "issues" => Issues::where('session_id', $id)->orderBy('created_at', 'DESC')->get(),
@@ -83,14 +87,14 @@ class GembaController extends Controller
                 'id' => "required",
             ]);
 
+            // Check if Session still has unresolved issues 
             $open_issue = GenbaSessions::where('id', $request->id)->first()->issues->where('status', "OPEN")->count();
-
             if ($open_issue > 0) {
                 Alert::toast('Sesi Genba gagal diselesaikan, tandai semua isu menjadi "Terselesaikan"', 'error')->position('top-end')->timerProgressBar();
-
                 return redirect()->back();
             };
 
+            // Update Session Status 
             GenbaSessions::where('id', $request->id)->update([
                 "status" => "FINISH"
             ]);

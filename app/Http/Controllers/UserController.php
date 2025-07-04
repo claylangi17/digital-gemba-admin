@@ -34,6 +34,7 @@ class UserController extends Controller
                 'password' => 'required|min:8',
             ]);
     
+            // Create user 
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -42,6 +43,7 @@ class UserController extends Controller
                 'password' => bcrypt($request->password),
             ]);
     
+            // Check if user attached profile photo 
             if ($request->hasFile('profile_photo')) {
                 $profileFile = $request->file('profile_photo');
                 $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
@@ -53,6 +55,7 @@ class UserController extends Controller
                 ]);
             }
             
+            // Check if user attached cover photo 
             if ($request->hasFile('cover_photo')) {
                 $coverFile = $request->file('cover_photo');
                 $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
@@ -91,6 +94,7 @@ class UserController extends Controller
             'email' => 'required|email',
         ]);
 
+        // Update related User 
         User::where('id', $request->id)->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -98,6 +102,7 @@ class UserController extends Controller
             'department' => $request->department,
         ]);
 
+        // Check if user attached profile photo 
         if ($request->hasFile('profile_photo')) {
             $profileFile = $request->file('profile_photo');
             $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
@@ -108,6 +113,7 @@ class UserController extends Controller
             ]);
         }
         
+        // Check if user attached cover photo 
         if ($request->hasFile('cover_photo')) {
             $coverFile = $request->file('cover_photo');
             $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
@@ -118,6 +124,7 @@ class UserController extends Controller
             ]);
         }
 
+        // Check if user inputed new password 
         if (!$request->password)
         {
             User::where('id', $request->id)->update([
