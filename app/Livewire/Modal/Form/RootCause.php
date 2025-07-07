@@ -25,18 +25,18 @@ class RootCause extends Component
 
     protected $listeners = ['showModalFormRootCause' => 'showModal'];
 
-    public function showModal($id, $issue_id = null) 
+    public function showModal($issue_id, $cause_id = null) 
     {
-        if ($id != '')
+        $this->issue_id = $issue_id;
+        
+        if ($cause_id)
         {
-            $this->cause = RootCauses::where('id', $id)->first();
+            $this->cause = RootCauses::where('id', $cause_id)->first();
             $this->mode = "update";
-        }
-
-        if ($issue_id)
-        {
-            $this->issue_id = $issue_id;
-        }
+        } else {
+            $this->cause = null;
+            $this->mode = "create";
+        }        
 
         $this->doShow();
     }

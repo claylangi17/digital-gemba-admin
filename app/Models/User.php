@@ -49,4 +49,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function profilePhoto()
+    {
+        return $this->hasOne(UserProfilePhoto::class, 'user_id', 'id');
+    }
+
+    public function coverPhoto()
+    {
+        return $this->hasOne(UserCoverPhoto::class, 'user_id', 'id');
+    }
 }

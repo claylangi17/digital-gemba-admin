@@ -1,0 +1,109 @@
+/* 
+README:
+- This file is used to store custom styling 
+- whether it's newly created or overriding the default style of certain library
+
+STEPS TO CREATE / OVERRIDE STYLES:
+- Find related ID or Class
+- create the same rule name 
+- Add !important to force overiding
+
+THEME BASED STYLE:
+- duplicate the class or id
+- add .dark to mark rule as dark mode style
+- don't use .dark if you want to mark it as light mode style
+ */
+
+
+/* Virtual Select Style : Start  */
+/* 
+INFO:
+- see https://sa-si-dev.github.io/virtual-select for documentation
+*/
+
+    /* Light Mode  */
+    .vscomp-toggle-button {
+        border-radius: 6px;
+        padding: 0.625rem 1.25rem;
+    }
+
+    /* Dark Mode  */
+    .dark .vscomp-toggle-button {
+        border-radius: 6px;
+        background-color: #283142 !important;
+        color: white !important;
+        border: 1px solid rgb(107 114 128) !important;
+        padding: 0.625rem 1.25rem;
+    }
+    .dark .vscomp-search-input {
+        background-color: #283142 !important;
+        color: white
+    }
+    .dark .vscomp-arrow::after {
+        transform: rotate(45deg);
+        border: 1px solid rgba(0,0,0,0);
+        border-bottom-color: oklch(70.7% 0.022 261.325) !important;
+        border-right-color: oklch(70.7% 0.022 261.325) !important;
+        content: "";
+        height: 8px;
+        margin-top: -6px;
+        width: 8px;
+    }
+
+    .dark .vscomp-dropbox{
+        background-color: #283142 !important;
+    }
+
+    .dark .vscomp-option.selected {
+        background-color: #12161e !important;
+    }
+    .dark .vscomp-option.focused {
+        background-color: #1b212c !important;
+    }
+    .dark .vscomp-no-options {
+        color: white !important;
+    }
+    .dark .vscomp-no-search-results {
+        color: white !important;
+    }
+
+/* Virtual Select Style : End  */
+
+/* Realrashid - SweetAlert Style : Start  */
+/* 
+INFO:
+- see https://realrashid.github.io/sweet-alert for documentation
+*/
+.swal2-popup {
+    color: black !important;
+    background-color: #fff !important;
+}
+
+.dark .swal2-popup {
+    color: white !important;
+    background-color: #283142 !important;
+}
+
+/* Realrashid - SweetAlert Style : Start  */
+
+/* Custom Independent Style: Start  */
+.appreciation-winner-card {
+    background-color: #fff;
+    border-width: 5px
+}
+
+.appreciation-info-card {
+    background-color: #fff;
+    border-width: 5px
+}
+
+.dark .appreciation-winner-card {
+    background-color: #283142;
+    border-width: 5px
+}
+
+.dark .appreciation-info-card {
+    background-color: #283142;
+    border-width: 5px
+}
+/* Custom Independent Style: End  */

@@ -21,11 +21,11 @@ style="display: @if($show === true)
                 <label for="possible_category" class="inline font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Kemungkinan Faktor Penyebab</label>
                 <div class="flex items-center gap-6 w-1/2 justify-end">
                     <select class="form-control capitalize" id="possible_category" name="possible_category" style="width: 75%" required>
-                        <option value="man" class="capitalize">man</option>
-                        <option value="machine" class="capitalize">machine</option>
-                        <option value="material" class="capitalize">material</option>
-                        <option value="method" class="capitalize">method</option>
-                        <option value="environment" class="capitalize">environment</option>
+                        <option value="man" class="capitalize text-black">man</option>
+                        <option value="machine" class="capitalize text-black">machine</option>
+                        <option value="material" class="capitalize text-black">material</option>
+                        <option value="method" class="capitalize text-black">method</option>
+                        <option value="environment" class="capitalize text-black">environment</option>
                     </select>
     
                     <button wire:click="get_suggestion(document.getElementById('possible_category').value)" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">

@@ -117,7 +117,7 @@ style="display: @if($show === true)
                     Batal
                 </button>
                 <button id="save-action-completion" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
-                    Simpan Aksi
+                    Selesaikan Aksi
                 </button>
             </div>
         </div>
