@@ -63,20 +63,21 @@ class AuthController extends Controller
             'email' => 'required|email',
         ]);
 
+        // Check if User exists
         if (!User::where('email', $request->email)->exists()) {
             Alert::toast('Pengguna tidak ditemukan!', 'error')->position('top-end')->timerProgressBar();
             return redirect()->back();
         }
 
+        // Create Password Reset Token 
         $data = [
             'email' => $request->email,
             'expires_at' => now()->addMinutes(30)->timestamp,
         ];
-
         $encrypted = Crypt::encryptString(json_encode($data));
 
+        // Send Email along with the token
         $link = route('auth.reset', ['token' => $encrypted]);
-
         Mail::to($request->email)->send(new ForgetPassword($link));
 
         Alert::toast('Link Reset Password Telah Dikirim!', 'success')->position('top-end')->timerProgressBar();
@@ -86,8 +87,8 @@ class AuthController extends Controller
 
     public function indexReset($token)
     {
+        // Validate The Password Reset Token 
         $data = json_decode(Crypt::decryptString($token), true);
-
         if (now()->timestamp > $data['expires_at']) {
             abort(403, 'Link expired');
         }
@@ -98,33 +99,33 @@ class AuthController extends Controller
     public function reset(Request $request)
     {
         
-        // dd($request->all());
-        
         $request->validate([
             'password' => 'required|min:8',
         ]);
 
+        // Check if time limit reached 
         $data = json_decode(Crypt::decryptString($request->secret), true);
-
         if (now()->timestamp > $data['expires_at']) {
             Alert::toast('Link Kadaluarsa, Silahkan Ulangi', 'error')->position('top-end')->timerProgressBar();
             return redirect()->route('auth.forget');
         }
 
+        // Check if password confirmation is same with the new one 
         if ($request->password != $request->confirm_password) {
             Alert::toast('Konfirmasi password tidak sesuai!', 'error')->position('top-end')->timerProgressBar();
             return redirect()->back();
         }
 
+        // Double Check user existence 
         $user = User::where('email', $data['email'])->first();
-
         if (!$user) {
             Alert::toast('Pengguna tidak ditemukan!', 'error')->position('top-end')->timerProgressBar();
             return redirect()->back();
         }
 
+        // Update User Password 
         $user->update(['password' => bcrypt($request->password)]);
-            Alert::toast('Password berhasil diubah!', 'success')->position('top-end')->timerProgressBar();
-            return redirect()->route('auth.login');
+        Alert::toast('Password berhasil diubah!', 'success')->position('top-end')->timerProgressBar();
+        return redirect()->route('auth.login');
     }
 }

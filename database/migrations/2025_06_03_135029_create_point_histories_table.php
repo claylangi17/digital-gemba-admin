@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('point_histories', function (Blueprint $table) {
             $table->id();
-            $table->integer('userid');
+            $table->foreignId('userid')->constrained('users')->onDelete('cascade');
+            $table->string('description');
             $table->enum('type', ["INC", "DEC"]);
             $table->enum('category', ["ROOT", "SOL", "PRE", "NOTE"]);
             $table->integer('point_before');

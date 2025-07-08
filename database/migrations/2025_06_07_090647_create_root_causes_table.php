@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('issue_id')->constrained('issues')->onDelete('cascade');
             $table->string('category');
             $table->text('description')->nullable();
-            $table->text('supporting_files')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
