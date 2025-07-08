@@ -177,7 +177,7 @@ Make sure you have the following software installed on your machine.
     npm run dev
     ```
 7.  **Create storage link for your application**
-    * This setting is required. Otherwise, Your files uploaded to the application won't show up.
+    * This setting is required. Otherwise, All of Your files uploaded to the application won't show up.
     ```sh
     php artisan storage:link
     ``` 
