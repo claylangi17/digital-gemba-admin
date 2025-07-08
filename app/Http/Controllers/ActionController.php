@@ -26,9 +26,11 @@ class ActionController extends Controller
                 'due_date' => "required",
             ]);
 
+            // Parse timedate data 
             $carbon = Carbon::createFromFormat('d/m/Y H:i', $request->due_date);
             $due_date = $carbon->format('Y-m-d H:i:s');
 
+            // Create new Action 
             Actions::create([
                 'issue_id' => $request->issue_id,
                 'root_cause_id' => $request->root_cause_selector,
@@ -67,9 +69,11 @@ class ActionController extends Controller
                 'due_date' => "required",
             ]);
 
+            // Parse Timedate data 
             $carbon = Carbon::createFromFormat('d/m/Y H:i', $request->due_date);
             $due_date = $carbon->format('Y-m-d H:i:s');
 
+            // Update related action 
             Actions::where('id', $request->action_id)->update([
                 'type' => $request->type,
                 'root_cause_id' => $request->root_cause_selector,
@@ -95,9 +99,10 @@ class ActionController extends Controller
 
     public function delete($id)
     {
+        // Find Related action 
         $action = Actions::find($id);
         if ($action) {
-            $action->delete();
+            $action->delete(); //delete
             Alert::toast('Aksi Berhasil Dihapus!', 'success')->position('top-end')->timerProgressBar();
         } else {
             Alert::toast('Aksi Tidak Ditemukan', 'error')->position('top-end')->timerProgressBar();
@@ -132,6 +137,7 @@ class ActionController extends Controller
                 ]);
             }
 
+            // Update Action status 
             Actions::where('id', $request->action_id)->update([
                 'done_at' => Carbon::now(),
                 'status' => "FINISHED",

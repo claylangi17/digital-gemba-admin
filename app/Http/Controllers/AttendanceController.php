@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AppreciationNotes;
 use App\Models\Attendances;
-use App\Models\PointHistories;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 
@@ -22,8 +18,8 @@ class AttendanceController extends Controller
                 "session_id" => "required"
             ]);
 
+            // Parse user ids and insert them into session attendance 
             $user_ids = explode(',', $request->user_ids);
-
             foreach ($user_ids as $id){
 
                 if (!Attendances::where('session_id', $request->session_id)->where('user_id', $id)->exists())

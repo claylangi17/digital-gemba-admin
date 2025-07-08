@@ -14,10 +14,11 @@ class AppreciationController extends Controller
 {
     public function index()
     {
+        // Get top 3 
         $topUsers = User::orderByDesc('points')->take(3)->get();
-
         $topUserIds = $topUsers->pluck('id')->toArray();
 
+        // Get the rest users and remove the top 3 
         $otherUsers = User::whereNotIn('id', $topUserIds)
                           ->orderByDesc('points') 
                           ->get();
@@ -42,6 +43,7 @@ class AppreciationController extends Controller
                 "description" => "required",
             ]);
 
+            // Check if appreciation has photos 
             if ($request->hasFile('photos'))
             {
                 $path = $request->file('photos')->store('uploads/appreciation/note', 'public');
@@ -49,11 +51,10 @@ class AppreciationController extends Controller
                 $path = '';
             }
 
-
+            // Collect appreciation receivers ids 
             $receivers_array = explode(',', $request->receivers);
             $receivers_id = [];
             $receivers_name = [];
-
             foreach ($receivers_array as $person) {
                 $temp = explode("#",$person);
 
@@ -61,6 +62,7 @@ class AppreciationController extends Controller
                 $receivers_name[] = $temp[1];
             }
 
+            // Create Appreciation Notes
             AppreciationNotes::create([
                 'session_id' => $request->session_id,
                 'by' => Auth::user()->name,
@@ -71,10 +73,9 @@ class AppreciationController extends Controller
                 'files' => $path
             ]);
 
+            // Give each receivers point 
             foreach ($receivers_id as $receiver) {
-
                 $user = User::where('id', $receiver)->first();
-
                 $point_before = (int) $user->points;
                 $point_after = $point_before + 10;
                 
@@ -87,6 +88,7 @@ class AppreciationController extends Controller
                     'point_after' =>  $point_after
                 ]);
 
+                // Update receivers point 
                 User::where('id', $receiver)->update([
                     "points" => $point_after
                 ]);

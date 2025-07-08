@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Actions;
 use Carbon\Carbon;
-use DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AnalyticController extends Controller
