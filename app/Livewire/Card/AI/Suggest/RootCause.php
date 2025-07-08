@@ -73,7 +73,6 @@ class RootCause extends Component
             'category' => $this->category,
             'description' => $suggestion,
             'created_by' => Auth::user()->id,
-            'supporting_files' => ''
         ]);
 
         // Remove the saved suggestion from the list

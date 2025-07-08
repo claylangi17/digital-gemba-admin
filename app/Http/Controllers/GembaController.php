@@ -69,7 +69,6 @@ class GembaController extends Controller
         $data = [
             "genba" => GenbaSessions::where('id', $id)->first(),
             "issues" => Issues::where('session_id', $id)->orderBy('created_at', 'DESC')->get(),
-            "attendances" => Attendances::where('session_id', $id)->get(),
             "appreciations" => AppreciationNotes::where('session_id', $id)->get(),
             "users" => User::all(),
             "items" => Items::all(),
