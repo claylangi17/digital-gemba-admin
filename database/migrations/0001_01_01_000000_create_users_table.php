@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('points')->default(0);
             $table->string('avatar')->default('');
             $table->string('department')->default('');
-            $table->enum('role', ['superadmin', 'admin', 'user'])->default('user');
+            $table->enum('role', [ 'admin', 'user'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

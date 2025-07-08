@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('issues', function (Blueprint $table) {
             $table->id();
-            $table->integer('session_id');
+            $table->foreignId('session_id')->constrained("genba_sessions")->onDelete("cascade");
             $table->foreignId('line_id')->constrained("lines")->onDelete("cascade");
             $table->text('items');
             $table->text('assigned_ids');

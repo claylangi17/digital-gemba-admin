@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('appreciation_notes', function (Blueprint $table) {
             $table->id();
-            $table->string('session_id');
-            $table->string('by');
+            $table->foreignId('session_id')->constrained('genba_sessions')->onDelete('cascade');
+            $table->foreignId('by')->constrained('users')->onDelete('cascade');
             $table->text('receivers_id');
             $table->text('receivers_name');
             $table->string('line');
