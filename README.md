@@ -51,6 +51,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#installing-updates">Installing Update</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -189,23 +190,30 @@ Make sure you have the following software installed on your machine.
 
 ---
 
-## Updating The Application
+## Installing Updates
 To update the application, follow these steps:
 
-1.  **Pull the latest update from github**
+1.  **Terminate running service**
+    * Kill the application.
+    
+2.  **Pull the latest update from github**
     * Checkout to branch `main` first then pull the latest one.
     ```sh
     git checkout main
     git pull
     ```
-2.  **Install required library**
+3.  **Install required library**
     ```sh
     composer install
     ```
-3.  **Re-link your Application storage link**
+4.  **Re-link your Application storage link**
     ```sh
     rm public/storage/
     php artisan storage:link
+    ```
+5.  **Re-run your application**
+    ```sh
+    php artisan serve
     ```
 
 
