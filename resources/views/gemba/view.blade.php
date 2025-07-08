@@ -416,11 +416,11 @@
 
 
                     <ul class="rounded-lg overflow-hidden">
-                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600 border-b border-primary-200 dark:border-primary-600">1. Buka aplikasi mobile attendance di smartphone Anda</li>
-                        <li class="text-secondary-light p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">2. Pilih menu 'Scan QR' pada aplikasi </li>
-                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600 border-b border-primary-200 dark:border-primary-600">3. Arahkan kamera ke QR code yang ditampilkan </li>
-                        <li class="text-secondary-light p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">4. Tunggu hingga muncul konfirmasi kehadiran</li>
-                        <li class="text-secondary-light p-2 bg-primary-50 dark:bg-primary-600">5. Ulangi langkah 1-4 sebelum mengakhiri sesi genba </li>
+                        <li class="text-white p-2 bg-primary-600 border-b border-primary-200 dark:border-primary-600">1. Buka aplikasi mobile attendance di smartphone Anda</li>
+                        <li class="text-primary-600 p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">2. Pilih menu 'Scan QR' pada aplikasi </li>
+                        <li class="text-white p-2 bg-primary-600 border-b border-primary-200 dark:border-primary-600">3. Arahkan kamera ke QR code yang ditampilkan </li>
+                        <li class="text-primary-600 p-2 bg-white dark:bg-primary-700 border-b border-primary-200 dark:border-primary-600">4. Tunggu hingga muncul konfirmasi kehadiran</li>
+                        <li class="text-white p-2 bg-primary-600">5. Ulangi langkah 1-4 sebelum mengakhiri sesi genba </li>
                     </ul>
                 </div>
                 <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
