@@ -47,6 +47,7 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#environment-setup">Environment Setup</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -96,6 +97,59 @@ Make sure you have the following software installed on your machine.
 * Node.js & npm
 * A database server (e.g., MySQL)
 
+### Environment Setup
+
+1.  **Copy .env.example**
+    ```sh
+    cp .env.example .env
+    ```
+2.  **Set Your Locale**
+    * useful to match local timezone and date format
+    ```env
+    APP_LOCALE=id
+    APP_FALLBACK_LOCALE=id
+    APP_FAKER_LOCALE=id_ID
+    ```
+3.  **Set Your Database Connection**
+    * You might need to create the database first
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=database
+    DB_USERNAME=username
+    DB_PASSWORD=password
+    ```
+4.  **Set Your SMTP Connection**
+    * This configuration is required to allow system send email of password reset request, You might need to use 3rd party STMP provider or you can deploy on your own server.
+    ```env
+    MAIL_MAILER=smtp
+    MAIL_SCHEME=null
+    MAIL_HOST=mail.example.com
+    MAIL_PORT=587
+    MAIL_ENCRYPTION=tls
+    MAIL_USERNAME=username@example.com
+    MAIL_PASSWORD=password
+    MAIL_FROM_ADDRESS=username@example.com
+    MAIL_FROM_NAME="YOUR APP NAME"
+    ```
+5.  **Customize Sweetalert Delete Message**
+    * This configuration is used to customize parameters of sweetalert delete pop-up, please refers to it's specific documentation ([See The Documentation](https://realrashid.github.io/sweet-alert/environment)).
+    ```env
+    SWEET_ALERT_CONFIRM_DELETE_CONFIRM_BUTTON_TEXT='Yes, Delete'
+    SWEET_ALERT_CONFIRM_DELETE_CANCEL_BUTTON_TEXT='No, Return'
+    SWEET_ALERT_CONFIRM_DELETE_SHOW_CANCEL_BUTTON=true
+    SWEET_ALERT_CONFIRM_DELETE_SHOW_CLOSE_BUTTON=false
+    SWEET_ALERT_CONFIRM_DELETE_ICON='warning'
+    SWEET_ALERT_CONFIRM_DELETE_SHOW_LOADER_ON_CONFIRM=true
+    ```
+6.  **Connect Application to Gemba AI Service**
+    * This configuration is required to connect AI services in this application.
+    ```env
+    GENBA_AI_API_ADDRESS=http://api.example.com
+    GENBA_AI_API_KEY=YOUR_API_KEY
+    ```
+
 ### Installation
 
 1.  **Clone the repo**
@@ -110,39 +164,50 @@ Make sure you have the following software installed on your machine.
 3.  **Install NPM packages**
     ```sh
     npm install
-    ```
-4.  **Set up your environment file**
-    * Copy the example environment file.
-        ```sh
-        cp .env.example .env
-        ```
-    * Generate your application key.
-        ```sh
-        php artisan key:generate
-        ```
-5.  **Configure your database**
-    * Open the `.env` file and update the `DB_*` variables with your database credentials.
-        ```env
-        DB_CONNECTION=mysql
-        DB_HOST=127.0.0.1
-        DB_PORT=3306
-        DB_DATABASE=gemba_digital
-        DB_USERNAME=root
-        DB_PASSWORD=
-        ```
-6.  **Run database migrations and seeders**
+    ```    
+4.  **Configure your application environment**
+    * Please refers to the previous parts
+
+5.  **Create your application key**
     ```sh
-    php artisan migrate --seed
-    ```
-7.  **Compile front-end assets**
+    php artisan key:generate
+    ``` 
+6.  **Compile front-end assets**
     ```sh
     npm run dev
     ```
+7.  **Create storage link for your application**
+    * This setting is required. Otherwise, Your files uploaded to the application won't show up.
+    ```sh
+    php artisan storage:link
+    ``` 
 8.  **Run the development server**
     ```sh
     php artisan serve
     ```
     Your application will be available at `http://127.0.0.1:8000`.
+
+---
+
+## Updating The Application
+To update the application, follow these steps:
+
+1.  **Pull the latest update from github**
+    * Checkout to branch `main` first then pull the latest one.
+    ```sh
+    git checkout main
+    git pull
+    ```
+2.  **Install required library**
+    ```sh
+    composer install
+    ```
+3.  **Re-link your Application storage link**
+    ```sh
+    rm public/storage/
+    php artisan storage:link
+    ```
+
 
 ---
 
