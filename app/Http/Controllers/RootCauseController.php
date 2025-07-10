@@ -29,7 +29,6 @@ class RootCauseController extends Controller
                 'category' => $request->category,
                 'description' => $request->description,
                 'created_by' => Auth::user()->id,
-                'supporting_files' => ''
             ]);
 
 
