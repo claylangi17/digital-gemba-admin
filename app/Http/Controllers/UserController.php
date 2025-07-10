@@ -67,7 +67,7 @@ class UserController extends Controller
                 ]);
             }
 
-            Alert::toast("Berhasil menambahkan aksi", 'success')->position('top-end')->timerProgressBar();
+            Alert::toast("Berhasil menambahkan pengguna", 'success')->position('top-end')->timerProgressBar();
     
             return redirect()->back();
     
@@ -80,61 +80,67 @@ class UserController extends Controller
     
             return redirect()->back()->withInput();
         }
-        
-
-        Alert::toast('Pengguna Berhasil Ditambahkan!', 'success')->position('top-end')->timerProgressBar();
-
-        return redirect()->back();
     }
 
     public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-        ]);
-
-        // Update related User 
-        User::where('id', $request->id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-            'department' => $request->department,
-        ]);
-
-        // Check if user attached profile photo 
-        if ($request->hasFile('profile_photo')) {
-            $profileFile = $request->file('profile_photo');
-            $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
-            $profilePath = $profileFile->storeAs('uploads/user/profile/' . $request->id, $profileFilename, 'public');
-        
-            UserProfilePhoto::where('user_id', $request->id)->update([
-                'path' => $profilePath,
+        try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
             ]);
-        }
-        
-        // Check if user attached cover photo 
-        if ($request->hasFile('cover_photo')) {
-            $coverFile = $request->file('cover_photo');
-            $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
-            $coverPath = $coverFile->storeAs('uploads/user/cover/' . $request->id, $coverFilename, 'public');
-        
-            UserCoverPhoto::where('user_id', $request->id)->update([
-                'path' => $coverPath,
-            ]);
-        }
-
-        // Check if user inputed new password 
-        if (!$request->password)
-        {
+    
+            // Update related User 
             User::where('id', $request->id)->update([
-                'password' => bcrypt($request->password),
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => $request->role,
+                'department' => $request->department,
             ]);
+    
+            // Check if user attached profile photo 
+            if ($request->hasFile('profile_photo')) {
+                $profileFile = $request->file('profile_photo');
+                $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
+                $profilePath = $profileFile->storeAs('uploads/user/profile/' . $request->id, $profileFilename, 'public');
+            
+                UserProfilePhoto::where('user_id', $request->id)->update([
+                    'path' => $profilePath,
+                ]);
+            }
+            
+            // Check if user attached cover photo 
+            if ($request->hasFile('cover_photo')) {
+                $coverFile = $request->file('cover_photo');
+                $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
+                $coverPath = $coverFile->storeAs('uploads/user/cover/' . $request->id, $coverFilename, 'public');
+            
+                UserCoverPhoto::where('user_id', $request->id)->update([
+                    'path' => $coverPath,
+                ]);
+            }
+    
+            // Check if user inputed new password 
+            if (!$request->password)
+            {
+                User::where('id', $request->id)->update([
+                    'password' => bcrypt($request->password),
+                ]);
+            }
+
+            Alert::toast("Berhasil memperbaharui detail pengguna", 'success')->position('top-end')->timerProgressBar();
+    
+            return redirect()->back();
+    
+        } catch (\Exception $e) {
+            Log::error('Failed to update User', ['error' => $e->getMessage()]);
+    
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+    
+            return redirect()->back()->withInput();
         }
-
-        Alert::toast('Pengguna Berhasil Diperbaharui!', 'success')->position('top-end')->timerProgressBar();
-
-        return redirect()->back();
     }
 
     public function delete($id)
