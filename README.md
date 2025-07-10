@@ -169,20 +169,29 @@ Make sure you have the following software installed on your machine.
 4.  **Configure your application environment**
     * Please refers to the previous parts
 
-5.  **Create your application key**
+5.  **Run the first time migration**
+    ```sh
+    php artisan migrate:fresh
+    ``` 
+6.  **Create your application key**
     ```sh
     php artisan key:generate
     ``` 
-6.  **Compile front-end assets**
+7.  **Compile front-end assets**
     ```sh
     npm run dev
     ```
-7.  **Create storage link for your application**
+8.  **Create storage link for your application**
     * This setting is required. Otherwise, All of Your files uploaded to the application won't show up.
     ```sh
     php artisan storage:link
     ``` 
-8.  **Run the development server**
+9.  **Run Seeder for default account**
+    * To sign-in to the application for the first time, use `admin@genba.aradenta.com` and password `password`. Please create new user and remove the default account to prevent unwanted access.
+    ```sh
+    php artisan db:seed 
+    ``` 
+10.  **Run the development server**
     ```sh
     php artisan serve
     ```
