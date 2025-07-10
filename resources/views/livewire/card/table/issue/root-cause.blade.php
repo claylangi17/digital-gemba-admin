@@ -22,6 +22,10 @@
 
         @if ($issue->status == "OPEN")
             <div class="flex items-center justify-end gap-3" style="width: 45%">
+                <button onclick="Livewire.dispatch('showModalAISuggestMergeCause')" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                    <iconify-icon icon="material-symbols:merge" class="icon text-xl line-height-1"></iconify-icon>
+                    Gabungkan Saran
+                </button>
                 <button onclick="Livewire.dispatch('showModalAISuggestRootCause', ['{{ $issue->id }}' ,'{{ $issue->line->name }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Tanya AI
@@ -34,6 +38,7 @@
         @endif
     </div>
     <div class="card-body p-6">
+        @livewire("Card.AI.Suggest.MergeCause", [$issue->id])
         <table id="genba-cause-table" class="border border-neutral-200 dark:border-neutral-600 rounded-lg border-separate	">
             <thead>
                 <tr>
