@@ -11,6 +11,7 @@
     @livewire('Modal.View.RootCause')
 
     @if ($issue->status == "OPEN")
+        @livewire("Modal.Form.Issue")
         @livewire('Modal.Form.Action')
         @livewire('Modal.Form.ActionCompletion')
         @livewire('Modal.Form.RootCause')
@@ -50,10 +51,18 @@
                 </div>
 
                 @if ($issue->status == "OPEN")
-                    <button onclick="closingConfirmation()" class="btn btn bg-success-600 hover:bg-success-700 text-sm btn-sm text-white px-3 py-3 rounded-lg flex items-center gap-2">
-                        <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
-                        Tandai "Terselesaikan"
-                    </button>
+
+                    <div class="flex items-center justify-end gap-3">
+                        <button onclick="Livewire.dispatch('showModalFormIssue', { session_id: '{{ $issue->session->id }}', issue_id: '{{ $issue->id }}' })" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="tabler:edit" class="icon text-xl line-height-1"></iconify-icon>
+                            Edit Detail Isu
+                        </button>
+    
+                        <button onclick="closingConfirmation()" class="btn btn bg-success-600 hover:bg-success-700 text-sm btn-sm text-white px-3 py-3 rounded-lg flex items-center gap-2">
+                            <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
+                            Tandai "Terselesaikan"
+                        </button>
+                    </div>
 
                     <form id="close-issue-form" action="{{ route('issue.close') }}" method="post" hidden>
                         @csrf
