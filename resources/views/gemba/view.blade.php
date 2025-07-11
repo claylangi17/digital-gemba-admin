@@ -205,7 +205,7 @@
                                             </div>
                                             <p class="card-text text-neutral-600 mb-4">{{ $appreciation->description }}</p>
                 
-                                            <span class="text-xs">Dari: {{ $appreciation->by }}</span>
+                                            <span class="text-xs">Dari: {{ $appreciation->creator->name }}</span>
                                         </div>
                                         <div class="flex shrink-0">
                                             <img src="{{ $appreciation->files != '' ? asset('storage/' . $appreciation->files) : 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">

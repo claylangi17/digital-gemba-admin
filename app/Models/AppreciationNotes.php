@@ -15,4 +15,9 @@ class AppreciationNotes extends Model
         'description',
         'files',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'by');
+    }
 }
