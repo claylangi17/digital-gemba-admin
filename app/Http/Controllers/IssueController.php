@@ -107,6 +107,76 @@ class IssueController extends Controller
         }
     }
 
+    public function update (Request $request)
+    {
+        try {
+
+            $request->validate([
+                'issue_id' => "required",
+                'line_id' => "required",
+                'items' => "required",
+                'assigned_ids' => "required",
+                'description' => "required",
+                'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
+            ]);
+
+            // Create Item if it didnt exist 
+            $items = explode(',', $request->items);
+            foreach ($items as $item)
+            {
+                $item = strtolower($item);
+                if (!Items::where('name', $item)->exists() && !Items::where('id', $item)->exists())
+                {
+                    Items::create([
+                        "name" => $item,
+                        "description" => ""
+                    ]);
+                }
+            }
+
+            // Create Issue 
+            $issue = Issues::where("id", $request->issue_id)->update([
+                        'line_id' => $request->line_id,
+                        'items' => $request->items,
+                        'assigned_ids' => $request->assigned_ids,
+                        'description' => $request->description,
+                        'status' => "OPEN"
+                    ]);
+
+            // Handle file uploads 
+            $last_id = Issues::latest()->first() ? Issues::latest()->first()->id : 1;
+            foreach ($request->file('files', []) as $file) {
+                // Name Obfuscate
+                $filename = uniqid() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+                // Storing
+                $path = $file->storeAs('uploads/issue/' . (string) $last_id . '/', $filename, 'public');
+
+                // Save the record
+                $mime = $file->getMimeType();
+                IssueFiles::create([
+                    'issue_id' => $issue->id,
+                    'user_id' => Auth::user()->id,
+                    'type' => str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO",
+                    'path' => $path,
+                ]);
+            }
+
+            Alert::toast('Detail Isu berhasil diperbaharui', 'success')->position('top-end')->timerProgressBar();
+    
+            return redirect()->back();
+    
+        } catch (\Exception $e) {
+            Log::error('Failed to update Issue', ['error' => $e->getMessage()]);
+            
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+    
+            return redirect()->back()->withInput();
+        }
+    }
+
     public function close(Request $request)
     {
         try {

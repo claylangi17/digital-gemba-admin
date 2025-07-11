@@ -15,6 +15,16 @@ class Issues extends Model
         'status',
     ];
 
+    public function session()
+    {
+        return $this->belongsTo(GenbaSessions::class, 'session_id');
+    }
+
+    public function getAssignedsAttribute()
+    {
+        return User::whereIn('id', explode(',', $this->assigned_ids))->pluck('id');
+    }
+    
     public function files()
     {
         return $this->hasMany(IssueFiles::class, 'issue_id');
