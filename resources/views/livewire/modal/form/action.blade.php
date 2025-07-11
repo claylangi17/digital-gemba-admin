@@ -73,7 +73,7 @@ style="display: @if($show === true)
                     </div>
 
                     <div class="mb-3 w-full">
-                        <label for="root_cause_selector" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Pilih Isu Terkait</label>
+                        <label for="root_cause_selector" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Pilih Penyebab Terkait</label>
                         <select id="root_cause_selector" name="root_cause_selector" style="width: 100%" required>
                             @if ($causes)
                                 @foreach ($causes as $cause)
