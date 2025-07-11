@@ -20,7 +20,7 @@ style="display: @if($show === true)
             </div>
             <div class="p-4 md:p-5 space-y-4">
                 @if ($note != null)
-                <img src="{{ $note->files ? asset('storage/' . $note->files) : asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
+                <img src="{{ $note->image_url ?? asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
                 @endif
                 <div class="grid grid-cols-2 gap-4">
                     <div class="mb-3">
@@ -32,7 +32,7 @@ style="display: @if($show === true)
                     <div class="mb-3">
                         <label for="email" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Diberikan Oleh</label>
                         <p>
-                            {{ $note->creator->name ?? '' }}
+                            {{ $note->byUser->name ?? '' 
                         </p>
                     </div>
                     <div class="mb-3 col-span-2">

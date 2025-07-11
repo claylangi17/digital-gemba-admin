@@ -18,7 +18,7 @@ class AppreciationNote extends Component
 
     public function showModal($id) 
     {
-        $this->note = AppreciationNotes::where('id', $id)->first();
+        $this->note = AppreciationNotes::with('byUser')->where('id', $id)->first();
 
         $this->doShow();
     }
