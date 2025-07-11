@@ -14,24 +14,27 @@ class AppreciationNotes extends Model
         return $this->belongsTo(User::class, 'by');
     }
 
-        public function getImageUrlAttribute()
+    public function getImageUrlAttribute()
     {
-        if (!$this->files) {
-            // Return a placeholder if no file is set
-            return 'https://placehold.co/200x200?text=No%20Image';
+        $path = $this->files;
+
+        if (!$path) {
+            return 'https://placehold.co/200x200?text=No%20Image'; // Return a default placeholder
         }
 
-        // Directly use the full base URL from .env
-        $baseUrl = env('APPRECIATION_IMAGE_BASE_URL');
+        // Check if it's a new, locally stored file (e.g., 'uploads/appreciation/note/... ')
+        if (Str::startsWith($path, 'uploads/')) {
+            return asset('storage/' . $path);
+        }
 
-        // The file path from the database
-        $filePath = $this->files;
+        // Otherwise, assume it's an old file on the external server.
+        // The old paths were inconsistent, so we clean them up.
+        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL'), '/');
+        
+        // Remove any 'uploads/' prefix from the old path to prevent duplication
+        $filePath = Str::after($path, 'uploads/');
 
-        // Ensure the base URL ends with a single slash
-        $baseUrl = rtrim($baseUrl, '/') . '/';
-
-        // Return the full, absolute URL
-        return $baseUrl . $filePath;
+        return "{$baseUrl}/{$filePath}";
     }
 
     protected $fillable = [
