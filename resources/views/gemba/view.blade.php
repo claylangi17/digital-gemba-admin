@@ -284,8 +284,14 @@
                             <div id="line"></div>
                         </div>
                         <div class="mb-3 w-full">
-                            <label for="receivers" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Penerima Apresiasi</label>
-                            <div id="receivers"></div>
+                            <div class="mb-3">
+                                <label for="receiver_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">ID Penerima</label>
+                                <input type="text" class="form-control" placeholder="Masukkan ID penerima apresiasi " id="receiver_id" name="receiver_id" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="receiver_name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Penerima</label>
+                                <input type="text" class="form-control" placeholder="Masukkan nama penerima apresiasi " id="receiver_name" name="receiver_name" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Deskripsi Apresiasi</label>
