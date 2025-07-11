@@ -39,7 +39,8 @@ class AppreciationController extends Controller
             $request->validate([
                 "session_id" => "required",
                 "line" => "required",
-                "receivers" => "required",
+                "receiver_id" => "required",
+                "receiver_name" => "required",
                 "description" => "required",
             ]);
 
@@ -51,49 +52,16 @@ class AppreciationController extends Controller
                 $path = '';
             }
 
-            // Collect appreciation receivers ids 
-            $receivers_array = explode(',', $request->receivers);
-            $receivers_id = [];
-            $receivers_name = [];
-            foreach ($receivers_array as $person) {
-                $temp = explode("#",$person);
-
-                $receivers_id[] = $temp[0];
-                $receivers_name[] = $temp[1];
-            }
-
             // Create Appreciation Notes
             AppreciationNotes::create([
                 'session_id' => $request->session_id,
-                'by' => Auth::user()->name,
-                'receivers_id' => implode(",",$receivers_id),
-                'receivers_name' => implode(", ",$receivers_name),
+                'by' => Auth::user()->id,
+                'receivers_id' => $request->receiver_id,
+                'receivers_name' => $request->receiver_name,
                 'line' => $request->line,
                 'description' => $request->description,
                 'files' => $path
             ]);
-
-            // Give each receivers point 
-            foreach ($receivers_id as $receiver) {
-                $user = User::where('id', $receiver)->first();
-                $point_before = (int) $user->points;
-                $point_after = $point_before + 10;
-                
-                PointHistories::create([
-                    'userid' => $receiver,
-                    'type' =>  "INC",
-                    'category' =>  "NOTE",
-                    'point_before' =>  $point_before,
-                    'point_earned' => 10,
-                    'point_after' =>  $point_after
-                ]);
-
-                // Update receivers point 
-                User::where('id', $receiver)->update([
-                    "points" => $point_after
-                ]);
-
-            }
 
             Alert::toast('Berhasil Menambahkan Catatan Apresiasi', 'success')->position('top-end')->timerProgressBar();
 

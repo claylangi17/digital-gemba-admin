@@ -32,7 +32,7 @@ style="display: @if($show === true)
                     <div class="mb-3">
                         <label for="email" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Diberikan Oleh</label>
                         <p>
-                            {{ $note->byUser->name ?? '' }}
+                            {{ $note->byUser->name ?? '' 
                         </p>
                     </div>
                     <div class="mb-3 col-span-2">
