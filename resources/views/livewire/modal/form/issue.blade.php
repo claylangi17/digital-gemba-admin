@@ -40,7 +40,7 @@ style="display: @if($show === true)
                     </div>
                     <div class="mb-3">
                         <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
-                        <select name="lines" id="lines">
+                        <select name="line_id" id="lines">
                             @foreach ($lines as $line)
                                 <option value="{{ $line->id }}">{{ $line->name }}</option>
                             @endforeach
