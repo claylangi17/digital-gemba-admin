@@ -33,18 +33,14 @@ style="display: @if($show === true)
                         <select id="pic_id" name="pic_id" required>
                             @if ($mode == "create")
                                 @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             @else
                                 @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                        @if ($user->id == $action->pic->id)
-                                            <option value="{{ $user->id }}" selected>{{ $user->name }}</option>  
-                                        @else
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endif
+                                    @if ($user->id == $action->pic->id)
+                                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>  
+                                    @else
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endif
                                 @endforeach
                             @endif
