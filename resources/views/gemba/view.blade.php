@@ -498,9 +498,7 @@
             placeholder: "Pilih Karyawan",
             options: [
                 @foreach ( $users as $user )
-                    @if (Auth::user()->id != $user->id)
-                    { label: '{{ $user->name }}', value: '{{ $user->id }}', },
-                    @endif
+                { label: '{{ $user->name }}', value: '{{ $user->id }}', },
                 @endforeach
             ],
         });
