@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('receivers_name');
             $table->string('line');
             $table->string('description');
-            $table->text('files');
             $table->timestamps();
         });
     }

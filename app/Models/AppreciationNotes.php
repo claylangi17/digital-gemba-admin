@@ -44,11 +44,15 @@ class AppreciationNotes extends Model
         'receivers_name',
         'line',
         'description',
-        'files',
     ];
 
     public function creator()
     {
         return $this->belongsTo(User::class, 'by');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(AppreciationNoteFiles::class, 'appreciation_note_id');
     }
 }

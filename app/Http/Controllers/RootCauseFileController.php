@@ -2,72 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\IssueFiles;
+use App\Models\RootCauseFiles;
+use App\Models\RootCauses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
-use Termwind\Components\Raw;
 
-class IssueFileController extends Controller
+class RootCauseFileController extends Controller
 {
-    public function create(Request $request)
-    {
-        try {
-
-            $request->validate([
-                'issue_id' => "required",
-                'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
-            ]);
-
-            foreach ($request->file('files', []) as $file) {
-                // Name Obfuscate
-                $filename = uniqid() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-    
-                // Storing
-                $path = $file->storeAs('uploads/issue/' . (string) $request->issue_id . '/', $filename, 'public');
-    
-                // Save the record
-                $mime = $file->getMimeType();
-                IssueFiles::create([
-                    'issue_id' => $request->issue_id,
-                    'user_id' => Auth::user()->id,
-                    'type' => str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO",
-                    'path' => $path,
-                ]);
-            }
-    
-            Alert::toast('File pendukung berhasil ditambahkan', 'success')->position('top-end')->timerProgressBar();
-    
-            return redirect()->back();
-
-        } catch (\Exception $e) {
-            Log::error('Failed to add Issue Files', ['error' => $e->getMessage()]);
-            
-            Alert::toast('Error: ' . $e->getMessage(), 'error')
-                ->position('top-end')
-                ->timerProgressBar();
-    
-            return redirect()->back()->withInput();
-        }
-        
-        
-    }
-
     public function create_api(Request $request)
     {
         try {
 
             $request->validate([
-                'issue_id' => "required",
+                'cause_id' => "required",
                 'user_id' => "required",
                 'files.*' => "required|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
             ],
             [
-                "issue_id.required" => "Please attach issue_id",
+                "cause_id.required" => "Please attach cause_id",
                 "user_id.required" => "Please attach user_id",
-                "files.*.file" => "File not found",
+                "files.*.required" => "File not found",
             ]);
 
             $createdFiles = [];
@@ -79,7 +36,7 @@ class IssueFileController extends Controller
 
                 // Store file
                 $path = $file->storeAs(
-                    'uploads/issue/' . (string) $request->issue_id . '/',
+                    'uploads/root-cause/' . (string) $request->cause_id,
                     $filename,
                     'public'
                 );
@@ -89,46 +46,46 @@ class IssueFileController extends Controller
                 $type = str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO";
 
                 // Create record
-                $issueFile = IssueFiles::create([
-                    'issue_id' => $request->issue_id,
+                $rootCauseFile = RootCauseFiles::create([
+                    'root_cause_id' => $request->cause_id,
                     'user_id' => $request->user_id,
-                    'type' => $type,
+                    'type' => str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO",
                     'path' => $path,
                 ]);
 
-                $createdFiles[] = $issueFile;
+                $createdFiles[] = $rootCauseFile;
             }
 
             return response()->json([
                 'status' => '200',
-                'message' => 'Issue Files were succesfully uploaded',
+                'message' => 'Root Cause Files were succesfully uploaded',
                 'data' => [
                     'files' => $createdFiles,
                 ]
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Failed to add Issue Files via API', ['error' => $e->getMessage()]);
+            Log::error('Failed to add Root Cause Files via API', ['error' => $e->getMessage()]);
 
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 
-    public function get_api($issue_id)
+    public function get_api($cause_id)
     {
         try {
 
-            if (!$issue_id) {
+            if (!$cause_id) {
                 return response()->json([
                     'status' => '400',
-                    'message' => 'Please attach issue_id ',
+                    'message' => 'Please attach cause_id ',
                     'data' => []
                 ]);
             }
 
             $files = [];
 
-            $records = IssueFiles::where('issue_id', $issue_id)->get();
+            $records = RootCauseFiles::where('root_cause_id', $cause_id)->get();
 
             foreach ($records as $record) {
                 $files[] = [
@@ -141,15 +98,15 @@ class IssueFileController extends Controller
 
             return response()->json([
                 'status' => '200',
-                'message' => 'Issue File list fetched successfully',
+                'message' => 'Root Cause File list fetched successfully',
                 'data' => [
-                    'issue_id' => $issue_id,
+                    'cause_id' => $cause_id,
                     'files' => $files,
                 ]
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Failed to fetch issue files via API', ['error' => $e->getMessage()]);
+            Log::error('Failed to fetch root cause files via API', ['error' => $e->getMessage()]);
 
             return response()->json(['error' => $e->getMessage()], 400);
         }
@@ -167,26 +124,26 @@ class IssueFileController extends Controller
                 ]);
             }
 
-            $record = IssueFiles::find($file_id);
+            $record = RootCauseFiles::find($file_id);
 
             if ($record) {
                 $record->delete();
                 return response()->json([
                     'status' => '200',
-                    'message' => 'Issue File has been deleted',
+                    'message' => 'Root Cause File has been deleted',
                     'data' => []
                 ]);
             } else {
                 return response()->json([
                     'status' => '400',
-                    'message' => 'Issue File not found',
+                    'message' => 'File not found',
                     'data' => []
                 ]);
             }
             
 
         } catch (\Exception $e) {
-            Log::error('Failed to delete issue files via API', ['error' => $e->getMessage()]);
+            Log::error('Failed to delete root cause files via API', ['error' => $e->getMessage()]);
 
             return response()->json(['error' => $e->getMessage()], 400);
         }

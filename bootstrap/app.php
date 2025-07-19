@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ApiKeyMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -34,11 +35,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::middleware('web')
                 ->group(base_path('routes/cause.php'));
+
+            Route::middleware(['api', 'api.key'])->prefix('api')
+                ->group(base_path('routes/api.php'));
+            
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => RoleMiddleware::class,
+            'api.key' => ApiKeyMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
