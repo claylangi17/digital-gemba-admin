@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\Modal\View\AppreciationNote;
+use App\Models\AppreciationNoteFiles;
 use App\Models\AppreciationNotes;
 use App\Models\PointHistories;
 use App\Models\User;
@@ -9,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AppreciationController extends Controller
 {
@@ -44,24 +47,45 @@ class AppreciationController extends Controller
                 "description" => "required",
             ]);
 
-            // Check if appreciation has photos 
-            if ($request->hasFile('photos'))
-            {
-                $path = $request->file('photos')->store('uploads/appreciation/note', 'public');
-            } else {
-                $path = '';
-            }
-
             // Create Appreciation Notes
-            AppreciationNotes::create([
+            $record = AppreciationNotes::create([
                 'session_id' => $request->session_id,
                 'by' => Auth::user()->id,
                 'receivers_id' => $request->receiver_id,
                 'receivers_name' => $request->receiver_name,
                 'line' => $request->line,
                 'description' => $request->description,
-                'files' => $path
             ]);
+
+            // Check if appreciation has photos 
+            if ($request->hasFile('photos'))
+            {
+                foreach ($request->file('photos', []) as $file) {
+
+                    // Generate unique file name
+                    $filename = uniqid() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+    
+                    // Store file
+                    $path = $file->storeAs(
+                        'uploads/appreciation/note' . (string) $request->action_id,
+                        $filename,
+                        'public'
+                    );
+    
+                    // Determine type
+                    $mime = $file->getMimeType();
+                    $type = str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO";
+    
+                    // Create record
+                    AppreciationNoteFiles::create([
+                        'appreciation_note_id' => $record->id,
+                        'user_id' => Auth::user()->id,
+                        'type' => str_starts_with($mime, 'image/') ? "PHOTO" : "VIDEO",
+                        'path' => $path,
+                    ]);
+    
+                }
+            } 
 
             Alert::toast('Berhasil Menambahkan Catatan Apresiasi', 'success')->position('top-end')->timerProgressBar();
 

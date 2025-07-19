@@ -208,7 +208,7 @@
                                             <span class="text-xs">Dari: {{ $appreciation->creator->name }}</span>
                                         </div>
                                         <div class="flex shrink-0">
-                                            <img src="{{ $appreciation->files != '' ? asset('storage/' . $appreciation->files) : 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            <img src="{{ $appreciation->files->first() != null ? asset('storage/' . $appreciation->files->first()->path) : 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +299,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="photos" class="form-label">Foto Pendukung Apresiasi</label>
-                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos">
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos[]" id="photos" multiple accept="image/*,video/*">
                         </div>
                     </form>
                 </div>
