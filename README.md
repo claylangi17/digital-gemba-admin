@@ -188,14 +188,22 @@ Make sure you have the following software installed on your machine.
     ``` 
 9.  **Run Seeder for default account**
     * To sign-in to the application for the first time, use `admin@genba.aradenta.com` and password `password`. Please create new user and remove the default account to prevent unwanted access.
+    
     ```sh
     php artisan db:seed 
-    ``` 
-10.  **Run the development server**
+    ```
+
+10. **Run the development server**
+
     ```sh
     php artisan serve
     ```
     Your application will be available at `http://127.0.0.1:8000`.
+
+11. **Run The Background PHP Worker for Job Queue**
+    ```sh
+    php artisan queue:work --daemon --tries=3
+    ```
 
 ---
 
@@ -203,7 +211,7 @@ Make sure you have the following software installed on your machine.
 To update the application, follow these steps:
 
 1.  **Terminate running service**
-    * Kill the application.
+    * Kill the application and it's workers.
     
 2.  **Pull the latest update from github**
     * Checkout to branch `main` first then pull the latest one.
@@ -223,6 +231,10 @@ To update the application, follow these steps:
 5.  **Re-run your application**
     ```sh
     php artisan serve
+    ```
+6. **Re-Run The Background PHP Worker for Job Queue**
+    ```sh
+    php artisan queue:work --daemon --tries=3
     ```
 
 
