@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Modal\View;
 
+use App\Jobs\FetchGembaReportPdf;
 use App\Models\GenbaReports;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Report extends Component
 {
@@ -18,6 +20,7 @@ class Report extends Component
     public $line;
     public $problem;
     public $reports;
+    public $isReportReady = true;
     
     public function mount() {
         $this->show = false;
@@ -25,6 +28,7 @@ class Report extends Component
 
     protected $listeners = [
         'showModalAIReport' => 'showModal',
+        'getGembaReports' => 'getReports',
     ];
 
     public function showModal($session_id) 
@@ -41,36 +45,29 @@ class Report extends Component
 
     public function create_report()
     {
+        $this->isReportReady = false;
 
-        $apiUrl = config('services.genba_ai.url');
-        $apiKey = config('services.genba_ai.key');
-
-        if (!$apiUrl || !$apiKey) {
-            // Log an error or return a specific response
-            Log::error('API URL or Key is not configured.');
-            return response()->json(['error' => 'API service is not configured.'], 500);
-        }
-
-        $response = Http::withHeaders([
-            'X-API-KEY' => $apiKey,
-        ])->timeout(300)
-        ->get("{$apiUrl}/sessions/{$this->session_id}/gemba_report_pdf");
-
-        $content = $response->getBody()->getContents();
-        $filename = 'gemba_report_session-' . $this->session_id . '- ' . Carbon::now()->format('Ymd_His') . '.pdf';
-        $path = 'gemba_reports/' . $filename;
-
-        Storage::disk('public')->put($path, $content);
-
-        $url = Storage::url($path);
-
-        GenbaReports::create([
-            "session_id" => $this->session_id,
-            "filename" => $filename,
-            "path" => $url
+        $record = GenbaReports::create([
+            'session_id' => $this->session_id,
+            'path' => "",
+            'filename' => ""
         ]);
 
-        $this->getReports();
+        FetchGembaReportPdf::dispatch(
+            $this->session_id,
+            $record->id,
+            config('services.genba_ai.url'),
+            config('services.genba_ai.key'),
+        );
+    }
+
+    public function checkIfReportReady()
+    {
+        $this->isReportReady = GenbaReports::where("session_id", $this->session_id)->orderByDesc('created_at')->first()->path != "";
+
+        if ($this->isReportReady) {
+            $this->getReports();
+        };
     }
 
     public function doShow() {
