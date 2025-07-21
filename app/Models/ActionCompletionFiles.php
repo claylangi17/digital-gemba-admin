@@ -30,18 +30,31 @@ class ActionCompletionFiles extends Model
         $path = $this->path;
 
         if (!$path) {
-            return asset('assets/images/appreciation/default.png'); // Return a default placeholder
+            return asset('assets/images/appreciation/default.png');
         }
 
-        // Check if it's a new, locally stored file
-        if (Str::startsWith($path, 'uploads/')) {
-            return asset('storage/' . $path);
+        // Jika path sudah berupa URL lengkap, langsung kembalikan
+        if (filter_var($path, FILTER_VALIDATE_URL)) {
+            return $path;
         }
 
-        // Otherwise, assume it's an old file on the external server
-        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL'), '/');
+        // Untuk file action_evidence, selalu gunakan URL eksternal
+        if (str_contains($path, 'action_evidence')) {
+            $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL', 'https://localhost:8080/uploads'), '/');
+            $filePath = ltrim($path, '/');
+            // Hapus 'uploads/' dari awal path jika ada
+            $filePath = preg_replace('#^uploads/#', '', $filePath);
+            return "{$baseUrl}/{$filePath}";
+        }
+
+        // Untuk file lokal lainnya (jika ada)
+        if (str_starts_with($path, 'uploads/')) {
+            return asset('storage/' . ltrim($path, '/'));
+        }
+
+        // Default: gunakan APPRECIATION_IMAGE_BASE_URL
+        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL', 'https://localhost:8080/uploads'), '/');
         $filePath = ltrim($path, '/');
-
         return "{$baseUrl}/{$filePath}";
     }
 }
