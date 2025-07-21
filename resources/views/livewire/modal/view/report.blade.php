@@ -19,19 +19,22 @@ style="display: @if($show === true)
             </div>
             <div class="mb-3 flex items-center gap-6 justify-between px-6 py-2">
                 <label for="root_cause" class="inline font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2 capitalize">Klik Tombol Disamping untuk membuat laporan</label>
-                <button wire:click="create_report()" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                <button wire:click="create_report()" onclick="show_report_loader()" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Buat Laporan
                 </button>
                     
             </div>
 
-            <div id="rootcause-suggestion-loading" wire:loading.flex wire:target="create_report" class="flex items-center justify-center gap-4 p-6 mb-3">
+            @unless ($isReportReady)
+            <div wire:poll.5000ms="checkIfReportReady" id="report-loading" class="flex items-center justify-center gap-4 p-6 mb-3">
                 <p class="text-primary-600">Mohon Tunggu Sebentar</p>
                 <iconify-icon icon="eos-icons:three-dots-loading" class="icon text-2xl line-height-1 text-primary-600"></iconify-icon>
             </div>
+            @endunless
 
-            <div class="mb-3 p-6" wire:loading.remove wire:target="create_report">
+            @if ($isReportReady)
+            <div class="block mb-3 p-6" id="report-table">
                 <div class="table-responsive">
                     <table class="table border-0 mb-0">
                         <thead>
@@ -70,6 +73,7 @@ style="display: @if($show === true)
                     </table>
                 </div>
             </div>
+            @endif
            
             <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" wire:click="doClose()" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg">
@@ -89,5 +93,21 @@ style="display: @if($show === true)
                 additionalClasses: 'vir-select',
             });
         }, 100);
+    });
+
+    function show_report_loader()
+    {
+        $("#report-loading").removeClass("hidden").addClass("flex");
+        $("#report-table").removeClass("block").addClass("hidden");
+    }
+
+    function hide_report_loader()
+    {
+        $("#report-loading").removeClass("flex").addClass("hidden");
+        $("#report-table").removeClass("hidden").addClass("block");
+    }
+
+    Livewire.on('gembaReportCreated', () => {
+        hide_report_loader()
     });
 </script>
