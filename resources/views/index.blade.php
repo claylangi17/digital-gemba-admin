@@ -17,8 +17,8 @@
                 Gemba Walk adalah praktik manajemen yang mengutamakan pengamatan langsung di lapangan. Dengan Gemba Digital, Anda dapat mendigitalisasi proses ini untuk pemantauan yang lebih efektif dan pengambilan keputusan yang lebih baik.
             </p>
         </div>
-        <div class="w-1/ overflow-hidden rounded-xl" style="aspect-ratio: 16/9">
-            <img src="{{ asset('assets/images/home-hero.png') }}" alt="" class="block mx-auto">
+        <div class="w-1/2 overflow-hidden rounded-xl" style="aspect-ratio: 16/9">
+            <img src="{{ asset('assets/images/gemba-photo.webp') }}" alt="" class="block mx-auto">
         </div>
     </div>
 
