@@ -69,7 +69,7 @@ style="display: @if($show === true)
                         </div>
                     </div>
                     <div class="px-4">
-                        <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200 mb-1.5">Deskripsi Aksi</h5>
+                        <h5 class="card-title text-lg text-neutral-900 dark:text-neutral-200 mb-1.5">Deskripsi Penyebab</h5>
                         <p class="card-text text-neutral-600"> {{ $cause->description ?? '' }} </p>
                     </div>
                 </div>
