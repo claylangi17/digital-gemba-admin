@@ -106,7 +106,24 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ $issue->files->where('type', "PHOTO")->first() ? asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) : 'https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini' }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            @if ($issue->files->first())
+                                                @if ($issue->files->first()->type == "PHOTO")
+                                                    <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $issue->files->first()->path) }}')">
+                                                @else
+                                                    <video
+                                                        muted
+                                                        autoplay
+                                                        loop
+                                                        playsinline
+                                                        style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
+                                                        onclick="showVideoModal('{{ asset('storage/' . $issue->files->first()->path) }}')"
+                                                    >
+                                                        <source src="{{ asset('storage/' . $issue->files->first()->path) }}" type="video/mp4">
+                                                    </video>
+                                                @endif
+                                            @else
+                                                <img src="https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            @endif
                                             
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
@@ -143,7 +160,24 @@
                                             </h6>
                                             
                                             {{-- Supporting File  --}}
-                                            <img src="{{ $issue->files->where('type', "PHOTO")->first() ? asset('storage/' . $issue->files->where('type', 'PHOTO')->first()->path) : 'https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini' }}" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            @if ($issue->files->first())
+                                                @if ($issue->files->first()->type == "PHOTO")
+                                                    <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $issue->files->first()->path) }}')">
+                                                @else
+                                                    <video
+                                                        muted
+                                                        autoplay
+                                                        loop
+                                                        playsinline
+                                                        style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
+                                                        onclick="showVideoModal('{{ asset('storage/' . $issue->files->first()->path) }}')"
+                                                    >
+                                                        <source src="{{ asset('storage/' . $issue->files->first()->path) }}" type="video/mp4">
+                                                    </video>
+                                                @endif
+                                            @else
+                                                <img src="https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini" alt="" style="width: 100% ;height: 225px; object-fit:cover">
+                                            @endif
                                             <span class="text-xs py-2">
                                                 <span class="font-semibold">Ditugaskan: </span>
 
@@ -538,6 +572,38 @@
             prevArrow: '',
             nextArrow: '',
         })
+
+        // Function to show image modal
+        function showImageModal(path) {
+            Swal.fire({
+                imageUrl: path,
+                imageWidth: 'auto',
+                imageHeight: 'auto',
+                showCloseButton: true,
+                showConfirmButton: false,
+                customClass: {
+                    image: 'img-fluid'
+                }
+            });
+        }
+
+        // Function to show video modal
+        function showVideoModal(path) {
+            Swal.fire({
+                html: `
+                    <video controls style="width: 100%; max-width: 800px; height: auto;">
+                        <source src="${path}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `,
+                showCloseButton: true,
+                showConfirmButton: false,
+                width: 'auto',
+                customClass: {
+                    popup: 'video-modal'
+                }
+            });
+        }
     </script>
 
 </body>
