@@ -112,4 +112,37 @@ class GembaController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            // Find the genba session first to check if it exists
+            $genba = GenbaSessions::find($id);
+            
+            if (!$genba) {
+                Alert::toast('Sesi Genba tidak ditemukan', 'error')
+                    ->position('top-end')
+                    ->timerProgressBar();
+                return redirect()->back();
+            }
+
+            // Delete the genba session using Eloquent (which will use the database connection)
+            $genba->delete();
+
+            Alert::toast('Sesi Genba berhasil dihapus', 'success')
+                ->position('top-end')
+                ->timerProgressBar();
+
+            return redirect()->route('genba.history');
+
+        } catch (\Exception $e) {
+            Log::error('Failed to delete Genba Session', ['error' => $e->getMessage()]);
+            
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+
+            return redirect()->back();
+        }
+    }
 }

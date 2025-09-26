@@ -105,9 +105,18 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('genba.view', [$genba->id]) }}" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
-                                <iconify-icon icon="solar:eye-bold"></iconify-icon>
-                            </a>
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('genba.view', [$genba->id]) }}" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
+                                    <iconify-icon icon="solar:eye-bold"></iconify-icon>
+                                </a>
+                                <form action="{{ route('genba.delete', [$genba->id]) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus sesi gemba ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-8 h-8 bg-danger-50 dark:bg-danger-600/10 text-danger-600 dark:text-danger-400 rounded-full inline-flex items-center justify-center">
+                                        <iconify-icon icon="solar:trash-bin-minimalistic-bold"></iconify-icon>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

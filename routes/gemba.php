@@ -13,4 +13,5 @@ Route::middleware(['role:superadmin,admin'])->prefix('genba')->group(function ()
     Route::get('/view/{id}', [GembaController::class, 'view'])->name('genba.view');
     Route::post('/create', [GembaController::class, 'create'])->name('genba.create');    
     Route::post('/close', [GembaController::class, 'close'])->name('genba.close');
+    Route::delete('/delete/{id}', [GembaController::class, 'delete'])->name('genba.delete');
 });
