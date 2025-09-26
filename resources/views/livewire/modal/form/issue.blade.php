@@ -30,14 +30,6 @@ style="display: @if($show === true)
                         <input type="text" value="{{ $issue->line_id }}" name="line" id="line" hidden >
                         <input type="text" value="{{ $issue->items }}" name="item" id="item" hidden >
                     @endif
-                    <div class="mb-3 w-full">
-                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
-                        <select name="assigned_ids" id="assigned_ids">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="mb-3">
                         <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
                         <select name="line_id" id="lines">
@@ -61,6 +53,14 @@ style="display: @if($show === true)
                     <div class="mb-3">
                         <label for="files" class="form-label">Foto / Video Pendukung</label>
                         <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                    </div>
+                    <div class="mb-3 w-full">
+                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
+                        <select name="assigned_ids" id="assigned_ids">
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </form>
             </div>
