@@ -243,7 +243,16 @@
 
                                         </div>
                                         <div class="flex shrink-0">
-                                            <img src="{{ $appreciation->image_url ?? 'https://placehold.co/200x200?text=Tidak%20ada%20foto%20apresiasi%20' }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            @if($appreciation->files && $appreciation->file_type == 'PHOTO')
+                                                <img src="{{ $appreciation->image_url }}" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            @elseif($appreciation->files && $appreciation->file_type == 'VIDEO')
+                                                <video style="width: 170px ; height: 166px; object-fit:cover" muted autoplay loop playsinline>
+                                                    <source src="{{ $appreciation->image_url }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @else
+                                                <img src="https://placehold.co/200x200?text=Tidak%20ada%20media%20apresiasi" style="width: 170px ; height: 166px; object-fit:cover" alt="">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -333,8 +342,8 @@
                             <textarea name="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="photos" class="form-label">Foto Pendukung Apresiasi</label>
-                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos">
+                            <label for="photos" class="form-label">Foto/Video Pendukung Apresiasi</label>
+                            <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="photos" id="photos" accept="image/*,video/*">
                         </div>
                     </form>
                 </div>
