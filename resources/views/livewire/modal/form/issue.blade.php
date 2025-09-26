@@ -30,6 +30,14 @@ style="display: @if($show === true)
                         <input type="text" value="{{ $issue->line_id }}" name="line" id="line" hidden >
                         <input type="text" value="{{ $issue->items }}" name="item" id="item" hidden >
                     @endif
+                    <div class="mb-3 w-full">
+                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
+                        <select name="assigned_ids" id="assigned_ids">
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
                         <select name="line_id" id="lines">
@@ -48,19 +56,11 @@ style="display: @if($show === true)
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Deskripsi Permasalahan</label>
-                        <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi..."></textarea>
+                        <textarea name="description" id="description" class="form-control" rows="4" cols="50" placeholder="Masukan Deskripsi...">{{ $issue->description ?? '' }}</textarea>
                     </div>
                     <div class="mb-3">
                         <label for="files" class="form-label">Foto / Video Pendukung</label>
                         <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
-                    </div>
-                    <div class="mb-3 w-full">
-                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
-                        <select name="assigned_ids" id="assigned_ids">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
                     </div>
                 </form>
             </div>
@@ -91,12 +91,7 @@ style="display: @if($show === true)
                     noSearchResultsText: "Karyawan tidak ditemukan",
                     searchPlaceholderText: "Cari....",
                     placeholder: "Pilih Karyawan",
-                    selectedValue: [],
-                    options : [
-                        @foreach ($users as $user)
-                        { label: '{{ $user->name }}', value: '{{ $user->id }}', },
-                        @endforeach
-                    ]
+
                 });
 
                 VirtualSelect.init({ 
@@ -108,7 +103,6 @@ style="display: @if($show === true)
                     noSearchResultsText: "Pilihan tidak ditemukan",
                     searchPlaceholderText: "Cari....",
                     placeholder: "Pilih Line",
-                    selectedValue: '',
                     options : [
                         @foreach ($lines as $line)
                         { label: '{{ $line->name }}', value: '{{ $line->id }}', },
@@ -127,21 +121,12 @@ style="display: @if($show === true)
                     noSearchResultsText: "Item tidak ditemukan",
                     searchPlaceholderText: "Cari....",
                     placeholder: "Pilih Item",
-                    selectedValue: [],
                     options : [
                         @foreach ($items as $item)
                         { label: '{{ $item->name }}', value: '{{ $item->id }}', },
                         @endforeach
                     ]
                 });
-
-                // Reset all form fields to ensure they start empty
-                setTimeout(() => {
-                    document.querySelector('#assigned_ids').setValue([]);
-                    document.querySelector('#items').setValue([]);
-                    document.querySelector('#lines').setValue('');
-                    document.querySelector('#description').value = '';
-                }, 100);
             }, 100);
         });
 
@@ -153,11 +138,9 @@ style="display: @if($show === true)
 
         Livewire.on('UpdateIssueVirSelector', () => {
             setTimeout(() => {
-                // Reset all form fields to empty values
-                document.querySelector('#assigned_ids').setValue([]);
-                document.querySelector('#items').setValue([]);
-                document.querySelector('#lines').setValue('');
-                document.querySelector('#description').value = '';
+                document.querySelector('#assigned_ids').setValue(JSON.parse(document.querySelector("#assigneds").value));
+                document.querySelector('#items').setValue(document.querySelector("#item").value.split(','));
+                document.querySelector('#lines').setValue(document.querySelector("#line").value);
             }, 200)
         })
     </script>
