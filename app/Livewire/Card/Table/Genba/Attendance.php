@@ -14,6 +14,11 @@ class Attendance extends Component
     {
         $this->genba = $genba;
 
+        // Message for sweetalert delete confirmation 
+        $title = 'Hapus Peserta!';
+        $text = "Apakah kamu yakin untuk menghapus peserta ini?";
+        confirmDelete($title, $text);
+
         $this->get_data();
     }
 
