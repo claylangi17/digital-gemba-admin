@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class RootCauseFiles extends Model
 {
@@ -33,14 +34,14 @@ class RootCauseFiles extends Model
         }
 
         // Check if it's a new, locally stored file
-        if (str_starts_with($path, 'uploads/')) {
+        if (Str::startsWith($path, 'uploads/')) {
             return asset('storage/' . $path);
         }
 
-        // Otherwise, assume it's an old file on the external server
-        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL'), '/');
-        $filePath = ltrim($path, '/');
+        // Otherwise, serve from external storage via media proxy to bypass SSL issues
+        $filePath = Str::after($path, 'uploads/');
+        $filePath = ltrim($filePath, '/');
 
-        return "{$baseUrl}/{$filePath}";
+        return route('media.proxy', ['path' => $filePath]);
     }
 }
