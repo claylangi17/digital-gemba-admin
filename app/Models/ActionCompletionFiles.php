@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ActionCompletionFiles extends Model
@@ -38,23 +39,19 @@ class ActionCompletionFiles extends Model
             return $path;
         }
 
-        // Untuk file action_evidence, selalu gunakan URL eksternal
-        if (str_contains($path, 'action_evidence')) {
-            $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL', 'https://localhost:8080/uploads'), '/');
-            $filePath = ltrim($path, '/');
-            // Hapus 'uploads/' dari awal path jika ada
-            $filePath = preg_replace('#^uploads/#', '', $filePath);
-            return "{$baseUrl}/{$filePath}";
+        // Untuk file yang berada di storage lokal aplikasi
+        if (Str::startsWith($path, 'uploads/')) {
+            $normalizedPath = ltrim($path, '/');
+
+            if (Storage::disk('public')->exists($normalizedPath)) {
+                return asset('storage/' . $normalizedPath);
+            }
         }
 
-        // Untuk file lokal lainnya (jika ada)
-        if (str_starts_with($path, 'uploads/')) {
-            return asset('storage/' . ltrim($path, '/'));
-        }
+        // Default: gunakan media proxy untuk menghindari masalah SSL pada server eksternal
+        $filePath = Str::after($path, 'uploads/');
+        $filePath = ltrim($filePath, '/');
 
-        // Default: gunakan APPRECIATION_IMAGE_BASE_URL
-        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL', 'https://localhost:8080/uploads'), '/');
-        $filePath = ltrim($path, '/');
-        return "{$baseUrl}/{$filePath}";
+        return route('media.proxy', ['path' => $filePath]);
     }
 }
