@@ -246,6 +246,11 @@
                 }
 
                 resetTable();
+                if (window.Flowbite && typeof window.Flowbite.init === 'function') {
+                    window.Flowbite.init();
+                } else if (typeof window.initFlowbite === 'function') {
+                    window.initFlowbite();
+                }
                 }
         }, 100);
     })

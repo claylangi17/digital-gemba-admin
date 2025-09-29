@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -117,8 +118,12 @@ class IssueController extends Controller
                 'items' => "required",
                 'assigned_ids' => "required",
                 'description' => "required",
-                'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
+                'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480",
+                'remove_files' => 'array',
+                'remove_files.*' => 'integer|exists:issue_files,id'
             ]);
+
+            $issue = Issues::with('files')->findOrFail($request->issue_id);
 
             // Create Item if it didnt exist 
             $items = explode(',', $request->items);
@@ -134,23 +139,33 @@ class IssueController extends Controller
                 }
             }
 
-            // Create Issue 
-            $issue = Issues::where("id", $request->issue_id)->update([
-                        'line_id' => $request->line_id,
-                        'items' => $request->items,
-                        'assigned_ids' => $request->assigned_ids,
-                        'description' => $request->description,
-                        'status' => "OPEN"
-                    ]);
+            // Update Issue 
+            $issue->update([
+                'line_id' => $request->line_id,
+                'items' => $request->items,
+                'assigned_ids' => $request->assigned_ids,
+                'description' => $request->description,
+                'status' => "OPEN"
+            ]);
+
+            if ($request->filled('remove_files')) {
+                $filesToRemove = IssueFiles::whereIn('id', $request->remove_files)
+                    ->where('issue_id', $issue->id)
+                    ->get();
+
+                foreach ($filesToRemove as $file) {
+                    Storage::disk('public')->delete($file->path);
+                    $file->delete();
+                }
+            }
 
             // Handle file uploads 
-            $last_id = Issues::latest()->first() ? Issues::latest()->first()->id : 1;
             foreach ($request->file('files', []) as $file) {
                 // Name Obfuscate
                 $filename = uniqid() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
 
                 // Storing
-                $path = $file->storeAs('uploads/issue/' . (string) $last_id . '/', $filename, 'public');
+                $path = $file->storeAs('uploads/issue/' . (string) $issue->id . '/', $filename, 'public');
 
                 // Save the record
                 $mime = $file->getMimeType();

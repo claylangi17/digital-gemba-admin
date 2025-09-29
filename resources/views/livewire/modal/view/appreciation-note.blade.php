@@ -19,8 +19,19 @@ style="display: @if($show === true)
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                @if ($note != null)
-                <img src="{{ $note->image_url ?? asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
+                @if ($note != null && $note->files)
+                    @if($note->file_type == 'PHOTO')
+                        <img src="{{ $note->image_url }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
+                    @elseif($note->file_type == 'VIDEO')
+                        <video style="width: 100% ;height: 250px; object-fit:cover" controls>
+                            <source src="{{ $note->image_url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    @else
+                        <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
+                    @endif
+                @else
+                    <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 100% ;height: 250px; object-fit:cover">
                 @endif
                 <div class="grid grid-cols-2 gap-4">
                     <div class="mb-3">

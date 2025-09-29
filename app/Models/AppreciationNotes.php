@@ -27,14 +27,12 @@ class AppreciationNotes extends Model
             return asset('storage/' . $path);
         }
 
-        // Otherwise, assume it's an old file on the external server.
-        // The old paths were inconsistent, so we clean them up.
-        $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL'), '/');
-        
+        // For external files, use media proxy to bypass SSL issues
         // Remove any 'uploads/' prefix from the old path to prevent duplication
         $filePath = Str::after($path, 'uploads/');
-
-        return "{$baseUrl}/{$filePath}";
+        
+        // Use media proxy route instead of direct external URL
+        return route('media.proxy', ['path' => $filePath]);
     }
 
     protected $fillable = [
@@ -50,5 +48,25 @@ class AppreciationNotes extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'by');
+    }
+
+    public function getFileTypeAttribute()
+    {
+        if (!$this->files) {
+            return null;
+        }
+
+        $extension = strtolower(pathinfo($this->files, PATHINFO_EXTENSION));
+        
+        $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', '3gp'];
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+        
+        if (in_array($extension, $videoExtensions)) {
+            return 'VIDEO';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'PHOTO';
+        }
+        
+        return 'UNKNOWN';
     }
 }

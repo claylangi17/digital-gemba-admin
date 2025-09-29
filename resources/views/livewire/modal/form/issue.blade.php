@@ -1,12 +1,7 @@
 <div 
 id="issue-editor" 
-class="@if($show == true) flex @endif bg-neutral-600/10 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-style="display: @if($show === true)
-                 flex
-         @else
-                 none
-         @endif;"
-         >
+class="{{ $show === true ? 'flex' : 'hidden' }} bg-neutral-600/10 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+>
     <div class="relative p-4 max-h-full" style="width: 70%">
         <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -30,14 +25,6 @@ style="display: @if($show === true)
                         <input type="text" value="{{ $issue->line_id }}" name="line" id="line" hidden >
                         <input type="text" value="{{ $issue->items }}" name="item" id="item" hidden >
                     @endif
-                    <div class="mb-3 w-full">
-                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
-                        <select name="assigned_ids" id="assigned_ids">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="mb-3">
                         <label for="line_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Line</label>
                         <select name="line_id" id="lines">
@@ -61,6 +48,42 @@ style="display: @if($show === true)
                     <div class="mb-3">
                         <label for="files" class="form-label">Foto / Video Pendukung</label>
                         <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                        <p class="text-xs text-neutral-500 mt-1">Biarkan kosong jika tidak ingin menambah file baru.</p>
+
+                        @if($mode === 'update' && $issue && $issue->files->count())
+                            <div class="mt-4">
+                                <p class="font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">File Saat Ini</p>
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    @foreach ($issue->files as $file)
+                                        <div class="border border-neutral-200 dark:border-neutral-600 rounded-lg p-3 bg-neutral-50 dark:bg-neutral-700/50">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">{{ $file->type }}</span>
+                                                <label class="inline-flex items-center gap-2 text-xs text-danger-600 dark:text-danger-400">
+                                                    <input type="checkbox" name="remove_files[]" value="{{ $file->id }}" class="rounded border-neutral-300 dark:border-neutral-600">
+                                                    Hapus
+                                                </label>
+                                            </div>
+                                            <div class="rounded-lg overflow-hidden">
+                                                @if ($file->type === 'PHOTO')
+                                                    <img src="{{ asset('storage/' . $file->path) }}" alt="File pendukung" class="w-full h-32 object-cover">
+                                                @else
+                                                    <video src="{{ asset('storage/' . $file->path) }}" class="w-full h-32 object-cover" controls></video>
+                                                @endif
+                                            </div>
+                                            <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-primary-600 dark:text-primary-400 text-xs mt-2 inline-block">Lihat File</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="mb-3 w-full">
+                        <label for="assigned_ids" class="block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Ditugaskan Kepada</label>
+                        <select name="assigned_ids" id="assigned_ids">
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </form>
             </div>
@@ -81,7 +104,7 @@ style="display: @if($show === true)
     <script>
         Livewire.on('initIssueVirSelector', () => {
             setTimeout(() => {
-                let assigneds = VirtualSelect.init({ 
+                VirtualSelect.init({ 
                     ele: '#assigned_ids',
                     name: 'assigned_ids',
                     maxWidth: '100%',
@@ -102,12 +125,7 @@ style="display: @if($show === true)
                     noOptionsText: "Tidak ada pilihan",
                     noSearchResultsText: "Pilihan tidak ditemukan",
                     searchPlaceholderText: "Cari....",
-                    placeholder: "Pilih Line",
-                    options : [
-                        @foreach ($lines as $line)
-                        { label: '{{ $line->name }}', value: '{{ $line->id }}', },
-                        @endforeach
-                    ]
+                    placeholder: "Pilih Line"
                 });
 
                 VirtualSelect.init({ 
@@ -120,12 +138,7 @@ style="display: @if($show === true)
                     noOptionsText: "Tidak ada item",
                     noSearchResultsText: "Item tidak ditemukan",
                     searchPlaceholderText: "Cari....",
-                    placeholder: "Pilih Item",
-                    options : [
-                        @foreach ($items as $item)
-                        { label: '{{ $item->name }}', value: '{{ $item->id }}', },
-                        @endforeach
-                    ]
+                    placeholder: "Pilih Item"
                 });
             }, 100);
         });

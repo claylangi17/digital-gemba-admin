@@ -6,6 +6,7 @@ use App\Models\Attendances;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -27,7 +28,8 @@ class AttendanceController extends Controller
                     Attendances::create([
                         'session_id' =>  $request->session_id,
                         'user_id' => $id,
-                        'status' => "ABSENT",
+                        'status' => "PRESENT",
+                        'time_in' => Carbon::now(),
                     ]);
                 }
                 
