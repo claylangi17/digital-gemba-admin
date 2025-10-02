@@ -8,6 +8,7 @@ use App\Models\Issues;
 use App\Models\Items;
 use App\Models\RootCauses;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -244,6 +245,70 @@ class IssueController extends Controller
                 ->position('top-end')
                 ->timerProgressBar();
     
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        try {
+
+            $request->validate([
+                'session_id' => 'required'
+            ]);
+
+            $issue = Issues::with(['files'])->find($id);
+
+            if (!$issue) {
+                Alert::toast('Isu tidak ditemukan', 'error')->position('top-end')->timerProgressBar();
+                return redirect()->back();
+            }
+
+            DB::transaction(function () use ($issue) {
+
+                foreach ($issue->files as $file) {
+                    if ($file->path) {
+                        Storage::disk('public')->delete($file->path);
+                    }
+                    $file->delete();
+                }
+
+                $rootCauses = RootCauses::with('files')->where('issue_id', $issue->id)->get();
+                foreach ($rootCauses as $rootCause) {
+                    foreach ($rootCause->files as $rootFile) {
+                        if ($rootFile->path) {
+                            Storage::disk('public')->delete($rootFile->path);
+                        }
+                        $rootFile->delete();
+                    }
+                    $rootCause->delete();
+                }
+
+                $actions = $issue->actions()->with('completionFiles')->get();
+                foreach ($actions as $action) {
+                    foreach ($action->completionFiles as $completionFile) {
+                        if ($completionFile->path) {
+                            Storage::disk('public')->delete($completionFile->path);
+                        }
+                        $completionFile->delete();
+                    }
+                    $action->delete();
+                }
+
+                $issue->delete();
+            });
+
+            Alert::toast('Isu berhasil dihapus', 'success')->position('top-end')->timerProgressBar();
+
+            return redirect()->route('genba.view', [$request->session_id]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to delete Issue', ['error' => $e->getMessage()]);
+
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+
             return redirect()->back()->withInput();
         }
     }

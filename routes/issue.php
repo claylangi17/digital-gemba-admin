@@ -9,6 +9,7 @@ Route::middleware(['role:superadmin,admin'])->prefix('issue')->group(function ()
     Route::post('/create', [IssueController::class, 'create'])->name('issue.create');
     Route::post('/update', [IssueController::class, 'update'])->name('issue.update');
     Route::post('/close', [IssueController::class, 'close'])->name('issue.close');
+    Route::delete('/delete/{id}', [IssueController::class, 'delete'])->name('issue.delete');
 });
 
 Route::middleware(['role:superadmin,admin'])->prefix('issue/file')->group(function () {

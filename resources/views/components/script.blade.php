@@ -1,5 +1,9 @@
-    <!-- jQuery library js -->
+<!-- jQuery library js -->
     <script src="{{ asset('assets/js/lib/jquery-3.7.1.min.js') }}"></script>
+    
+    <!-- Load Livewire early -->
+    @livewireScripts
+    
     <!-- Apex Chart js -->
     <script src="{{ asset('assets/js/lib/apexcharts.min.js') }}"></script>
     <!-- Data Table js -->
@@ -30,7 +34,6 @@
 
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    @livewireScripts
     @stack('lv-scripts')
 
     <script>
