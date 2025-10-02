@@ -50,25 +50,35 @@ class IssueController extends Controller
                 'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
             ]);
 
-            // Create Item if it didnt exist 
-            $items = explode(',', $request->items);
-            foreach ($items as $item)
-            {
-                $item = strtolower($item);
-                if (!Items::where('name', $item)->exists() && !Items::where('id', $item)->exists())
-                {
-                    Items::create([
-                        "name" => $item,
-                        "description" => ""
+            // Normalize item values and ensure their IDs are stored
+            $submittedItems = array_filter(array_map('trim', explode(',', $request->items)));
+            $itemIds = [];
+
+            foreach ($submittedItems as $item) {
+                $originalItem = $item;
+                $normalizedName = strtolower($originalItem);
+
+                $itemModel = ctype_digit($originalItem) ? Items::find($originalItem) : null;
+
+                if (!$itemModel) {
+                    $itemModel = Items::whereRaw('LOWER(name) = ?', [$normalizedName])->first();
+                }
+
+                if (!$itemModel) {
+                    $itemModel = Items::create([
+                        'name' => $originalItem,
+                        'description' => ''
                     ]);
                 }
+
+                $itemIds[] = $itemModel->id;
             }
 
             // Create Issue 
             $issue = Issues::create([
                         'session_id' => $request->session_id,
                         'line_id' => $request->line_id,
-                        'items' => $request->items,
+                        'items' => implode(',', $itemIds),
                         'assigned_ids' => $request->assigned_ids,
                         'description' => $request->description,
                         'status' => "OPEN"
@@ -125,24 +135,34 @@ class IssueController extends Controller
 
             $issue = Issues::with('files')->findOrFail($request->issue_id);
 
-            // Create Item if it didnt exist 
-            $items = explode(',', $request->items);
-            foreach ($items as $item)
-            {
-                $item = strtolower($item);
-                if (!Items::where('name', $item)->exists() && !Items::where('id', $item)->exists())
-                {
-                    Items::create([
-                        "name" => $item,
-                        "description" => ""
+            // Normalize item values and ensure their IDs are stored
+            $submittedItems = array_filter(array_map('trim', explode(',', $request->items)));
+            $itemIds = [];
+
+            foreach ($submittedItems as $item) {
+                $originalItem = $item;
+                $normalizedName = strtolower($originalItem);
+
+                $itemModel = ctype_digit($originalItem) ? Items::find($originalItem) : null;
+
+                if (!$itemModel) {
+                    $itemModel = Items::whereRaw('LOWER(name) = ?', [$normalizedName])->first();
+                }
+
+                if (!$itemModel) {
+                    $itemModel = Items::create([
+                        'name' => $originalItem,
+                        'description' => ''
                     ]);
                 }
+
+                $itemIds[] = $itemModel->id;
             }
 
             // Update Issue 
             $issue->update([
                 'line_id' => $request->line_id,
-                'items' => $request->items,
+                'items' => implode(',', $itemIds),
                 'assigned_ids' => $request->assigned_ids,
                 'description' => $request->description,
                 'status' => "OPEN"
