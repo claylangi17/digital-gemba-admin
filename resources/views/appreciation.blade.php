@@ -205,6 +205,9 @@
                             <p class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-md font-medium text-base mb-2">
                                 Memberikan Akar Masalah = +1 hingga +100
                             </p>
+                            <p class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-md font-medium text-base mb-2">
+                                Submisi sebagai Group Leader = +20 per root cause
+                            </p>
                         </div>
                     </div>
                 </div>
