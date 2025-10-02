@@ -18,7 +18,7 @@
 
                 {{-- Profile Menu : start  --}}
                 <button data-dropdown-toggle="dropdownProfile" class="flex justify-center items-center rounded-full" type="button">
-                    <img src="{{ Auth::user()->profilePhoto ? asset('storage/' . Auth::user()->profilePhoto->path) : asset('assets/images/user.png') }}" alt="image" class="w-10 h-10 object-fit-cover rounded-full">
+                    <img src="{{ get_user_avatar(Auth::user(), 40) }}" alt="image" class="w-10 h-10 object-fit-cover rounded-full">
                 </button>
                 <div id="dropdownProfile" class="z-10 hidden bg-white dark:bg-neutral-700 rounded-lg shadow-lg dropdown-menu-sm p-3">
                     <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 mb-4 flex items-center justify-between gap-2">

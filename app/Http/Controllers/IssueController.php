@@ -8,6 +8,7 @@ use App\Models\Issues;
 use App\Models\Items;
 use App\Models\RootCauses;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -50,25 +51,35 @@ class IssueController extends Controller
                 'files.*' => "file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,webm|max:20480"
             ]);
 
-            // Create Item if it didnt exist 
-            $items = explode(',', $request->items);
-            foreach ($items as $item)
-            {
-                $item = strtolower($item);
-                if (!Items::where('name', $item)->exists() && !Items::where('id', $item)->exists())
-                {
-                    Items::create([
-                        "name" => $item,
-                        "description" => ""
+            // Normalize item values and ensure their IDs are stored
+            $submittedItems = array_filter(array_map('trim', explode(',', $request->items)));
+            $itemIds = [];
+
+            foreach ($submittedItems as $item) {
+                $originalItem = $item;
+                $normalizedName = strtolower($originalItem);
+
+                $itemModel = ctype_digit($originalItem) ? Items::find($originalItem) : null;
+
+                if (!$itemModel) {
+                    $itemModel = Items::whereRaw('LOWER(name) = ?', [$normalizedName])->first();
+                }
+
+                if (!$itemModel) {
+                    $itemModel = Items::create([
+                        'name' => $originalItem,
+                        'description' => ''
                     ]);
                 }
+
+                $itemIds[] = $itemModel->id;
             }
 
             // Create Issue 
             $issue = Issues::create([
                         'session_id' => $request->session_id,
                         'line_id' => $request->line_id,
-                        'items' => $request->items,
+                        'items' => implode(',', $itemIds),
                         'assigned_ids' => $request->assigned_ids,
                         'description' => $request->description,
                         'status' => "OPEN"
@@ -125,24 +136,34 @@ class IssueController extends Controller
 
             $issue = Issues::with('files')->findOrFail($request->issue_id);
 
-            // Create Item if it didnt exist 
-            $items = explode(',', $request->items);
-            foreach ($items as $item)
-            {
-                $item = strtolower($item);
-                if (!Items::where('name', $item)->exists() && !Items::where('id', $item)->exists())
-                {
-                    Items::create([
-                        "name" => $item,
-                        "description" => ""
+            // Normalize item values and ensure their IDs are stored
+            $submittedItems = array_filter(array_map('trim', explode(',', $request->items)));
+            $itemIds = [];
+
+            foreach ($submittedItems as $item) {
+                $originalItem = $item;
+                $normalizedName = strtolower($originalItem);
+
+                $itemModel = ctype_digit($originalItem) ? Items::find($originalItem) : null;
+
+                if (!$itemModel) {
+                    $itemModel = Items::whereRaw('LOWER(name) = ?', [$normalizedName])->first();
+                }
+
+                if (!$itemModel) {
+                    $itemModel = Items::create([
+                        'name' => $originalItem,
+                        'description' => ''
                     ]);
                 }
+
+                $itemIds[] = $itemModel->id;
             }
 
             // Update Issue 
             $issue->update([
                 'line_id' => $request->line_id,
-                'items' => $request->items,
+                'items' => implode(',', $itemIds),
                 'assigned_ids' => $request->assigned_ids,
                 'description' => $request->description,
                 'status' => "OPEN"
@@ -224,6 +245,70 @@ class IssueController extends Controller
                 ->position('top-end')
                 ->timerProgressBar();
     
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        try {
+
+            $request->validate([
+                'session_id' => 'required'
+            ]);
+
+            $issue = Issues::with(['files'])->find($id);
+
+            if (!$issue) {
+                Alert::toast('Isu tidak ditemukan', 'error')->position('top-end')->timerProgressBar();
+                return redirect()->back();
+            }
+
+            DB::transaction(function () use ($issue) {
+
+                foreach ($issue->files as $file) {
+                    if ($file->path) {
+                        Storage::disk('public')->delete($file->path);
+                    }
+                    $file->delete();
+                }
+
+                $rootCauses = RootCauses::with('files')->where('issue_id', $issue->id)->get();
+                foreach ($rootCauses as $rootCause) {
+                    foreach ($rootCause->files as $rootFile) {
+                        if ($rootFile->path) {
+                            Storage::disk('public')->delete($rootFile->path);
+                        }
+                        $rootFile->delete();
+                    }
+                    $rootCause->delete();
+                }
+
+                $actions = $issue->actions()->with('completionFiles')->get();
+                foreach ($actions as $action) {
+                    foreach ($action->completionFiles as $completionFile) {
+                        if ($completionFile->path) {
+                            Storage::disk('public')->delete($completionFile->path);
+                        }
+                        $completionFile->delete();
+                    }
+                    $action->delete();
+                }
+
+                $issue->delete();
+            });
+
+            Alert::toast('Isu berhasil dihapus', 'success')->position('top-end')->timerProgressBar();
+
+            return redirect()->route('genba.view', [$request->session_id]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to delete Issue', ['error' => $e->getMessage()]);
+
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+
             return redirect()->back()->withInput();
         }
     }

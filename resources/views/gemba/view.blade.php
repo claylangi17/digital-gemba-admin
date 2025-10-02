@@ -75,18 +75,25 @@
                 @endif
             </div>
             <div class="card-body p-6">
-                <div id="issue-carousel" class="p-0 dots-style-circle dots-positioned">
+                <div id="issue-carousel" class="flex gap-4 overflow-x-auto pb-4">
                     @if ($issues->count() > 0)
                         @foreach ($issues as $issue)
-                        
+
+                            @php
+                                $assignedNames = $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name');
+                                $displayedAssigned = $assignedNames->take(3);
+                                $remainingAssigned = max($assignedNames->count() - $displayedAssigned->count(), 0);
+                                $assignedTooltip = $assignedNames->implode(', ');
+                            @endphp
+
                             @if ($issue->status == "OPEN")
-                                <div class="mx-2 issue-card" data-description="{{ strtolower($issue->description) }}">
+                                <div class="issue-card shrink-0 w-[320px]" data-description="{{ strtolower($issue->description) }}">
                                     {{-- Tempalate Onprogress  --}}
                                     <div class="user-grid-card">
                                         <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
                                             
             
-                                            <div class="flex items-center justify-between">
+                                            <div class="flex items-center justify-between gap-4">
                                                 <div class="flex items-center gap-2">
             
                                                     {{-- Aspect  --}}
@@ -94,10 +101,14 @@
                                                     {{-- Status  --}}
                                                     <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
                                                 </div>
-
-                                                <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
-                                                    <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                                </a>
+                                                <div class="flex items-center gap-2">
+                                                    <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[48px] h-[48px] flex items-center justify-center gap-2">
+                                                        <iconify-icon icon="solar:eye-outline" class="text-lg"></iconify-icon>
+                                                    </a>
+                                                    <button type="button" class="btn bg-danger-100 hover:bg-danger-200 text-danger-600 w-[48px] h-[48px] flex items-center justify-center gap-2" onclick="deleteIssueConfirmation('{{ $issue->id }}')">
+                                                        <iconify-icon icon="solar:trash-bin-minimalistic-broken" class="text-lg"></iconify-icon>
+                                                    </button>
+                                                </div>
                                             </div>
                                             
                                             {{-- Issue Name  --}}
@@ -125,33 +136,52 @@
                                                 <img src="https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             @endif
                                             
-                                            <span class="text-xs py-2">
-                                                <span class="font-semibold">Ditugaskan: </span>
-
-                                                {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
-                                            </span>
+                                            <div class="text-xs py-2">
+                                                <span class="font-semibold block">Ditugaskan:</span>
+                                                <div class="flex flex-wrap gap-1" title="{{ $assignedTooltip }}">
+                                                    @foreach ($displayedAssigned as $name)
+                                                        <span class="bg-neutral-100 dark:bg-neutral-700 px-2 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-600">
+                                                            {{ \Illuminate\Support\Str::limit($name, 12) }}
+                                                        </span>
+                                                    @endforeach
+                                                    @if ($remainingAssigned > 0)
+                                                        <span class="bg-neutral-100 dark:bg-neutral-700 px-2 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-600">
+                                                            +{{ $remainingAssigned }} lainnya
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <form id="delete-issue-form-{{ $issue->id }}" action="{{ route('issue.delete', $issue->id) }}" method="post" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="session_id" value="{{ $genba->id }}">
+                                    </form>
                                 </div>
                             @else
-                                <div class="mx-2 issue-card" data-description="{{ strtolower($issue->description) }}">
+                                <div class="issue-card shrink-0 w-[320px]" data-description="{{ strtolower($issue->description) }}">
                                     {{-- Tempalate Finish  --}}
                                     <div class="user-grid-card">
                                         <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
                                             
 
-                                            <div class="flex items-center justify-between">
-                                                <div class="flex items-center gap-2">
+                                            <div class="flex items-center justify-between gap-4">
+                                                <div class="flex items-center gap-3">
             
                                                     {{-- Aspect  --}}
                                                     <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line->name }} </span>
                                                     {{-- Status  --}}
                                                     <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
                                                 </div>
-
-                                                <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[60px] h-[50px] flex items-center justify-center gap-2">
-                                                    <iconify-icon icon="solar:eye-outline" class="text-xl"></iconify-icon>
-                                                </a>
+                                                <div class="flex items-center gap-3">
+                                                    <a href="{{ route('issue.view', [$issue->id]) }}" class="btn bg-primary-600 hover:bg-primary-700 text-white w-[48px] h-[48px] flex items-center justify-center gap-2">
+                                                        <iconify-icon icon="solar:eye-outline" class="text-lg"></iconify-icon>
+                                                    </a>
+                                                    <button type="button" class="btn bg-danger-100 hover:bg-danger-200 text-danger-600 w-[48px] h-[48px] flex items-center justify-center gap-2" onclick="deleteIssueConfirmation('{{ $issue->id }}')">
+                                                        <iconify-icon icon="solar:trash-bin-minimalistic-broken" class="text-lg"></iconify-icon>
+                                                    </button>
+                                                </div>
                                             </div>
                                             
                                             {{-- Issue Name  --}}
@@ -178,13 +208,28 @@
                                             @else
                                                 <img src="https://placehold.co/300x225?text=tambahkan%20file%20terkait%20isu%20ini" alt="" style="width: 100% ;height: 225px; object-fit:cover">
                                             @endif
-                                            <span class="text-xs py-2">
-                                                <span class="font-semibold">Ditugaskan: </span>
-
-                                                {{ $users->whereIn('id', explode(',', $issue->assigned_ids))->pluck('name')->implode(', ') }}
-                                            </span>
+                                            <div class="text-xs py-2">
+                                                <span class="font-semibold block">Ditugaskan:</span>
+                                                <div class="flex flex-wrap gap-1" title="{{ $assignedTooltip }}">
+                                                    @foreach ($displayedAssigned as $name)
+                                                        <span class="bg-neutral-100 dark:bg-neutral-700 px-2 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-600">
+                                                            {{ \Illuminate\Support\Str::limit($name, 12) }}
+                                                        </span>
+                                                    @endforeach
+                                                    @if ($remainingAssigned > 0)
+                                                        <span class="bg-neutral-100 dark:bg-neutral-700 px-2 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-600">
+                                                            +{{ $remainingAssigned }} lainnya
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <form id="delete-issue-form-{{ $issue->id }}" action="{{ route('issue.delete', $issue->id) }}" method="post" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="session_id" value="{{ $genba->id }}">
+                                    </form>
                                 </div>
                             @endif
 
@@ -199,9 +244,6 @@
                             </div>
                         </div>
                     @endif
-                </div>
-                <div class="slider-progress">
-                    <span></span>
                 </div>
             </div>
         </div>
@@ -285,7 +327,7 @@
                     </button>
     
                     @if ($genba->status != "FINISH")
-                        <button onclick="closingConfirmation()" class="btn bg-success-600 text-white hover:bg-success-700 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                        <button id="close-genba-btn" class="btn bg-success-600 text-white hover:bg-success-700 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                             <iconify-icon icon="ic:round-done-all" class="icon text-xl line-height-1"></iconify-icon>
                             Tutup Sesi
                         </button>
@@ -360,11 +402,11 @@
     </div>
 
     {{-- Attendance Modal  --}}
-    <div id="attendance-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div id="attendance-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" role="dialog" aria-labelledby="attendance-modal-title">
         <div class="relative p-4 w-full  max-w-2xl max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Tambahkan Peserta </h3>
+                    <h3 id="attendance-modal-title" class="text-xl font-semibold text-gray-900 dark:text-white"> Tambahkan Peserta </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="attendance-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -477,98 +519,232 @@
     
 
     <script>
-        function closingConfirmation() {
-            Swal.fire({
-                title: 'Apakah Anda Yakin?',
-                text: "Genba ini akan dinyatakan telah 'Selesai' dilaksanakan",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, konfirmasi!',
-                confirmButtonColor: '#2563eb',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $("#close-genba-form").submit()
-                }
+        // Use DOMContentLoaded to ensure DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing components...');
+            
+            // Initialize close genba button
+            const closeGenbaBtn = document.getElementById('close-genba-btn');
+            const closeGenbaForm = document.getElementById('close-genba-form');
+            
+            console.log('Close button found:', closeGenbaBtn);
+            console.log('Close form found:', closeGenbaForm);
+            
+            if (closeGenbaBtn && closeGenbaForm) {
+                closeGenbaBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Close button clicked');
+                    
+                    // Check if SweetAlert2 is available
+                    if (typeof Swal !== 'undefined') {
+                        console.log('Using SweetAlert2');
+                        Swal.fire({
+                            title: 'Apakah Anda Yakin?',
+                            text: "Genba ini akan dinyatakan telah 'Selesai' dilaksanakan",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, konfirmasi!',
+                            confirmButtonColor: '#2563eb',
+                            cancelButtonColor: '#d33',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log('User confirmed, submitting form...');
+                                closeGenbaForm.submit();
+                            } else {
+                                console.log('User cancelled');
+                            }
+                        });
+                    } else {
+                        console.log('SweetAlert2 not available, using native confirm');
+                        if (confirm("Genba ini akan dinyatakan telah 'Selesai' dilaksanakan. Lanjutkan?")) {
+                            console.log('User confirmed, submitting form...');
+                            closeGenbaForm.submit();
+                        } else {
+                            console.log('User cancelled');
+                        }
+                    }
+                });
+                
+                console.log('Event listener attached successfully');
+            } else {
+                console.error('Close button or form not found!');
+                if (!closeGenbaBtn) console.error('close-genba-btn element not found');
+                if (!closeGenbaForm) console.error('close-genba-form element not found');
+            }
+
+            // Initialize VirtualSelect components
+            console.log('Initializing VirtualSelect components...');
+            
+            // Check if VirtualSelect is available
+            if (typeof VirtualSelect === 'undefined') {
+                console.error('VirtualSelect is not loaded');
+                return;
+            }
+
+            // Initialize line selector
+            if (document.getElementById('line')) {
+                VirtualSelect.init({ 
+                    ele: '#line',
+                    name: 'line',
+                    maxWidth: '100%',
+                    search: true,
+                    noOptionsText: "Tidak ada pilihan",
+                    noSearchResultsText: "Pilihan tidak ditemukan",
+                    searchPlaceholderText: "Cari....",
+                    placeholder: "Pilih Line",
+                    options : [
+                         @foreach ($lines as $line)
+                         { label: {!! json_encode($line->name) !!}, value: {!! json_encode($line->name) !!} },
+                         @endforeach
+                     ]
+                });
+            }
+
+            // Initialize receivers selector
+            if (document.getElementById('receivers')) {
+                VirtualSelect.init({ 
+                    ele: '#receivers',
+                    name: 'receivers',
+                    maxWidth: '100%',
+                    multiple: true,
+                    search: true,
+                    noOptionsText: "Tidak ada karyawan",
+                    noSearchResultsText: "Karyawan tidak ditemukan",
+                    searchPlaceholderText: "Cari....",
+                    placeholder: "Pilih Karyawan",
+                    options: [
+                         @foreach ( $users as $user )
+                             @if (Auth::user()->id != $user->id)
+                             { label: {!! json_encode($user->name) !!}, value: {!! json_encode($user->id . '#' . $user->name) !!} },
+                             @endif
+                         @endforeach
+                     ],
+                });
+            }
+
+            // Initialize user_ids selector
+            console.log('Initializing VirtualSelect for user_ids...');
+            if (document.getElementById('user_ids')) {
+                console.log('Element user_ids found, initializing VirtualSelect...');
+                VirtualSelect.init({ 
+                    ele: '#user_ids',
+                    name: 'user_ids',
+                    maxWidth: '100%',
+                    multiple: true,
+                    search: true,
+                    noOptionsText: "Tidak ada karyawan",
+                    noSearchResultsText: "Karyawan tidak ditemukan",
+                    searchPlaceholderText: "Cari....",
+                    placeholder: "Pilih Karyawan",
+                    options: [
+                         @foreach ( $users as $user )
+                         { label: {!! json_encode($user->name) !!}, value: {!! json_encode($user->id) !!} },
+                         @endforeach
+                     ],
+                });
+                console.log('VirtualSelect for user_ids initialized');
+            } else {
+                console.log('Element user_ids not found');
+            }
+
+            // Initialize save button event listeners
+            console.log('Initializing save button event listeners...');
+            
+            // Save appreciation button
+            $('#save-appreciation').on('click', function(e) {
+                e.preventDefault();
+                $('#appreciation-note-form').submit();
             });
+
+            // Save attendance button
+            $('#save-attendance').on('click', function(e) {
+                e.preventDefault();
+                
+                console.log('Save attendance clicked');
+                
+                // Get selected user IDs from VirtualSelect
+                const userIds = document.querySelector('#user_ids').value;
+                console.log('Selected user IDs:', userIds);
+                
+                if (!userIds || userIds.length === 0) {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'Peringatan!',
+                            text: 'Silakan pilih minimal satu peserta',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        alert('Silakan pilih minimal satu peserta');
+                    }
+                    return;
+                }
+                
+                // Create hidden input for user_ids if it doesn't exist
+                let userIdsInput = document.querySelector('#attendance-form input[name="user_ids"]');
+                if (!userIdsInput) {
+                    userIdsInput = document.createElement('input');
+                    userIdsInput.type = 'hidden';
+                    userIdsInput.name = 'user_ids';
+                    document.getElementById('attendance-form').appendChild(userIdsInput);
+                }
+                
+                // Set the value
+                userIdsInput.value = userIds;
+                console.log('Form will be submitted with user_ids:', userIdsInput.value);
+
+                $('#attendance-form').submit();
+            });
+
+            console.log('All components initialized successfully');
+        });
+
+        // Debug: Check if users data is available
+        console.log('Users data from server:');
+        @if(isset($users) && count($users) > 0)
+            console.log('Users count: {{ count($users) }}');
+            @foreach($users as $user)
+                console.log('User: {{ $user->name }} (ID: {{ $user->id }})');
+            @endforeach
+        @else
+            console.log('No users data available');
+        @endif
+
+    </script>
+
+    <script>
+        window.deleteIssueConfirmation = function(issueId) {
+            const submitForm = () => {
+                const form = document.getElementById(`delete-issue-form-${issueId}`);
+                if (form) {
+                    form.submit();
+                } else {
+                    console.error('Delete form not found for issue', issueId);
+                }
+            };
+
+            if (window.Swal && typeof window.Swal.fire === 'function') {
+                Swal.fire({
+                    title: 'Hapus Isu?',
+                    text: 'Isu dan semua data terkait akan dihapus permanen.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#2563eb',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitForm();
+                    }
+                });
+            } else {
+                if (confirm('Hapus isu ini beserta seluruh data terkait?')) {
+                    submitForm();
+                }
+            }
         }
-
-        VirtualSelect.init({ 
-            ele: '#line',
-            name: 'line',
-            maxWidth: '100%',
-            search: true,
-            noOptionsText: "Tidak ada pilihan",
-            noSearchResultsText: "Pilihan tidak ditemukan",
-            searchPlaceholderText: "Cari....",
-            placeholder: "Pilih Line",
-            options : [
-                @foreach ($lines as $line)
-                { label: '{{ $line->name }}', value: '{{ $line->name }}', },
-                @endforeach
-            ]
-        });
-
-        VirtualSelect.init({ 
-            ele: '#receivers',
-            name: 'receivers',
-            maxWidth: '100%',
-            multiple: true,
-            search: true,
-            noOptionsText: "Tidak ada karyawan",
-            noSearchResultsText: "Karyawan tidak ditemukan",
-            searchPlaceholderText: "Cari....",
-            placeholder: "Pilih Karyawan",
-            options: [
-                @foreach ( $users as $user )
-                    @if (Auth::user()->id != $user->id)
-                    { label: '{{ $user->name }}', value: '{{ $user->id }}#{{ $user->name }}', },
-                    @endif
-                @endforeach
-            ],
-        });
-
-        VirtualSelect.init({ 
-            ele: '#user_ids',
-            name: 'user_ids',
-            maxWidth: '100%',
-            multiple: true,
-            search: true,
-            noOptionsText: "Tidak ada karyawan",
-            noSearchResultsText: "Karyawan tidak ditemukan",
-            searchPlaceholderText: "Cari....",
-            placeholder: "Pilih Karyawan",
-            options: [
-                @foreach ( $users as $user )
-                { label: '{{ $user->name }}', value: '{{ $user->id }}', },
-                @endforeach
-            ],
-        });
-
-        $('#save-appreciation').on('click', function(e) {
-            e.preventDefault();
-
-            $('#appreciation-note-form').submit();
-        });
-
-        $('#save-attendance').on('click', function(e) {
-            e.preventDefault();
-
-            $('#attendance-form').submit();
-        });
-
-        $("#issue-carousel").slick({
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 3, 
-            arrows: true, 
-            dots: true,
-            infinite: true,
-            speed: 600,
-            prevArrow: '',
-            nextArrow: '',
-        })
 
         $("#progress-carousel").slick({
             infinite: true,

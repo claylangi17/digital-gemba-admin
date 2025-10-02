@@ -19,7 +19,7 @@
                             <p class="text-xs font-neutral-600 text-center mb-2 mt-2">
                                 2nd Top Performer
                             </p>
-                            <img src="{{ asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
+                            <img src="{{ get_user_avatar($top->get(1), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             <h6 class="text-lg text-center mb-2 mt-2">
                                 {{ $top->get(1)->name }}
                             </h6>
@@ -42,7 +42,7 @@
                                 1st Top Performer
                             </p>
 
-                            <img src="{{ asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
+                            <img src="{{ get_user_avatar($top->get(0), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             
                             <h6 class="text-lg text-center mb-2 mt-2">
                                 {{ $top->get(0)->name }}
@@ -68,7 +68,7 @@
                             <p class="text-xs font-neutral-600 text-center mb-2 mt-2">
                                 3rd Top Performer
                             </p>
-                            <img src="{{ asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
+                            <img src="{{ get_user_avatar($top->get(2), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             <h6 class="text-lg text-center mb-2 mt-2">
                                 {{ $top->get(2)->name }}
                             </h6>
@@ -204,6 +204,9 @@
 
                             <p class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-md font-medium text-base mb-2">
                                 Memberikan Akar Masalah = +1 hingga +100
+                            </p>
+                            <p class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-md font-medium text-base mb-2">
+                                Submisi sebagai Group Leader = +20 per root cause
                             </p>
                         </div>
                     </div>

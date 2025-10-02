@@ -31,9 +31,9 @@
                     @if ($user->id != Auth::user()->id)
                         <div class="user-grid-card" data-name="{{ $user->name }}" data-email="{{ $user->name }}">
                             <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden">
-                                <img src="{{ $user->coverPhoto ? asset('storage/' . $user->coverPhoto->path) : asset('assets/images/user-grid/user-grid-bg1.png') }}" alt="" style="width: 360px ;height: 120px; object-fit:cover">
+                                <img src="{{ get_user_cover($user) }}" alt="" style="width: 360px ;height: 120px; object-fit:cover">
                                 <div class="pe-6 pb-4 ps-6 text-center mt--50">
-                                    <img src="{{ $user->profilePhoto ? asset('storage/' . $user->profilePhoto->path) : asset('assets/images/user-grid/user-grid-img1.png') }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto -mt-[50px] rounded-full object-fit-cover">
+                                    <img src="{{ get_user_avatar($user, 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto -mt-[50px] rounded-full object-fit-cover">
                                     <h6 class="text-lg mb-0 mt-1.5">
                                         {{ $user->name }}
                                     </h6>
