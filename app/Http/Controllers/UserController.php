@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserCoverPhoto;
 use App\Models\UserProfilePhoto;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -104,9 +105,10 @@ class UserController extends Controller
                 $profileFilename = uniqid() . '_' . Str::random(10) . '.' . $profileFile->getClientOriginalExtension();
                 $profilePath = $profileFile->storeAs('uploads/user/profile/' . $request->id, $profileFilename, 'public');
             
-                UserProfilePhoto::where('user_id', $request->id)->update([
-                    'path' => $profilePath,
-                ]);
+                UserProfilePhoto::updateOrCreate(
+                    ['user_id' => $request->id],
+                    ['path' => $profilePath]
+                );
             }
             
             // Check if user attached cover photo 
@@ -115,13 +117,14 @@ class UserController extends Controller
                 $coverFilename = uniqid() . '_' . Str::random(10) . '.' . $coverFile->getClientOriginalExtension();
                 $coverPath = $coverFile->storeAs('uploads/user/cover/' . $request->id, $coverFilename, 'public');
             
-                UserCoverPhoto::where('user_id', $request->id)->update([
-                    'path' => $coverPath,
-                ]);
+                UserCoverPhoto::updateOrCreate(
+                    ['user_id' => $request->id],
+                    ['path' => $coverPath]
+                );
             }
     
             // Check if user inputed new password 
-            if (!$request->password)
+            if ($request->filled('password'))
             {
                 User::where('id', $request->id)->update([
                     'password' => bcrypt($request->password),
@@ -154,5 +157,53 @@ class UserController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function deleteProfilePhoto($id)
+    {
+        try {
+            $profilePhoto = UserProfilePhoto::where('user_id', $id)->first();
+            
+            if ($profilePhoto) {
+                // Delete file from storage
+                if (Storage::disk('public')->exists($profilePhoto->path)) {
+                    Storage::disk('public')->delete($profilePhoto->path);
+                }
+                
+                // Delete record from database
+                $profilePhoto->delete();
+                
+                return response()->json(['success' => true, 'message' => 'Foto profil berhasil dihapus']);
+            }
+            
+            return response()->json(['success' => false, 'message' => 'Foto profil tidak ditemukan']);
+        } catch (\Exception $e) {
+            Log::error('Failed to delete profile photo', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus foto profil']);
+        }
+    }
+
+    public function deleteCoverPhoto($id)
+    {
+        try {
+            $coverPhoto = UserCoverPhoto::where('user_id', $id)->first();
+            
+            if ($coverPhoto) {
+                // Delete file from storage
+                if (Storage::disk('public')->exists($coverPhoto->path)) {
+                    Storage::disk('public')->delete($coverPhoto->path);
+                }
+                
+                // Delete record from database
+                $coverPhoto->delete();
+                
+                return response()->json(['success' => true, 'message' => 'Foto sampul berhasil dihapus']);
+            }
+            
+            return response()->json(['success' => false, 'message' => 'Foto sampul tidak ditemukan']);
+        } catch (\Exception $e) {
+            Log::error('Failed to delete cover photo', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus foto sampul']);
+        }
     }
 }

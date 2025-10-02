@@ -66,11 +66,45 @@ style="display: @if($show === true)
                     </div>
                     <div class="mb-3 col-span-2">
                         <label for="profile_photo" class="form-label">Foto Profil</label>
-                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="profile_photo" id="profile_photo" accept="image/*">
+                        @if ($mode != 'create' && $user && $user->profilePhoto)
+                            <div class="mb-3">
+                                <div class="flex justify-center mb-2">
+                                    <img src="{{ asset('storage/' . $user->profilePhoto->path) }}" alt="Current Profile" class="w-24 h-24 rounded-full object-cover border-2 border-neutral-200 dark:border-neutral-600">
+                                </div>
+                                <p class="text-xs text-neutral-500 text-center mb-2">Foto profil saat ini</p>
+                                <div class="flex justify-center">
+                                    <button type="button" onclick="deleteProfilePhoto('{{ $user->id }}')" class="btn bg-danger-100 hover:bg-danger-200 text-danger-600 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                        <iconify-icon icon="solar:trash-bin-minimalistic-broken" class="text-sm"></iconify-icon>
+                                        Hapus & Gunakan Avatar Random
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="profile_photo" id="profile_photo" accept="image/*" onchange="previewProfilePhoto(event)">
+                        <div id="profile-preview" class="mt-2 hidden">
+                            <img id="profile-preview-img" class="w-24 h-24 rounded-full object-cover border-2 border-primary-600">
+                            <p class="text-xs text-primary-600 mt-1">Preview foto baru</p>
+                        </div>
                     </div>
                     <div class="mb-3 col-span-2">
                         <label for="cover_photo" class="form-label">Foto Sampul</label>
-                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="cover_photo" id="cover_photo" accept="image/*">
+                        @if ($mode != 'create' && $user && $user->coverPhoto)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $user->coverPhoto->path) }}" alt="Current Cover" class="w-full h-32 rounded-lg object-cover border-2 border-neutral-200 dark:border-neutral-600">
+                                <div class="flex items-center justify-between mt-2">
+                                    <p class="text-xs text-neutral-500">Foto sampul saat ini</p>
+                                    <button type="button" onclick="deleteCoverPhoto('{{ $user->id }}')" class="btn bg-danger-100 hover:bg-danger-200 text-danger-600 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                        <iconify-icon icon="solar:trash-bin-minimalistic-broken" class="text-sm"></iconify-icon>
+                                        Hapus & Gunakan Pattern Random
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                        <input class="border border-neutral-200 dark:border-neutral-600 w-full rounded-lg" type="file" name="cover_photo" id="cover_photo" accept="image/*" onchange="previewCoverPhoto(event)">
+                        <div id="cover-preview" class="mt-2 hidden">
+                            <img id="cover-preview-img" class="w-full h-32 rounded-lg object-cover border-2 border-primary-600">
+                            <p class="text-xs text-primary-600 mt-1">Preview foto baru</p>
+                        </div>
                     </div>
                     
                 </form>
@@ -99,5 +133,95 @@ style="display: @if($show === true)
 
             $('#user-form').submit();
         });
+
+        // Preview profile photo
+        function previewProfilePhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-preview-img').src = e.target.result;
+                    document.getElementById('profile-preview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview cover photo
+        function previewCoverPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cover-preview-img').src = e.target.result;
+                    document.getElementById('cover-preview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Delete profile photo
+        function deleteProfilePhoto(userId) {
+            if (confirm('Hapus foto profil dan gunakan avatar random?')) {
+                fetch(`/users/delete-profile-photo/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('Foto profil berhasil dihapus!');
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus foto: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus foto');
+                });
+            }
+        }
+
+        // Delete cover photo
+        function deleteCoverPhoto(userId) {
+            if (confirm('Hapus foto sampul dan gunakan pattern random?')) {
+                fetch(`/users/delete-cover-photo/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('Foto sampul berhasil dihapus!');
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus foto: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus foto');
+                });
+            }
+        }
     </script>
 @endpush
