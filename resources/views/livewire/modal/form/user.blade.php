@@ -69,7 +69,7 @@ style="display: @if($show === true)
                         @if ($mode != 'create' && $user && $user->profilePhoto)
                             <div class="mb-3">
                                 <div class="flex justify-center mb-2">
-                                    <img src="{{ asset('storage/' . $user->profilePhoto->path) }}" alt="Current Profile" class="w-24 h-24 rounded-full object-cover border-2 border-neutral-200 dark:border-neutral-600">
+                                    <img src="{{ $user->profilePhoto->image_url }}" alt="Current Profile" class="w-24 h-24 rounded-full object-cover border-2 border-neutral-200 dark:border-neutral-600">
                                 </div>
                                 <p class="text-xs text-neutral-500 text-center mb-2">Foto profil saat ini</p>
                                 <div class="flex justify-center">
@@ -90,7 +90,7 @@ style="display: @if($show === true)
                         <label for="cover_photo" class="form-label">Foto Sampul</label>
                         @if ($mode != 'create' && $user && $user->coverPhoto)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $user->coverPhoto->path) }}" alt="Current Cover" class="w-full h-32 rounded-lg object-cover border-2 border-neutral-200 dark:border-neutral-600">
+                                <img src="{{ $user->coverPhoto->image_url }}" alt="Current Cover" class="w-full h-32 rounded-lg object-cover border-2 border-neutral-200 dark:border-neutral-600">
                                 <div class="flex items-center justify-between mt-2">
                                     <p class="text-xs text-neutral-500">Foto sampul saat ini</p>
                                     <button type="button" onclick="deleteCoverPhoto('{{ $user->id }}')" class="btn bg-danger-100 hover:bg-danger-200 text-danger-600 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">

@@ -65,12 +65,12 @@ class="{{ $show === true ? 'flex' : 'hidden' }} bg-neutral-600/10 overflow-y-aut
                                             </div>
                                             <div class="rounded-lg overflow-hidden">
                                                 @if ($file->type === 'PHOTO')
-                                                    <img src="{{ asset('storage/' . $file->path) }}" alt="File pendukung" class="w-full h-32 object-cover">
+                                                    <img src="{{ $file->image_url }}" alt="File pendukung" class="w-full h-32 object-cover">
                                                 @else
-                                                    <video src="{{ asset('storage/' . $file->path) }}" class="w-full h-32 object-cover" controls></video>
+                                                    <video src="{{ $file->image_url }}" class="w-full h-32 object-cover" controls></video>
                                                 @endif
                                             </div>
-                                            <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-primary-600 dark:text-primary-400 text-xs mt-2 inline-block">Lihat File</a>
+                                            <a href="{{ $file->image_url }}" target="_blank" class="text-primary-600 dark:text-primary-400 text-xs mt-2 inline-block">Lihat File</a>
                                         </div>
                                     @endforeach
                                 </div>

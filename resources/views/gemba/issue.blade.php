@@ -173,7 +173,7 @@
                                 <div class="user-grid-card">
                                     <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4">
                                         {{--  File  --}}
-                                        <img src="{{ asset('storage/' . $file->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $file->path) }}')">
+                                        <img src="{{ $file->image_url }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ $file->image_url }}')">
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@
                             {{-- Tempalate IMG  --}}
                             <div class="mx-2">
                                 <div class="user-grid-card">
-                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4" onclick="showVideoModal('{{ asset('storage/' . $file->path) }}')">
+                                    <div class="relative border border-neutral-200 dark:border-neutral-600 rounded-2xl overflow-hidden p-4" onclick="showVideoModal('{{ $file->image_url }}')">
                                         {{--  File  --}}
                                         <video
                                         muted
@@ -190,7 +190,7 @@
                                         playsinline
                                         style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
                                         >
-                                            <source src="{{ asset('storage/' . $file->path) }}" type="video/mp4">
+                                            <source src="{{ $file->image_url }}" type="video/mp4">
                                         </video>
                                     </div>
                                 </div>
