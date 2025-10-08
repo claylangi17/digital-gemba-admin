@@ -40,6 +40,13 @@
             </li>
 
             <li>
+                <a href="{{ route('spinwheel.index') }}">
+                    <iconify-icon icon="game-icons:spinning-wheel" class="menu-icon"></iconify-icon>
+                    <span>Spinwheel Area</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('appreciation.index') }}">
                     <iconify-icon icon="gg:awards" class="menu-icon"></iconify-icon>
                     <span>Penghargaan</span>
