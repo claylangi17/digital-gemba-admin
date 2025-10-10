@@ -11,7 +11,9 @@ class Area extends Component
     
     public function mount()
     {
-        $this->lines = Lines::withCount('issues')
+        $this->lines = Lines::withCount(['issues' => function ($query) {
+            $query->where('session_id', '!=', 1);
+        }])
         ->orderBy('issues_count', 'desc')
         ->take(5)
         ->get();

@@ -13,7 +13,7 @@ class Highlight extends Component
 
     public function get_data()
     {
-        $sessions = GenbaSessions::all();
+        $sessions = GenbaSessions::where('id', '!=', 1)->get();
 
         $this->total = $sessions->count();
         $this->progress = $sessions->where("status", "PROGRESS")->count();

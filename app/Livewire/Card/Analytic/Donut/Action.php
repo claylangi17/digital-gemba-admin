@@ -42,6 +42,11 @@ class Action extends Component
             $actions = Actions::query(); // all data
         }
 
+        // Exclude actions from Gemba session ID 1
+        $actions = $actions->whereHas('issue', function ($query) {
+            $query->where('session_id', '!=', 1);
+        });
+
         $this->overdue = (clone $actions)->where('status', "PROGRESS")
                                         ->wherePast('due_date')
                                         ->count();

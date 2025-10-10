@@ -119,7 +119,7 @@
                                             {{-- Supporting File  --}}
                                             @if ($issue->files->first())
                                                 @if ($issue->files->first()->type == "PHOTO")
-                                                    <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $issue->files->first()->path) }}')">
+                                                    <img src="{{ $issue->files->first()->image_url }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ $issue->files->first()->image_url }}')">
                                                 @else
                                                     <video
                                                         muted
@@ -127,9 +127,9 @@
                                                         loop
                                                         playsinline
                                                         style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
-                                                        onclick="showVideoModal('{{ asset('storage/' . $issue->files->first()->path) }}')"
+                                                        onclick="showVideoModal('{{ $issue->files->first()->image_url }}')"
                                                     >
-                                                        <source src="{{ asset('storage/' . $issue->files->first()->path) }}" type="video/mp4">
+                                                        <source src="{{ $issue->files->first()->image_url }}" type="video/mp4">
                                                     </video>
                                                 @endif
                                             @else
@@ -192,7 +192,7 @@
                                             {{-- Supporting File  --}}
                                             @if ($issue->files->first())
                                                 @if ($issue->files->first()->type == "PHOTO")
-                                                    <img src="{{ asset('storage/' . $issue->files->first()->path) }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ asset('storage/' . $issue->files->first()->path) }}')">
+                                                    <img src="{{ $issue->files->first()->image_url }}" alt="" style="width: 100% ;height: 225px; object-fit:cover; cursor: pointer" onclick="showImageModal('{{ $issue->files->first()->image_url }}')">
                                                 @else
                                                     <video
                                                         muted
@@ -200,9 +200,9 @@
                                                         loop
                                                         playsinline
                                                         style="width: 100% ;height: 225px; object-fit:cover; cursor:pointer;"
-                                                        onclick="showVideoModal('{{ asset('storage/' . $issue->files->first()->path) }}')"
+                                                        onclick="showVideoModal('{{ $issue->files->first()->image_url }}')"
                                                     >
-                                                        <source src="{{ asset('storage/' . $issue->files->first()->path) }}" type="video/mp4">
+                                                        <source src="{{ $issue->files->first()->image_url }}" type="video/mp4">
                                                     </video>
                                                 @endif
                                             @else
