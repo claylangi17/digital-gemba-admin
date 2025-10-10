@@ -582,6 +582,177 @@
         }
     }
     
+    /* Line Management Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+    
+    .modal-overlay.hidden {
+        display: none;
+    }
+    
+    .modal-content {
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .modal-header h5 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #6b7280;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.375rem;
+        transition: all 0.2s;
+    }
+    
+    .modal-close:hover {
+        background: #f3f4f6;
+        color: #374151;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1.5rem;
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .form-control.is-invalid {
+        border-color: #ef4444;
+    }
+    
+    .invalid-feedback {
+        display: none;
+        color: #ef4444;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+    
+    .invalid-feedback.show {
+        display: block;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #2563eb;
+    }
+    
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #4b5563;
+    }
+    
+    .btn-sm {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .text-danger {
+        color: #ef4444;
+    }
+    
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+
+    
     /* Enhanced button states */
     .btn-primary {
         background: var(--primary-gradient);
@@ -841,6 +1012,65 @@
                 <p class="text-secondary-light text-center py-4 text-sm">Belum ada riwayat spin hari ini</p>
             </div>
         </div>
+
+        <!-- Line Management Section -->
+        <div class="card p-5 rounded-xl border-0 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600" role="region" aria-label="Kelola Area Line">
+            <div class="flex items-center justify-between mb-4">
+                <h6 class="mb-0 flex items-center gap-2 font-semibold text-neutral-900 dark:text-neutral-200">
+                    <iconify-icon icon="mdi:cog" class="text-xl" aria-hidden="true"></iconify-icon>
+                    Kelola Area Line
+                </h6>
+                <button id="addLineButton" 
+                        class="btn btn-sm bg-primary-600 hover:bg-primary-700 text-white rounded-lg px-3 py-1 text-sm"
+                        aria-label="Tambah area line baru">
+                    <iconify-icon icon="mdi:plus" class="mr-1" aria-hidden="true"></iconify-icon>
+                    Tambah Line
+                </button>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchLines" 
+                        class="w-full px-4 py-2 pr-10 border border-neutral-200 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-600 text-neutral-900 dark:text-neutral-200 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
+                        placeholder="Cari area line..." 
+                        onkeyup="filterLines()"
+                    >
+
+                </div>
+            </div>
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+                <div id="linesContainer">
+                    @foreach($lines as $index => $line)
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-neutral-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-600 transition" data-line-id="{{ $line->id }}">
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                                {{ $index + 1 }}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h6 class="mb-0 font-semibold text-sm truncate">{{ $line->name }}</h6>
+                                <p class="text-xs text-secondary-light mb-0 truncate">{{ $line->description ?: 'Tidak ada deskripsi' }}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-1 flex-shrink-0 ml-2">
+                            <button class="btn btn-sm bg-warning-600 hover:bg-warning-700 text-white rounded px-2 py-1 text-xs" 
+                                    onclick="editLine({{ $line->id }}, '{{ addslashes($line->name) }}', '{{ addslashes($line->description) }}')"
+                                    aria-label="Edit {{ $line->name }}">
+                                <iconify-icon icon="mdi:pencil"></iconify-icon>
+                            </button>
+                            <button class="btn btn-sm bg-danger-600 hover:bg-danger-700 text-white rounded px-2 py-1 text-xs" 
+                                    onclick="deleteLine({{ $line->id }}, '{{ addslashes($line->name) }}')"
+                                    aria-label="Hapus {{ $line->name }}">
+                                <iconify-icon icon="mdi:delete"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @else
@@ -851,6 +1081,42 @@
     <p class="text-secondary-light">Silakan tambahkan data line terlebih dahulu untuk menggunakan fitur spinwheel.</p>
 </div>
 @endif
+
+<!-- Line Management Modal -->
+<div id="lineModal" class="modal-overlay hidden">
+    <div class="modal-content bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600">
+        <div class="modal-header border-b border-neutral-200 dark:border-neutral-600">
+            <h5 id="modalTitle" class="text-neutral-900 dark:text-neutral-200">Tambah Area Line</h5>
+            <button type="button" class="modal-close text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" onclick="closeLineModal()">
+                <iconify-icon icon="mdi:close"></iconify-icon>
+            </button>
+        </div>
+        <form id="lineForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="lineName" class="text-neutral-900 dark:text-neutral-200">Nama Line <span class="text-danger">*</span></label>
+                    <input type="text" id="lineName" name="name" class="form-control bg-white dark:bg-neutral-600 border-neutral-200 dark:border-neutral-600 text-neutral-900 dark:text-neutral-200 placeholder-neutral-500 dark:placeholder-neutral-400" required>
+                    <div class="invalid-feedback" id="nameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="lineDescription" class="text-neutral-900 dark:text-neutral-200">Deskripsi <span class="text-danger">*</span></label>
+                    <textarea id="lineDescription" name="description" class="form-control bg-white dark:bg-neutral-600 border-neutral-200 dark:border-neutral-600 text-neutral-900 dark:text-neutral-200 placeholder-neutral-500 dark:placeholder-neutral-400" rows="3" required></textarea>
+                    <div class="invalid-feedback" id="descriptionError"></div>
+                </div>
+            </div>
+            <div class="modal-footer border-t border-neutral-200 dark:border-neutral-600">
+                <button type="button" class="btn btn-secondary bg-neutral-200 dark:bg-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-500" onclick="closeLineModal()">Batal</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="btn-text">Simpan</span>
+                    <span class="btn-loading hidden">
+                        <iconify-icon icon="mdi:loading" class="animate-spin"></iconify-icon>
+                        Menyimpan...
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @endsection
 
@@ -1123,6 +1389,180 @@
         }, 1000);
     }
     
+    // Line Management Functions
+    let currentEditingLineId = null;
+
+    function openAddLineModal() {
+        currentEditingLineId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Area Line';
+        document.getElementById('lineForm').reset();
+        clearValidationErrors();
+        document.getElementById('lineModal').classList.remove('hidden');
+    }
+
+    function editLine(id, name, description) {
+        currentEditingLineId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Area Line';
+        document.getElementById('lineName').value = name;
+        document.getElementById('lineDescription').value = description;
+        clearValidationErrors();
+        document.getElementById('lineModal').classList.remove('hidden');
+    }
+
+    function closeLineModal() {
+        document.getElementById('lineModal').classList.add('hidden');
+        currentEditingLineId = null;
+        document.getElementById('lineForm').reset();
+        clearValidationErrors();
+    }
+
+    function clearValidationErrors() {
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.classList.remove('is-invalid');
+        });
+        document.querySelectorAll('.invalid-feedback').forEach(error => {
+            error.classList.remove('show');
+            error.textContent = '';
+        });
+    }
+
+    function showValidationErrors(errors) {
+        clearValidationErrors();
+        for (const field in errors) {
+            const input = document.querySelector(`[name="${field}"]`);
+            const errorDiv = document.getElementById(`${field}Error`);
+            if (input && errorDiv) {
+                input.classList.add('is-invalid');
+                errorDiv.textContent = errors[field][0];
+                errorDiv.classList.add('show');
+            }
+        }
+    }
+
+    function setButtonLoading(loading) {
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+        
+        if (loading) {
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+        } else {
+            btnText.classList.remove('hidden');
+            btnLoading.classList.add('hidden');
+            submitBtn.disabled = false;
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        // Simple toast notification
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    function filterLines() {
+        const searchTerm = document.getElementById('searchLines').value.toLowerCase();
+        const lineItems = document.querySelectorAll('#linesContainer > div[data-line-id]');
+        
+        lineItems.forEach(item => {
+            const lineName = item.querySelector('h6').textContent.toLowerCase();
+            const lineDescription = item.querySelector('p').textContent.toLowerCase();
+            
+            if (lineName.includes(searchTerm) || lineDescription.includes(searchTerm)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    function deleteLine(id, name) {
+        if (!confirm(`Apakah Anda yakin ingin menghapus line "${name}"?`)) {
+            return;
+        }
+
+        fetch(`/spinwheel/lines/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message);
+                refreshLinesDisplay();
+                updateSpinwheel();
+            } else {
+                showToast(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Terjadi kesalahan saat menghapus line', 'error');
+        });
+    }
+
+    function refreshLinesDisplay() {
+        fetch('/spinwheel/lines')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const container = document.getElementById('linesContainer');
+                container.innerHTML = '';
+                
+                data.data.forEach((line, index) => {
+                    const lineElement = document.createElement('div');
+                    lineElement.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-neutral-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-600 transition';
+                    lineElement.setAttribute('data-line-id', line.id);
+                    lineElement.innerHTML = `
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                                ${index + 1}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h6 class="mb-0 font-semibold text-sm truncate">${line.name}</h6>
+                                <p class="text-xs text-secondary-light mb-0 truncate">${line.description || 'Tidak ada deskripsi'}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-1 flex-shrink-0 ml-2">
+                             <button class="btn btn-sm bg-warning-600 hover:bg-warning-700 text-white rounded px-2 py-1 text-xs" 
+                                     onclick="editLine(${line.id}, '${line.name.replace(/'/g, "\\'")}', '${(line.description || '').replace(/'/g, "\\'")}')"
+                                     aria-label="Edit ${line.name}">
+                                 <iconify-icon icon="mdi:pencil"></iconify-icon>
+                             </button>
+                             <button class="btn btn-sm bg-danger-600 hover:bg-danger-700 text-white rounded px-2 py-1 text-xs" 
+                                     onclick="deleteLine(${line.id}, '${line.name.replace(/'/g, "\\'")}')"
+                                     aria-label="Hapus ${line.name}">
+                                 <iconify-icon icon="mdi:delete"></iconify-icon>
+                             </button>
+                         </div>
+                    `;
+                    container.appendChild(lineElement);
+                });
+
+                // Update total count
+                document.querySelector('.stats-card h3').textContent = data.data.length;
+            }
+        })
+        .catch(error => {
+            console.error('Error refreshing lines:', error);
+        });
+    }
+
+    function updateSpinwheel() {
+        // Refresh the page to update the spinwheel with new lines
+        location.reload();
+    }
+
     // Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
         if (lines.length > 0) {
@@ -1131,6 +1571,64 @@
             document.getElementById('spinButton').addEventListener('click', spinWheel);
 
             document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
+            
+            // Line form submission
+            document.getElementById('lineForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const data = {
+                    name: formData.get('name'),
+                    description: formData.get('description')
+                };
+
+                setButtonLoading(true);
+                clearValidationErrors();
+
+                const url = currentEditingLineId ? `/spinwheel/lines/${currentEditingLineId}` : '/spinwheel/lines';
+                const method = currentEditingLineId ? 'PUT' : 'POST';
+
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    setButtonLoading(false);
+                    
+                    if (data.success) {
+                        showToast(data.message);
+                        closeLineModal();
+                        refreshLinesDisplay();
+                        updateSpinwheel();
+                    } else {
+                        if (data.errors) {
+                            showValidationErrors(data.errors);
+                        } else {
+                            showToast(data.message, 'error');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    setButtonLoading(false);
+                    showToast('Terjadi kesalahan saat menyimpan data', 'error');
+                });
+            });
+
+            // Add line button
+            document.getElementById('addLineButton').addEventListener('click', openAddLineModal);
+
+            // Close modal when clicking outside
+            document.getElementById('lineModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeLineModal();
+                }
+            });
             
             // Keyboard navigation support
             document.addEventListener('keydown', function(event) {
@@ -1141,14 +1639,18 @@
                     spinWheel();
                 }
                 
-                // Escape key to close result card
+                // Escape key to close result card or modal
                 if (event.code === 'Escape') {
-                    const resultCard = document.getElementById('resultCard');
-                    if (resultCard && resultCard.style.display !== 'none') {
-                        resultCard.style.display = 'none';
-                        const spinButton = document.getElementById('spinButton');
-                        if (spinButton) {
-                            spinButton.focus();
+                    if (!document.getElementById('lineModal').classList.contains('hidden')) {
+                        closeLineModal();
+                    } else {
+                        const resultCard = document.getElementById('resultCard');
+                        if (resultCard && resultCard.style.display !== 'none') {
+                            resultCard.style.display = 'none';
+                            const spinButton = document.getElementById('spinButton');
+                            if (spinButton) {
+                                spinButton.focus();
+                            }
                         }
                     }
                 }
