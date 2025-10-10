@@ -16,7 +16,7 @@
                         </div>
                         <div class="flex-grow-1">
                             <h6 class="text-base mb-0 font-normal"> {{ $line->name }} </h6>
-                            <span class="text-sm text-neutral-600 font-normal"> {{ $line->issues->count() }} Isu </span>
+                            <span class="text-sm text-neutral-600 font-normal"> {{ $line->issues_count }} Isu </span>
                         </div>
                     </div>
                 </div>
