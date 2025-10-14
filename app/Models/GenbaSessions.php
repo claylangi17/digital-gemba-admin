@@ -14,6 +14,10 @@ class GenbaSessions extends Model
         'start_time'
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime'
+    ];
+
     public function issues()
     {
         return $this->hasMany(Issues::class, "session_id");
