@@ -113,6 +113,51 @@ class GembaController extends Controller
         }
     }
 
+    public function edit(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'name' => 'required',
+                'start_time' => 'required'
+            ]);
+
+            // Find the genba session first to check if it exists
+            $genba = GenbaSessions::find($id);
+            
+            if (!$genba) {
+                Alert::toast('Sesi Genba tidak ditemukan', 'error')
+                    ->position('top-end')
+                    ->timerProgressBar();
+                return redirect()->back();
+            }
+
+            // Parse timedate format 
+            $carbon = Carbon::createFromFormat('d/m/Y H:i', $request->start_time);
+            $start_time = $carbon->format('Y-m-d H:i:s');
+
+            // Update Session 
+            $genba->update([
+                'name' => $request->name,
+                'start_time' => $start_time
+            ]);
+
+            Alert::toast('Sesi Genba berhasil diperbarui', 'success')
+                ->position('top-end')
+                ->timerProgressBar();
+
+            return redirect()->route('genba.history');
+
+        } catch (\Exception $e) {
+            Log::error('Failed to update Genba Session', ['error' => $e->getMessage()]);
+            
+            Alert::toast('Error: ' . $e->getMessage(), 'error')
+                ->position('top-end')
+                ->timerProgressBar();
+
+            return redirect()->back()->withInput();
+        }
+    }
+
     public function delete($id)
     {
         try {

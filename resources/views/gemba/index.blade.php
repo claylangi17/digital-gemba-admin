@@ -109,6 +109,14 @@
                                 <a href="{{ route('genba.view', [$genba->id]) }}" class="w-8 h-8 bg-primary-50 dark:bg-primary-600/10 text-primary-600 dark:text-primary-400 rounded-full inline-flex items-center justify-center">
                                     <iconify-icon icon="solar:eye-bold"></iconify-icon>
                                 </a>
+                                <button type="button" class="w-8 h-8 bg-warning-50 dark:bg-warning-600/10 text-warning-600 dark:text-warning-400 rounded-full inline-flex items-center justify-center edit-btn" 
+                                        data-modal-target="edit-modal" 
+                                        data-modal-toggle="edit-modal"
+                                        data-id="{{ $genba->id }}"
+                                        data-name="{{ $genba->name }}"
+                                        data-start-time="{{ $genba->start_time->format('d/m/Y H:i') }}">
+                                    <iconify-icon icon="solar:pen-bold"></iconify-icon>
+                                </button>
                                 <form action="{{ route('genba.delete', [$genba->id]) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus sesi gemba ini?')">
                                     @csrf
                                     @method('DELETE')
@@ -168,6 +176,50 @@
         </div>
     </div>
 
+    <!-- Edit modal -->
+    <div id="edit-modal" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full  max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-dark-2">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Edit Sesi Gemba </h3>
+                    <button id="btn-close-edit-modal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="edit-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Tutup Formulir</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-5 space-y-4">
+                    <form id="edit-form" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                                <label for="edit_name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Nama Sesi</label>
+                            <input type="text" class="form-control" placeholder="Masukkan nama sesi genba " id="edit_name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_start_time" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Batas Waktu Absen</label>
+                            <div class=" relative">
+                                <input class="form-control rounded-lg bg-white dark:bg-neutral-700" id="edit_start_time" name="start_time" type="text">
+                                <span class="absolute end-0 top-1/2 -translate-y-1/2 me-3 line-height-1"><iconify-icon icon="solar:calendar-linear" class="icon text-lg"></iconify-icon></span>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="flex items-center gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button id="btn-cancel-edit-modal" type="button" data-modal-hide="edit-modal" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-[50px] py-[11px] rounded-lg" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button id="btn-submit-edit-modal" type="submit" class="btn btn-primary border border-primary-600 text-base px-7 py-3 rounded-lg">
+                        Perbarui Sesi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('user-script')
@@ -210,5 +262,40 @@
 
         $('#user-form').submit();
     });
+
+    // Edit Modal Functionality
+    $('.edit-btn').on('click', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const startTime = $(this).data('start-time');
+        
+        // Set form action URL
+        $('#edit-form').attr('action', '/genba/edit/' + id);
+        
+        // Populate form fields
+        $('#edit_name').val(name);
+        $('#edit_start_time').val(startTime);
+        
+        // Show modal
+        $('#edit-modal').removeClass('hidden').addClass('flex');
+    });
+
+    // Close Edit Modal
+    $('#btn-close-edit-modal').on('click', function() {
+        $('#edit-modal').removeClass('flex').addClass('hidden');
+    });
+
+    $('#btn-cancel-edit-modal').on('click', function() {
+        $('#edit-modal').removeClass('flex').addClass('hidden');
+    });
+
+    // Edit Form Process 
+    $('#btn-submit-edit-modal').on('click', function(e) {
+        e.preventDefault();
+        $('#edit-form').submit();
+    });
+
+    // Initialize date picker for edit modal
+    getDatePicker("#edit_start_time");
 </script>
 @endsection

@@ -31,7 +31,26 @@ class IssueController extends Controller
         $text = "Apakah kamu yakin untuk menghapus item ini?";
         confirmDelete($title, $text);
 
-        $data["items"] = Items::whereIn('id', explode(',', $data["issue"]->items))->pluck('name')->implode(', ');
+        $rawItems = array_filter(array_map('trim', explode(',', (string) $data['issue']->items)));
+
+        if (!empty($rawItems)) {
+            $numericIds = array_filter($rawItems, fn ($value) => ctype_digit($value));
+            $itemsById = !empty($numericIds)
+                ? Items::whereIn('id', $numericIds)->pluck('name', 'id')
+                : collect();
+
+            $data['items'] = collect($rawItems)
+                ->map(function ($value) use ($itemsById) {
+                    if (ctype_digit($value)) {
+                        return $itemsById->get($value, $value);
+                    }
+
+                    return $value;
+                })
+                ->implode(', ');
+        } else {
+            $data['items'] = 'Tidak ada item';
+        }
         $data["root_causes"] = RootCauses::where('issue_id', $data["issue"]->id)->orderByDesc('created_at')->get();
         $data["actions"] = Actions::where('issue_id', $data["issue"]->id)->orderByDesc('created_at')->get();
 
