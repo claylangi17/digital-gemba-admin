@@ -452,7 +452,9 @@
                 <div class="p-4 md:p-5 space-y-4">
                     <p class="mb-0 text-center"> Scan QR Ini Untuk Mencatat Kehadiran </p>
                     <div class="flex items-center justify-center">
-                        {!! QrCode::size(225)->generate('SESSION_'. $genba->created_at->translatedFormat('Y_m_d') . "_T" . $genba->id ) !!}
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            {!! QrCode::size(225)->generate('SESSION_'. $genba->created_at->translatedFormat('Y_m_d') . "_T" . $genba->id ) !!}
+                        </div>
                     </div>
                     <p class="mb-0 text-sm text-secondary-light text-center">ID Sesi: {{ $genba->id }} </p>
 
