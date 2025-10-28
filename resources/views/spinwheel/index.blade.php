@@ -1347,9 +1347,17 @@
                             <p class="text-xs text-secondary-light mb-0 truncate">${item.line.description || 'Tidak ada deskripsi'}</p>
                         </div>
                     </div>
-                    <div class="text-secondary-light text-xs flex-shrink-0 ml-2">
-                        <iconify-icon icon="mdi:clock-outline"></iconify-icon>
-                        ${time}
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                        <div class="text-secondary-light text-xs">
+                            <iconify-icon icon="mdi:clock-outline"></iconify-icon>
+                            ${time}
+                        </div>
+                        <button class="btn btn-sm bg-danger-600 hover:bg-danger-700 text-white rounded px-2 py-1 text-xs" 
+                                onclick="deleteHistoryItem(${index})"
+                                aria-label="Hapus riwayat ${item.line.name}"
+                                title="Hapus riwayat">
+                            <iconify-icon icon="mdi:delete"></iconify-icon>
+                        </button>
                     </div>
                 </div>
             `;
@@ -1370,6 +1378,27 @@
             updateStats();
             renderHistory();
             document.getElementById('lastSelected').textContent = '-';
+        }
+    }
+
+    // Hapus satu item riwayat berdasarkan indeks
+    function deleteHistoryItem(index) {
+        const item = spinHistory[index];
+        if (!item) return;
+        
+        if (confirm(`Apakah Anda yakin ingin menghapus riwayat untuk "${item.line.name}"?`)) {
+            // Hapus item dari array
+            spinHistory.splice(index, 1);
+            // Simpan kembali ke localStorage
+            localStorage.setItem('spinHistory_' + new Date().toDateString(), JSON.stringify(spinHistory));
+            // Perbarui statistik dan tampilan riwayat
+            updateStats();
+            renderHistory();
+            // Jika sudah kosong, set label terakhir dipilih menjadi '-'
+            if (spinHistory.length === 0) {
+                const lastSelected = document.getElementById('lastSelected');
+                if (lastSelected) lastSelected.textContent = '-';
+            }
         }
     }
     
