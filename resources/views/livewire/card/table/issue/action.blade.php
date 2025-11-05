@@ -11,7 +11,7 @@
 
         @if ($issue->status == "OPEN")
             <div class="flex items-center justify-end gap-3">
-                <button onclick="Livewire.dispatch('showModalAISuggestAction', ['{{ $issue->id }}' ,'{{ $issue->line->name }}', '{{ $issue->description }}'])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+                <button onclick="Livewire.dispatch('showModalAISuggestAction', [@js($issue->id), @js($issue->line->name), @js($issue->description)])" class="btn btn-secondary border border-neutral-600 text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
                     <iconify-icon icon="mingcute:ai-line" class="icon text-xl line-height-1"></iconify-icon>
                     Tanya AI
                 </button>

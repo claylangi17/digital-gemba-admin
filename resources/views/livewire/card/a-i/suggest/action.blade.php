@@ -92,11 +92,18 @@ style="display: @if($show === true)
 <script>
     Livewire.on('initRootCauseSelector', () => {
         setTimeout(() => {
-            VirtualSelect.init({ 
-                ele: '#root_cause',
-                maxWidth: "60%",
-                additionalClasses: 'vir-select',
-            });
-        }, 100);
+            const el = document.querySelector('#root_cause');
+            if (el && typeof VirtualSelect !== 'undefined') {
+                try {
+                    VirtualSelect.init({ 
+                        ele: el,
+                        maxWidth: "60%",
+                        additionalClasses: 'vir-select',
+                    });
+                } catch (e) {
+                    console.error('VirtualSelect init failed:', e);
+                }
+            }
+        }, 150);
     });
 </script>
