@@ -1,8 +1,8 @@
 @extends('layout.layout')
 
 @php
-    $title='Spinwheel Area Line Gemba';
-    $subTitle = 'Spinwheel Area';
+    $title='Kelola Area Line';
+    $subTitle = 'Kelola Area Line';
 @endphp
 
 @section('content')
@@ -878,6 +878,14 @@
             animation: none !important;
         }
     }
+    
+    /* Hide Spinwheel feature while keeping Line Management */
+    .wheel-section { display: none !important; }
+    #resultCard { display: none !important; }
+    /* Hide spin-related stats but keep Total Area Line card */
+    .info-section [role="status"][aria-label="Jumlah putaran hari ini"],
+    .info-section [role="status"][aria-label="Area line terakhir yang terpilih"],
+    [role="region"][aria-label="Riwayat putaran roda"] { display: none !important; }
 </style>
 
 <!-- Skip to main content link for keyboard navigation -->
@@ -887,17 +895,18 @@
     <div class="flex items-center justify-between gap-4">
         <div>
             <h4 class="mb-2 flex items-center gap-3">
-                <iconify-icon icon="game-icons:spinning-wheel" class="text-4xl text-primary-600"></iconify-icon>
-                Spinwheel Area Line Gemba
+                <iconify-icon icon="mdi:cog" class="text-4xl text-primary-600"></iconify-icon>
+                Kelola Area Line
             </h4>
             <p class="text-secondary-light text-base mb-0">
-                Putar roda untuk memilih area line gemba secara acak. Fitur ini membantu dalam rotasi pemeriksaan area yang adil dan tidak bias.
+                Kelola daftar area line gemba: tambah, ubah, hapus, dan cari area line secara mudah.
             </p>
         </div>
     </div>
 </div>
 
-@if($lines->count() > 0)
+@php($showManagementOnly = true)
+@if($showManagementOnly || $lines->count() > 0)
 <!-- Main Content Wrapper -->
 <div class="main-content-wrapper" id="main-content">
     <!-- Left Column: Wheel Section -->
@@ -1140,6 +1149,7 @@
     
     function initWheel() {
         const wheel = document.getElementById('wheel');
+        if (!wheel) return;
         const segmentAngle = 360 / lines.length;
         
         lines.forEach((line, index) => {
@@ -1578,8 +1588,11 @@
                     container.appendChild(lineElement);
                 });
 
-                // Update total count
-                document.querySelector('.stats-card h3').textContent = data.data.length;
+                // Update total count if stats card exists
+                const statCountEl = document.querySelector('.stats-card h3');
+                if (statCountEl) {
+                    statCountEl.textContent = data.data.length;
+                }
             }
         })
         .catch(error => {
@@ -1588,18 +1601,25 @@
     }
 
     function updateSpinwheel() {
-        // Refresh the page to update the spinwheel with new lines
-        location.reload();
+        // No page reload when spinwheel is hidden; refresh the list
+        refreshLinesDisplay();
     }
 
     // Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
-        if (lines.length > 0) {
+        if (document.getElementById('wheel')) {
             initWheel();
-            
-            document.getElementById('spinButton').addEventListener('click', spinWheel);
+        }
 
-            document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
+        const spinBtn = document.getElementById('spinButton');
+        if (spinBtn) {
+            spinBtn.addEventListener('click', spinWheel);
+        }
+
+        const clearHistoryBtn = document.getElementById('clearHistoryButton');
+        if (clearHistoryBtn) {
+            clearHistoryBtn.addEventListener('click', clearHistory);
+        }
             
             // Line form submission
             document.getElementById('lineForm').addEventListener('submit', function(e) {
@@ -1684,7 +1704,6 @@
                     }
                 }
             });
-        }
     });
 </script>
 @endsection

@@ -41,8 +41,8 @@
 
             <li>
                 <a href="{{ route('spinwheel.index') }}">
-                    <iconify-icon icon="game-icons:spinning-wheel" class="menu-icon"></iconify-icon>
-                    <span>Spinwheel Area</span>
+                    <iconify-icon icon="mdi:cog" class="menu-icon"></iconify-icon>
+                    <span>Kelola Area Line</span>
                 </a>
             </li>
 
