@@ -43,6 +43,7 @@ class User extends Component
     
     public function render()
     {
-        return view('livewire.modal.form.user');
+        $factories = \App\Models\Factory::all();
+        return view('livewire.modal.form.user', compact('factories'));
     }
 }

@@ -1065,7 +1065,7 @@
                         </div>
                         <div class="flex gap-1 flex-shrink-0 ml-2">
                             <button class="btn btn-sm bg-warning-600 hover:bg-warning-700 text-white rounded px-2 py-1 text-xs" 
-                                    onclick="editLine({{ $line->id }}, '{{ addslashes($line->name) }}', '{{ addslashes($line->description) }}')"
+                                    onclick="editLine({{ $line->id }}, '{{ addslashes($line->name) }}', '{{ addslashes($line->description) }}', '{{ $line->factory_id }}')"
                                     aria-label="Edit {{ $line->name }}">
                                 <iconify-icon icon="mdi:pencil"></iconify-icon>
                             </button>
@@ -1112,6 +1112,17 @@
                     <textarea id="lineDescription" name="description" class="form-control bg-white dark:bg-neutral-600 border-neutral-200 dark:border-neutral-600 text-neutral-900 dark:text-neutral-200 placeholder-neutral-500 dark:placeholder-neutral-400" rows="3" required></textarea>
                     <div class="invalid-feedback" id="descriptionError"></div>
                 </div>
+                @if (!Auth::user()->factory_id)
+                <div class="form-group">
+                    <label for="lineFactory" class="text-neutral-900 dark:text-neutral-200">Pabrik</label>
+                    <select id="lineFactory" name="factory_id" class="form-control bg-white dark:bg-neutral-600 border-neutral-200 dark:border-neutral-600 text-neutral-900 dark:text-neutral-200">
+                        <option value="">Pilih Pabrik (Opsional)</option>
+                        @foreach($factories as $factory)
+                            <option value="{{ $factory->id }}">{{ $factory->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
             </div>
             <div class="modal-footer border-t border-neutral-200 dark:border-neutral-600">
                 <button type="button" class="btn btn-secondary bg-neutral-200 dark:bg-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-500" onclick="closeLineModal()">Batal</button>
@@ -1439,11 +1450,15 @@
         document.getElementById('lineModal').classList.remove('hidden');
     }
 
-    function editLine(id, name, description) {
+    function editLine(id, name, description, factory_id) {
         currentEditingLineId = id;
         document.getElementById('modalTitle').textContent = 'Edit Area Line';
         document.getElementById('lineName').value = name;
         document.getElementById('lineDescription').value = description;
+        const factorySelect = document.getElementById('lineFactory');
+        if (factorySelect) {
+            factorySelect.value = factory_id || '';
+        }
         clearValidationErrors();
         document.getElementById('lineModal').classList.remove('hidden');
     }
@@ -1574,7 +1589,7 @@
                         </div>
                         <div class="flex gap-1 flex-shrink-0 ml-2">
                              <button class="btn btn-sm bg-warning-600 hover:bg-warning-700 text-white rounded px-2 py-1 text-xs" 
-                                     onclick="editLine(${line.id}, '${line.name.replace(/'/g, "\\'")}', '${(line.description || '').replace(/'/g, "\\'")}')"
+                                     onclick="editLine(${line.id}, '${line.name.replace(/'/g, "\\'")}', '${(line.description || '').replace(/'/g, "\\'")}', '${line.factory_id || ''}')"
                                      aria-label="Edit ${line.name}">
                                  <iconify-icon icon="mdi:pencil"></iconify-icon>
                              </button>
@@ -1628,7 +1643,8 @@
                 const formData = new FormData(this);
                 const data = {
                     name: formData.get('name'),
-                    description: formData.get('description')
+                    description: formData.get('description'),
+                    factory_id: formData.get('factory_id')
                 };
 
                 setButtonLoading(true);

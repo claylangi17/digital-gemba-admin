@@ -20,7 +20,8 @@ class GembaController extends Controller
     public function index() 
     {
         $data = [
-            "genbas" => GenbaSessions::orderByDesc('created_at')->get()
+            "genbas" => GenbaSessions::orderByDesc('created_at')->get(),
+            "factories" => \App\Models\Factory::all()
         ];
         
         return view('gemba.index', $data);
@@ -66,13 +67,25 @@ class GembaController extends Controller
         confirmDelete($title, $text);
         
         // Collect Data from related session 
+        $genba = GenbaSessions::where('id', $id)->first();
+
+        $userQuery = User::query();
+        $itemQuery = Items::query();
+        $lineQuery = Lines::query();
+
+        if ($genba && $genba->factory_id) {
+            $userQuery->where('factory_id', $genba->factory_id);
+            $itemQuery->where('factory_id', $genba->factory_id);
+            $lineQuery->where('factory_id', $genba->factory_id);
+        }
+
         $data = [
-            "genba" => GenbaSessions::where('id', $id)->first(),
+            "genba" => $genba,
             "issues" => Issues::where('session_id', $id)->orderBy('created_at', 'DESC')->get(),
-                    "appreciations" => AppreciationNotes::with('byUser')->where('session_id', $id)->get(),
-            "users" => User::all(),
-            "items" => Items::all(),
-            "lines" => Lines::all(),
+            "appreciations" => AppreciationNotes::with('byUser')->where('session_id', $id)->get(),
+            "users" => $userQuery->get(),
+            "items" => $itemQuery->get(),
+            "lines" => $lineQuery->get(),
         ];
         
         return view('gemba.view', $data);

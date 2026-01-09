@@ -6,6 +6,7 @@ use App\Http\Controllers\SpinwheelController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebController::class, 'index'])->middleware('role:superadmin,admin')->name('index');
+Route::post('/set-factory', [App\Http\Controllers\DashboardController::class, 'setFactory'])->name('dashboard.set-factory');
 
 // Spinwheel routes
 Route::get('/spinwheel', [SpinwheelController::class, 'index'])->middleware('role:superadmin,admin')->name('spinwheel.index');

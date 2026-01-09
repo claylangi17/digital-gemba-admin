@@ -50,9 +50,21 @@ style="display: @if($show === true)
                             <option class="text-black" value="management" @if($user && $user->department == 'management') selected @endif>Manajemen</option>
                         </select>
                     </div>
+                    <div class="mb-3" id="factory-input-group">
+                        <label for="factory_id" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Pabrik</label>
+                        <select class="form-control" id="factory_id" name="factory_id">
+                            <option value="">Pilih Pabrik</option>
+                            @foreach ($factories as $factory)
+                                <option class="text-black" value="{{ $factory->id }}" @if($user && $user->factory_id == $factory->id) selected @endif>{{ $factory->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="role" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Role</label>
                         <select class="form-control" id="role" name="role" required>
+                            @if(auth()->user()->role === 'superadmin')
+                                <option class="text-black" value="superadmin" @if($user && $user->role == 'superadmin') selected @endif>Super Admin</option>
+                            @endif
                             <option class="text-black" value="admin" @if($user && $user->role == 'admin') selected @endif>Admin</option>
                             <option class="text-black" value="user" @if($user && $user->role == 'user') selected @endif>Karyawan</option>
                         </select>
@@ -132,6 +144,24 @@ style="display: @if($show === true)
             e.preventDefault();
 
             $('#user-form').submit();
+        });
+
+        function toggleFactoryInput() {
+            const role = $('#role').val();
+            if (role === 'superadmin') {
+                $('#factory-input-group').hide();
+                $('#factory_id').val(''); // Clear selection
+            } else {
+                $('#factory-input-group').show();
+            }
+        }
+
+        // Run on load
+        toggleFactoryInput();
+
+        // Run on change
+        $('#role').on('change', function() {
+            toggleFactoryInput();
         });
 
         // Preview profile photo

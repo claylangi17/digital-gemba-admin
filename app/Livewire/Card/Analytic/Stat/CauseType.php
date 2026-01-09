@@ -16,25 +16,15 @@ class CauseType extends Component
     public function mount()
     {
         $this->environment = RootCauses::where("category", "environment")
-            ->whereHas('issue', function($query) {
-                $query->where('session_id', '!=', 1);
-            })->count();
+            ->whereHas('issue.session')->count();
         $this->material = RootCauses::where("category", "material")
-            ->whereHas('issue', function($query) {
-                $query->where('session_id', '!=', 1);
-            })->count();
+            ->whereHas('issue.session')->count();
         $this->man = RootCauses::where("category", "man")
-            ->whereHas('issue', function($query) {
-                $query->where('session_id', '!=', 1);
-            })->count();
+            ->whereHas('issue.session')->count();
         $this->method = RootCauses::where("category", "method")
-            ->whereHas('issue', function($query) {
-                $query->where('session_id', '!=', 1);
-            })->count();
+            ->whereHas('issue.session')->count();
         $this->machine = RootCauses::where("category", "machine")
-            ->whereHas('issue', function($query) {
-                $query->where('session_id', '!=', 1);
-            })->count();
+            ->whereHas('issue.session')->count();
     }
     
     public function render()

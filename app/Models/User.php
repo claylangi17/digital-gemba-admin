@@ -25,6 +25,7 @@ class User extends Authenticatable
         'avatar',
         'role',
         'department',
+        'factory_id',
     ];
 
     /**
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function coverPhoto()
     {
         return $this->hasOne(UserCoverPhoto::class, 'user_id', 'id');
+    }
+
+    public function factory()
+    {
+        return $this->belongsTo(Factory::class);
     }
 }

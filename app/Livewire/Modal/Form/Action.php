@@ -19,7 +19,7 @@ class Action extends Component
     public function mount() {
         $this->show = false;
         $this->action = null;
-        $this->users = User::all();
+        $this->users = [];
         $this->mode = 'create';
         $this->issue_id = null;
     }
@@ -29,6 +29,17 @@ class Action extends Component
     public function showModal($issue_id, $action_id = null) 
     {
         $this->issue_id = $issue_id;
+        
+        // Find issue to get session and factory
+        $issue = \App\Models\Issues::with('session')->find($issue_id);
+        $factory_id = $issue && $issue->session ? $issue->session->factory_id : null;
+
+        // Fetch users filtered by factory
+        if ($factory_id) {
+            $this->users = User::where('factory_id', $factory_id)->get();
+        } else {
+            $this->users = User::all();
+        }
         
         if ($action_id)
         {

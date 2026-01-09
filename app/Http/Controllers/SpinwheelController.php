@@ -14,7 +14,8 @@ class SpinwheelController extends Controller
     public function index()
     {
         $lines = Lines::orderBy('name', 'asc')->get();
-        return view('spinwheel.index', compact('lines'));
+        $factories = \App\Models\Factory::all();
+        return view('spinwheel.index', compact('lines', 'factories'));
     }
 
     /**
@@ -22,7 +23,7 @@ class SpinwheelController extends Controller
      */
     public function getLines()
     {
-        $lines = Lines::orderBy('name', 'asc')->get(['id', 'name', 'description']);
+        $lines = Lines::orderBy('name', 'asc')->get(['id', 'name', 'description', 'factory_id']);
         return response()->json([
             'success' => true,
             'data' => $lines
@@ -48,10 +49,16 @@ class SpinwheelController extends Controller
         }
 
         try {
-            $line = Lines::create([
+            $data = [
                 'name' => $request->name,
                 'description' => $request->description
-            ]);
+            ];
+
+            if ($request->has('factory_id')) {
+                $data['factory_id'] = $request->factory_id;
+            }
+
+            $line = Lines::create($data);
 
             return response()->json([
                 'success' => true,
@@ -94,10 +101,16 @@ class SpinwheelController extends Controller
         }
 
         try {
-            $line->update([
+            $data = [
                 'name' => $request->name,
                 'description' => $request->description
-            ]);
+            ];
+
+            if (!$request->user()->factory_id && $request->has('factory_id')) {
+                $data['factory_id'] = $request->factory_id;
+            }
+
+            $line->update($data);
 
             return response()->json([
                 'success' => true,
