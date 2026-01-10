@@ -81,7 +81,7 @@
                                 {{ $action->description }}
                             </td>
                             <td>
-                                {{ $action->issue->line->name }}
+                                {{ $action->issue?->line?->name ?? '-' }}
                             </td>
                             <td>
                                 {{ $action->due_date }}
