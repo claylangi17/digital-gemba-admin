@@ -26,9 +26,9 @@ class Issue extends Component
     public function mount() {
         $this->show = false;
         $this->issue = null;
-        $this->users = User::all();
-        $this->lines = Lines::all();
-        $this->items = Items::all();
+        $this->users = [];
+        $this->lines = [];
+        $this->items = [];
         $this->mode = 'create';
         $this->session_id = null;
     }
@@ -38,6 +38,26 @@ class Issue extends Component
     public function showModal($session_id, $issue_id = null) 
     {
         $this->session_id = $session_id;
+        
+        // Find session to get factory_id
+        $session = \App\Models\GenbaSessions::find($session_id);
+        $factory_id = $session ? $session->factory_id : null;
+
+        // Base queries
+        $userQuery = User::query();
+        $lineQuery = Lines::query();
+        $itemQuery = Items::query();
+
+        // Apply factory filter if session has a factory
+        if ($factory_id) {
+            $userQuery->where('factory_id', $factory_id);
+            $lineQuery->where('factory_id', $factory_id);
+            $itemQuery->where('factory_id', $factory_id);
+        }
+
+        $this->users = $userQuery->get();
+        $this->lines = $lineQuery->get();
+        $this->items = $itemQuery->get();
         
         if ($issue_id)
         {

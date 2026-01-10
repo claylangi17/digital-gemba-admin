@@ -14,12 +14,22 @@ class AppreciationController extends Controller
 {
     public function index()
     {
+        // Base query with factory filter
+        $query = User::query();
+        if (Auth::check()) {
+            if (Auth::user()->factory_id) {
+                $query->where('factory_id', Auth::user()->factory_id);
+            } elseif (session('viewing_factory_id')) {
+                $query->where('factory_id', session('viewing_factory_id'));
+            }
+        }
+
         // Get top 3 
-        $topUsers = User::orderByDesc('points')->take(3)->get();
+        $topUsers = (clone $query)->orderByDesc('points')->take(3)->get();
         $topUserIds = $topUsers->pluck('id')->toArray();
 
         // Get the rest users and remove the top 3 
-        $otherUsers = User::whereNotIn('id', $topUserIds)
+        $otherUsers = (clone $query)->whereNotIn('id', $topUserIds)
                           ->orderByDesc('points') 
                           ->get();
 

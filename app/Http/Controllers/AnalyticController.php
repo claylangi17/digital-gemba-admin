@@ -11,7 +11,10 @@ class AnalyticController extends Controller
     public function index()
     {
         $data = [
-            "overdue_actions" => Actions::where("status", "PROGRESS")->whereDate("due_date", "<", Carbon::now())->get()
+            "overdue_actions" => Actions::where("status", "PROGRESS")
+                ->whereDate("due_date", "<", Carbon::now())
+                ->whereHas('issue.session')
+                ->get()
         ];
         
         return view('gemba.analytics', $data);
@@ -33,11 +36,11 @@ class AnalyticController extends Controller
     public function get_actions_count()
     {
         try {
-            $actions = Actions::all();
+            $actions = Actions::whereHas('issue.session');
     
-            $overdue = $actions->where('status', "PROGRESS")->whereDate('due_date', '<', Carbon::now())->count();
-            $finish = $actions->where("status", "FINISH")->count();
-            $progress = $actions->where('status', "PROGRESS")->whereDate('due_date', '>=', Carbon::now())->count();
+            $overdue = (clone $actions)->where('status', "PROGRESS")->whereDate('due_date', '<', Carbon::now())->count();
+            $finish = (clone $actions)->where("status", "FINISH")->count();
+            $progress = (clone $actions)->where('status', "PROGRESS")->whereDate('due_date', '>=', Carbon::now())->count();
     
             return response()->json([
                 "status" => "success",

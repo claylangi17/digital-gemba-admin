@@ -19,6 +19,7 @@
                             <p class="text-xs font-neutral-600 text-center mb-2 mt-2">
                                 2nd Top Performer
                             </p>
+                            @if($top->count() > 1)
                             <img src="{{ get_user_avatar($top->get(1), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             <h6 class="text-lg text-center mb-2 mt-2">
                                 {{ $top->get(1)->name }}
@@ -27,6 +28,13 @@
                                 {{ $top->get(1)->points }}
                                 pts
                             </p>
+                            @else
+                            <div class="w-[100px] h-[100px] ms-auto me-auto rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                <iconify-icon icon="mdi:account" class="text-4xl"></iconify-icon>
+                            </div>
+                            <h6 class="text-lg text-center mb-2 mt-2 text-gray-400">Belum Ada</h6>
+                            <p class="text-2xl text-gray-300 font-semibold text-center mb-2 mt-2">- pts</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -42,6 +50,7 @@
                                 1st Top Performer
                             </p>
 
+                            @if($top->count() > 0)
                             <img src="{{ get_user_avatar($top->get(0), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             
                             <h6 class="text-lg text-center mb-2 mt-2">
@@ -54,6 +63,13 @@
                             <div class="flex items-center justify-center">
                                 <p class="text-center bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-base mt-6" style="width: fit-content">Congratulation!</p>
                             </div>
+                            @else
+                            <div class="w-[100px] h-[100px] ms-auto me-auto rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                <iconify-icon icon="mdi:trophy" class="text-4xl"></iconify-icon>
+                            </div>
+                            <h6 class="text-lg text-center mb-2 mt-2 text-gray-400">Belum Ada</h6>
+                            <p class="text-2xl text-gray-300 font-semibold text-center mb-2 mt-2">- pts</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -68,6 +84,7 @@
                             <p class="text-xs font-neutral-600 text-center mb-2 mt-2">
                                 3rd Top Performer
                             </p>
+                            @if($top->count() > 2)
                             <img src="{{ get_user_avatar($top->get(2), 100) }}" alt="" class="border br-white border-width-2-px w-[100px] h-[100px] ms-auto me-auto rounded-full object-fit-cover">
                             <h6 class="text-lg text-center mb-2 mt-2">
                                 {{ $top->get(2)->name }}
@@ -76,6 +93,13 @@
                                 {{ $top->get(2)->points }}
                                 pts
                             </p>
+                            @else
+                            <div class="w-[100px] h-[100px] ms-auto me-auto rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                <iconify-icon icon="mdi:account" class="text-4xl"></iconify-icon>
+                            </div>
+                            <h6 class="text-lg text-center mb-2 mt-2 text-gray-400">Belum Ada</h6>
+                            <p class="text-2xl text-gray-300 font-semibold text-center mb-2 mt-2">- pts</p>
+                            @endif
                         </div>
                     </div>
                 </div>

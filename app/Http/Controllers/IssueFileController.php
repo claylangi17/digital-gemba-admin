@@ -25,7 +25,7 @@ class IssueFileController extends Controller
                 $filename = uniqid() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
     
                 // Storing
-                $path = $file->storeAs('uploads/issue/' . (string) $request->issue_id . '/', $filename, 'public');
+                $path = $file->storeAs('uploads/issue/' . (string) $request->issue_id, $filename, 'public');
     
                 // Save the record
                 $mime = $file->getMimeType();

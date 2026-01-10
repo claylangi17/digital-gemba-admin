@@ -14,6 +14,11 @@ class AppreciationNotes extends Model
         return $this->belongsTo(User::class, 'by');
     }
 
+    public function session()
+    {
+        return $this->belongsTo(GenbaSessions::class, 'session_id');
+    }
+
     public function getImageUrlAttribute()
     {
         $path = $this->files;

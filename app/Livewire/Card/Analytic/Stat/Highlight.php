@@ -29,30 +29,28 @@ class Highlight extends Component
         $previousMonth = Carbon::now()->subMonth()->month;
         $previousYear = Carbon::now()->subMonth()->year;
 
-        // Current month data - excluding session_id = 1
+        // Current month data
         $this->total_issue = Issues::whereMonth('created_at', $currentMonth)
                                   ->whereYear('created_at', $currentYear)
-                                  ->where('session_id', '!=', 1)
+                                  ->whereHas('session')
                                   ->count();
 
         $this->done_issue = Issues::whereMonth('created_at', $currentMonth)
                                  ->whereYear('created_at', $currentYear)
                                  ->where('status', 'CLOSED')
-                                 ->where('session_id', '!=', 1)
+                                 ->whereHas('session')
                                  ->count();
 
         $this->overdue_action = Actions::whereMonth('due_date', $currentMonth)
                                       ->whereYear('due_date', $currentYear)
                                       ->where('status', 'PENDING')
                                       ->where('due_date', '<', Carbon::now())
-                                      ->whereHas('issue', function($query) {
-                                          $query->where('session_id', '!=', 1);
-                                      })
+                                      ->whereHas('issue.session')
                                       ->count();
 
         $this->total_appreciation = AppreciationNotes::whereMonth('created_at', $currentMonth)
                                                     ->whereYear('created_at', $currentYear)
-                                                    ->where('session_id', '!=', 1)
+                                                    ->whereHas('session')
                                                     ->count();
     }
 
@@ -61,30 +59,28 @@ class Highlight extends Component
         $previousMonth = Carbon::now()->subMonth()->month;
         $previousYear = Carbon::now()->subMonth()->year;
 
-        // Previous month data - excluding session_id = 1
+        // Previous month data
         $this->total_issue_last = Issues::whereMonth('created_at', $previousMonth)
                                        ->whereYear('created_at', $previousYear)
-                                       ->where('session_id', '!=', 1)
+                                       ->whereHas('session')
                                        ->count();
 
         $this->done_issue_last = Issues::whereMonth('created_at', $previousMonth)
                                       ->whereYear('created_at', $previousYear)
                                       ->where('status', 'CLOSED')
-                                      ->where('session_id', '!=', 1)
+                                      ->whereHas('session')
                                       ->count();
 
         $this->overdue_action_last = Actions::whereMonth('due_date', $previousMonth)
                                            ->whereYear('due_date', $previousYear)
                                            ->where('status', 'PENDING')
                                            ->where('due_date', '<', Carbon::now()->subMonth())
-                                           ->whereHas('issue', function($query) {
-                                               $query->where('session_id', '!=', 1);
-                                           })
+                                           ->whereHas('issue.session')
                                            ->count();
 
         $this->total_appreciation_last = AppreciationNotes::whereMonth('created_at', $previousMonth)
                                                          ->whereYear('created_at', $previousYear)
-                                                         ->where('session_id', '!=', 1)
+                                                         ->whereHas('session')
                                                          ->count();
     }
 
