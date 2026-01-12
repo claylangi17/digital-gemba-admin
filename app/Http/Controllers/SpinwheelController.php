@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lines;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class SpinwheelController extends Controller
 {
@@ -36,7 +37,14 @@ class SpinwheelController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:lines,name',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('lines')->where(function ($query) use ($request) {
+                    return $query->where('factory_id', $request->factory_id);
+                })
+            ],
             'description' => 'required|string|max:255'
         ]);
 
@@ -88,7 +96,16 @@ class SpinwheelController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:lines,name,' . $id,
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('lines')->ignore($id)->where(function ($query) use ($request, $line) {
+                    // Use request factory_id if present (even if null), otherwise use existing line's factory_id
+                    $factoryId = $request->has('factory_id') ? $request->factory_id : $line->factory_id;
+                    return $query->where('factory_id', $factoryId);
+                })
+            ],
             'description' => 'required|string|max:255'
         ]);
 
