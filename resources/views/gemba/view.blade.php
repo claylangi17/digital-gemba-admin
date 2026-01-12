@@ -97,7 +97,7 @@
                                                 <div class="flex items-center gap-2">
             
                                                     {{-- Aspect  --}}
-                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line->name }} </span>
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line?->name ?? '-' }} </span>
                                                     {{-- Status  --}}
                                                     <span class="bg-warning-100 dark:bg-warning-600/25 text-warning-600 dark:text-warning-400 px-6 py-1.5 rounded-full font-medium text-xs">Dalam Proses</span>
                                                 </div>
@@ -170,7 +170,7 @@
                                                 <div class="flex items-center gap-3">
             
                                                     {{-- Aspect  --}}
-                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line->name }} </span>
+                                                    <span class="bg-primary-100 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 px-6 py-1.5 rounded-full font-medium text-xs"> {{ $issue->line?->name ?? '-' }} </span>
                                                     {{-- Status  --}}
                                                     <span class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 px-6 py-1.5 rounded-full font-medium text-xs">Terselesaikan</span>
                                                 </div>
