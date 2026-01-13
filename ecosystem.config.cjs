@@ -33,6 +33,22 @@ module.exports = {
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
     },
     {
+      name: 'gemba-admin-laravel-scheduler',
+      script: './start-laravel-scheduler.js',
+      interpreter: 'node',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '300M',
+      windowsHide: true,
+      env: {
+        APP_ENV: 'local',
+      },
+      error_file: './storage/logs/pm2-scheduler-error.log',
+      out_file: './storage/logs/pm2-scheduler-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+    {
       name: 'gemba-admin-vite-dev',
       script: './start-vite.js',
       interpreter: 'node',
