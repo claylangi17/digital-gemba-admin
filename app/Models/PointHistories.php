@@ -8,6 +8,7 @@ class PointHistories extends Model
 {
     protected $fillable = [
         'userid',
+        'description',
         'type', 
         'category', 
         'point_before', 
