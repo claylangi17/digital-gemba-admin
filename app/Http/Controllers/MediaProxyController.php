@@ -10,10 +10,25 @@ use Illuminate\Support\Facades\Storage;
 class MediaProxyController extends Controller
 {
     /**
-     * Proxy media files from external server with SSL bypass
+     * Proxy media files from external server with SSL bypass and local caching
      */
     public function proxy(Request $request, $path)
     {
+        // Define cache path
+        $cachePath = "media_cache/{$path}";
+
+        // Check if file exists in local cache
+        if (Storage::disk('public')->exists($cachePath)) {
+            $mimeType = Storage::disk('public')->mimeType($cachePath);
+            $content = Storage::disk('public')->get($cachePath);
+
+            return response($content)
+                ->header('Content-Type', $mimeType)
+                ->header('Cache-Control', 'public, max-age=864000') // 10 days
+                ->header('Access-Control-Allow-Origin', '*')
+                ->header('X-Cache', 'HIT');
+        }
+
         // Construct the external URL
         $baseUrl = rtrim(env('APPRECIATION_IMAGE_BASE_URL'), '/');
         $externalUrl = "{$baseUrl}/{$path}";
@@ -28,12 +43,17 @@ class MediaProxyController extends Controller
             if ($response->successful()) {
                 // Get the content type from the response
                 $contentType = $response->header('Content-Type');
+                $content = $response->body();
+
+                // Save to local cache
+                Storage::disk('public')->put($cachePath, $content);
                 
                 // Return the file content with proper headers
-                return response($response->body())
+                return response($content)
                     ->header('Content-Type', $contentType)
-                    ->header('Cache-Control', 'public, max-age=3600')
-                    ->header('Access-Control-Allow-Origin', '*');
+                    ->header('Cache-Control', 'public, max-age=864000') // 10 days
+                    ->header('Access-Control-Allow-Origin', '*')
+                    ->header('X-Cache', 'MISS');
             }
             
             // If external request fails, return 404
